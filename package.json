@@ -59,32 +59,22 @@
    },
    "lint-staged": {
       "packages/vite-app-ts/src/**/*.{ts,tsx}": [
-         "yarn workspace @scaffold-eth/vite-app lint --fix",
-         "yarn workspace @scaffold-eth/vite-app format"
+         "yarn workspace @scaffold-eth/vite-app lint"
       ],
       "packages/common/src/**/*.{ts,tsx}": [
-         "yarn workspace @scaffold-eth/common lint --fix",
-         "yarn workspace @scaffold-eth/common format"
+         "yarn workspace @scaffold-eth/common lint"
       ],
       "packages/hardhat-ts/test/**/*.ts": [
-         "yarn workspace @scaffold-eth/hardhat lint --fix",
-         "yarn workspace @scaffold-eth/hardhat format"
+         "yarn workspace @scaffold-eth/hardhat lint"
       ],
       "packages/hardhat-ts/helpers/**/*.ts": [
-         "yarn workspace @scaffold-eth/hardhat lint --fix",
-         "yarn workspace @scaffold-eth/hardhat format"
+         "yarn workspace @scaffold-eth/hardhat lint"
       ],
       "packages/hardhat-ts/tasks/**/*.ts": [
-         "yarn workspace @scaffold-eth/hardhat lint --fix",
-         "yarn workspace @scaffold-eth/hardhat format"
+         "yarn workspace @scaffold-eth/hardhat lint"
       ],
       "packages/hardhat-ts/deploy/**/*.ts": [
-         "yarn workspace @scaffold-eth/hardhat lint --fix",
-         "yarn workspace @scaffold-eth/hardhat format"
-      ],
-      "packages/hardhat-ts/**/*.sol": [
-         "yarn workspace @scaffold-eth/hardhat format",
-         "yarn workspace @scaffold-eth/hardhat solhint --fix"
+         "yarn workspace @scaffold-eth/hardhat lint"
       ]
    }
 }

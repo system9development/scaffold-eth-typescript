@@ -71,3 +71,4 @@ yarn-error.log*
 # misc
 .DS_Store
 *.pem
+packages/hardhat-ts/contracts

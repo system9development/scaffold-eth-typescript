@@ -47,6 +47,7 @@ const networks = {
   ...getNetworks({
     accounts: {
       mnemonic: getMnemonic(),
+      accountsBalance: '10000000000000000000000',
     },
   }),
   localhost: {
@@ -55,9 +56,16 @@ const networks = {
       if there is no mnemonic, it will just use account 0 of the hardhat node to deploy
       (you can put in a mnemonic here to set the deployer locally)
     */
-    // accounts: {
-    //   mnemonic: getMnemonic(),
-    // },
+    accounts: {
+      mnemonic: getMnemonic(),
+      accountsBalance: '10000000000000000000000',
+    },
+  },
+  hardhat: {
+    accounts: {
+      mnemonic: getMnemonic(),
+      accountsBalance: '10000000000000000000000',
+    },
   },
 };
 
@@ -79,6 +87,48 @@ export const config: HardhatUserConfig = {
     compilers: [
       {
         version: '0.8.10',
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 250,
+          },
+          outputSelection: {
+            '*': {
+              '*': ['storageLayout'],
+            },
+          },
+        },
+      },
+      {
+        version: '0.8.11',
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 250,
+          },
+          outputSelection: {
+            '*': {
+              '*': ['storageLayout'],
+            },
+          },
+        },
+      },
+      {
+        version: '0.8.13',
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 250,
+          },
+          outputSelection: {
+            '*': {
+              '*': ['storageLayout'],
+            },
+          },
+        },
+      },
+      {
+        version: '0.4.17',
         settings: {
           optimizer: {
             enabled: true,

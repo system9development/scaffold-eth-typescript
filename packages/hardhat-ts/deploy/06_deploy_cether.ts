@@ -18,7 +18,7 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
     from: deployer,
     log: true,
     args: [
-      Unitroller.address,
+      Comptroller.address,
       WhitePaperInterestRateModel.address,
       BN.from('200000000000000000000000000'),
       'Compound Ether',

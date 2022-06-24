@@ -17,7 +17,7 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
   await deploy('WhitePaperInterestRateModel', {
     from: deployer,
     log: true,
-    args: [BN.from('42048000000000000000000'), BN.from('210240000000000000000000')],
+    args: [BN.from('20000000000000000'), BN.from('100000000000000000')],
   });
   await deploy('JumpRateModelV2', {
     from: deployer,

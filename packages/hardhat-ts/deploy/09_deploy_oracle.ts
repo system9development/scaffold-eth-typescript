@@ -1,6 +1,7 @@
 import { ComptrollerG7 as IComptroller } from 'generated/contract-types/ComptrollerG7';
 import { SimplePriceOracle as IOracle } from 'generated/contract-types/SimplePriceOracle';
 import { Unitroller as IUnitroller } from 'generated/contract-types/Unitroller';
+import { USDC as IUSDC } from 'generated/contract-types/USDC';
 import { ethers } from 'hardhat';
 import { DeployFunction } from 'hardhat-deploy/types';
 import { THardhatRuntimeEnvironmentExtended } from 'helpers/types/THardhatRuntimeEnvironmentExtended';
@@ -20,7 +21,7 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
   await Comptroller._setPriceOracle(Oracle.address);
 
   const BN = ethers.BigNumber;
-  const cUSDC = await ethers.getContract('cUSDC');
+  const cUSDC = await ethers.getContract<IUSDC>('cUSDC');
   const cUSDT = await ethers.getContract('cUSDC');
   const cCOMP = await ethers.getContract('cCOMP');
   const cEther = await ethers.getContract('CEther');

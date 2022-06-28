@@ -120,7 +120,7 @@ const addTokenDataForMarket = async (market) => {
     };
   };
   if (underlying) {
-    const underlyingReader = new ethers.Contract(market, Erc20ReadAbi, provider);
+    const underlyingReader = new ethers.Contract(underlying, Erc20ReadAbi, provider);
     const underlyingName = await underlyingReader.name();
     const underlyingSymbol = await underlyingReader.symbol();
     const underlyingDecimals = await underlyingReader.decimals();

@@ -14,7 +14,7 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
     contract: 'TetherToken',
     from: deployer,
     log: true,
-    args: [BN.from('1000000000000'), 'Tether USD', 'usdt', 6],
+    args: [BN.from('1000000000000'), 'Tether USD', 'USDT', 6],
   });
   await deploy('USDC', {
     from: deployer,

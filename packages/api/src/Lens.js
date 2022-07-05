@@ -4,7 +4,7 @@ const { provider, networkConfig } = require('./config');
 const Lens = new ethers.Contract(
   networkConfig['Lens'].address,
   networkConfig['Lens'].abi,
-  provider
+  provider,
 );
 
 module.exports = Lens;

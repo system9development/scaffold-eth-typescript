@@ -1,26 +1,17 @@
 const ethers = require('ethers');
-const { provider, networkConfig } = require('./config');
+const { provider, mainnetProvider, mainnetTokens } = require('./config');
 const Comptroller = require('./Comptroller');
 const Lens = require('./Lens');
-
-
-const Erc20ReadAbi = JSON.stringify([
-  "function name() view returns (string)",
-  "function symbol() view returns (string)",
-  "function decimals() view returns (uint8)",
-]);
-
-const CTokenReadAbi = JSON.stringify([
-  "function name() view returns (string)",
-  "function symbol() view returns (string)",
-  "function decimals() view returns (uint8)",
-  "function underlying() view returns (address)",
-]);
+const Erc20ReadAbi = require('./abis/Erc20Read');
+const CTokenReadAbi = require('./abis/CTokenRead');
+const BlockCache = require('./lib/BlockCache');
 
 /**
  * map contract addresses to { name, decimals, symbol, reader }
  */
-const tokens = {};
+
+const cTokens = {};
+const mainnetCache = new BlockCache(mainnetProvider, Object.keys(mainnetTokens));
 
 /*
   Takes the array of stract and converts it to JSON with additional info from 'tokens'
@@ -45,15 +36,24 @@ const cTokenMetadataToJson = async ([
   compBorrowSpeed,
   borrowCap,
 ]) => {
-  const underlying = tokens[cToken].underlying;
+  const {
+    underlying,
+    underlyingSymbol,
+    underlyingName,
+  } = cTokens[cToken];
+  const underlyingPriceUsd = mainnetCache.getPriceBySymbol(underlyingSymbol);
+  const totalReservesUsd = ethers.utils.formatUnits(totalReserves * underlyingPriceUsd, 8);
+  const totalSupplyUsd = ethers.utils.formatUnits(totalSupply * underlyingPriceUsd, 8);
+  const totalBorrowsUsd = ethers.utils.formatUnits(totalBorrows * underlyingPriceUsd, 8);
+  const liquidity = (parseFloat(totalReservesUsd) + parseFloat(totalSupplyUsd) - parseFloat(totalBorrowsUsd)).toString();
   return {
     address: cToken,
-    symbol: tokens[cToken].symbol,
-    name: tokens[cToken].name,
+    symbol: cTokens[cToken].symbol,
+    name: cTokens[cToken].name,
     underlyingAddress: underlying,
-    underlyingName: underlying ? tokens[underlying].name : "ETH",
-    underlyingSymbol: underlying ? tokens[underlying].symbol : "ETH",
-    underlyingDecimal: underlying ? tokens[underlying].decimals : 18,
+    underlyingName,
+    underlyingSymbol,
+    underlyingDecimal: underlyingDecimals.toNumber(),
     dammSpeeds: compSupplySpeed.toString(),
     borrowerDailyDamm: compBorrowSpeed.toString(),
     supplierDailyDamm: compSupplySpeed.toString(),
@@ -62,13 +62,13 @@ const cTokenMetadataToJson = async ([
     borrowRatePerBlock: borrowRatePerBlock.toString(),
     supplyRatePerBlock: supplyRatePerBlock.toString(),
     exchangeRate: exchangeRateCurrent.toString(),
-    // underlyingPrice (get from oracle?)
+    underlyingPrice: underlyingPriceUsd,
     totalBorrows: totalBorrows.toString(),
     totalBorrows2: ethers.utils.formatUnits(totalBorrows, 8),
-    // totalBorrowsUsd (convert from oracle?)
+    totalBorrowsUsd: parseFloat(ethers.utils.formatUnits(totalBorrows, 8)) * mainnetCache.getPriceBySymbol(underlyingSymbol),
     totalSupply: totalSupply.toString(),
     totalSupply2: ethers.utils.formatUnits(totalSupply, 8),
-    // totalSupplyUsd (convert from oracle?)
+    totalSupplyUsd: parseFloat(ethers.utils.formatUnits(totalSupply, 8)) * mainnetCache.getPriceBySymbol(underlyingSymbol),
     cash: totalCash.toString(),
     totalReserves: totalReserves.toString(),
     reserveFactor: reserveFactorMantissa.toString(),
@@ -77,12 +77,12 @@ const cTokenMetadataToJson = async ([
     supplyApy: supplyRatePerBlock.toString(), // ditto
     // borrowDammApy (???)
     // supplyDammApy (???)
-    // liquidity: (totalReservesUsd + totalSupplyUsd - totalBorrowsUsd ???)
+    liquidity,
     // tokenPrice: (get from oracle ???)
     // totalDistributed: (???)
     // totalDistributed2: (???)
     borrowCaps: borrowCap.toString(),
-    lastCalculatedBlockNumber: await provider.getBlockNumber(),
+    lastCalculatedBlockNumber: provider.blockNumber,
     borrowerCount: 1, // (???)
     supplierCount: 1, // (???)
   };
@@ -99,45 +99,64 @@ const addTokenDataForMarket = async (market) => {
   const name = await marketReader.name();
   const symbol = await marketReader.symbol();
   const decimals = await marketReader.decimals();
-  let underlying = null;
+  let underlyingAddress = null;
   try {
-    underlying = await marketReader.underlying();
-    tokens[market] = {
+  //   if (!underlyingAddress) {
+  //     console.error('no underlyingAddress')
+  //     throw Error();
+  //   } else {
+  //     console.log('underlyingaddress', underlyingAddress);
+  //   }
+    underlyingAddress = await marketReader.underlying();
+    const underlyingReader = new ethers.Contract(underlyingAddress, Erc20ReadAbi, provider);
+    const underlyingSymbol = (await underlyingReader.symbol()).toUpperCase();
+    const underlyingName = await underlyingReader.name();
+    const underlyingDecimals = await underlyingReader.decimals();
+    cTokens[market] = {
       name,
       symbol,
       decimals,
       reader: marketReader,
-      underlying,
+      underlying: underlyingAddress,
+      underlyingName,
+      underlyingSymbol,
+      underlyingDecimals,
     };
-  } catch {
+    console.log(cTokens[market]);
+  } catch (e) {
+    console.log('error', e);
     // market is cether; don't set underlying
-    tokens[market] = {
+    cTokens[market] = {
       name,
       symbol,
       decimals,
       reader: cEtherReader,
-      underlying, // null
+      underlying: null,
+      underlyingSymbol: 'ETH',
+      underlyingName: 'Ether',
+      underlyingDecimals: 18,
     };
   };
-  if (underlying) {
-    const underlyingReader = new ethers.Contract(underlying, Erc20ReadAbi, provider);
-    const underlyingName = await underlyingReader.name();
-    const underlyingSymbol = await underlyingReader.symbol();
-    const underlyingDecimals = await underlyingReader.decimals();
-    tokens[underlying] = {
-      name: underlyingName,
-      symbol: underlyingSymbol,
-      decimals: underlyingDecimals,
-      reader: underlyingReader,
-    };
-  }
+  // if (underlyingAddress) {
+  //   const underlyingReader = new ethers.Contract(underlying, Erc20ReadAbi, provider);
+  //   const underlyingName = await underlyingReader.name();
+  //   const underlyingSymbol = await underlyingReader.symbol();
+  //   const underlyingDecimals = await underlyingReader.decimals();
+  //   cTokens[underlyingAddress] = {
+  //     name: underlyingName,
+  //     symbol: underlyingSymbol,
+  //     decimals: underlyingDecimals,
+  //     reader: underlyingReader,
+  //   };
+  // }
 }
 const apiData = async () => {
   // Gets an array of addresses
   const markets = await Comptroller.getAllMarkets();
+
   for (let i = 0; i < markets.length; i += 1) {
     const market = markets[i];
-    if (!(market in tokens)) {
+    if (!(market in cTokens)) {
       await addTokenDataForMarket(market);
     }
   };

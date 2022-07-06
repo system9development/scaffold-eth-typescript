@@ -54,15 +54,17 @@ const getUniV3USDPrice = async (token, ethPriceUsd) => {
   const slot0Data = await poolData.reader.slot0();
   // @ts-ignore
   const sqrtPrice = BigNumber(slot0Data[0].toString());
+  // @ts-ignore
+  const decimalAdjustment = BigNumber(10).pow(tokenIsBase ? 18 - tokenDecimals : tokenDecimals - 18);
   if (tokenIsBase) {
     // @ts-ignore
-    return sqrtPrice.pow(2).dividedBy(Q192).times(ethPriceUsd).toNumber();
+    return sqrtPrice.pow(2).dividedBy(Q192).times(ethPriceUsd).dividedBy(decimalAdjustment).toNumber();
   } else {
     // @ts-ignore
     return new BigNumber(ethPriceUsd).dividedBy(
       sqrtPrice.pow(2).dividedBy(Q192)
     // @ts-ignore
-    ).times(BigNumber(10).pow(-tokenDecimals)).toNumber();
+    ).times(decimalAdjustment).toNumber();
   }
 };
 

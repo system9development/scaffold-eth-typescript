@@ -31,7 +31,7 @@ const uniswapV2Pools = Object.fromEntries(
  * @param {number} ethPriceUsd - the price of ethereum in USD
  */
 const getUniV2USDPrice = async (token, ethPriceUsd) => {
-  // const { address: tokenAddress, decimals: tokenDecimals } = mainnetTokens[token];
+  const { address: tokenAddress, decimals: tokenDecimals } = mainnetTokens[token];
   const tokenIsBase = `${token}_ETH` in uniswapV2Pools || `${token}_WETH` in uniswapV2Pools;
   const tokenIsQuote = `ETH_${token}` in uniswapV2Pools || `WETH_${token}` in uniswapV2Pools;
   if (!tokenIsBase && !tokenIsQuote) {
@@ -43,9 +43,9 @@ const getUniV2USDPrice = async (token, ethPriceUsd) => {
 
   const reserves = await poolData.reader.getReserves();
   // @ts-ignore
-  const reserves0 = BigNumber(reserves[0].toString());
+  const reserves0 = BigNumber(ethers.utils.formatUnits(reserves[0], tokenIsBase ? tokenDecimals : 18).toString());
   // @ts-ignore
-  const reserves1 = BigNumber(reserves[1].toString());
+  const reserves1 = BigNumber(ethers.utils.formatUnits(reserves[1], tokenIsQuote ? tokenDecimals : 18).toString());
 
   if (tokenIsBase) {
     return reserves1.dividedBy(reserves0).times(ethPriceUsd).toNumber()

@@ -24,7 +24,7 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
   const cUSDC = await ethers.getContract<IUSDC>('cUSDC');
   const cUSDT = await ethers.getContract('cUSDC');
   const cCOMP = await ethers.getContract('cCOMP');
-  const cEther = await ethers.getContract('CEther');
+  const cEther = await ethers.getContract('cETH');
   await Oracle.setUnderlyingPrice(cUSDC.address, BN.from('1000000000000000000'));
   await Oracle.setUnderlyingPrice(cUSDT.address, BN.from('1000000000000000000'));
   await Oracle.setUnderlyingPrice(cEther.address, BN.from('10100000000000000000000'));

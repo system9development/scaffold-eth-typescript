@@ -14,7 +14,8 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
   const Unitroller = await ethers.getContract<IUnitroller>('Unitroller');
   const Comptroller = (await ethers.getContract<IComptroller>('ComptrollerImplementation')).attach(Unitroller.address);
   const WhitePaperInterestRateModel = await ethers.getContract<IWhitePaperInterestRateModel>('WhitePaperInterestRateModel');
-  const CEther = await deploy('CEther', {
+  const CEther = await deploy('cETH', {
+    contract: 'CEther',
     from: deployer,
     log: true,
     args: [

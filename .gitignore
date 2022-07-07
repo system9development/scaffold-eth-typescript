@@ -72,3 +72,4 @@ yarn-error.log*
 .DS_Store
 *.pem
 packages/hardhat-ts/contracts
+.env

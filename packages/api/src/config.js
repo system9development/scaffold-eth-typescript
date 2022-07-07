@@ -11,6 +11,7 @@ const { ALCHEMY_API_TOKEN } = process.env;
 
 if (!ALCHEMY_API_TOKEN) {
   console.error('ALCHEMY_API_TOKEN is required in environment. Check your .env file');
+  process.exit(1);
 }
 
 const provider = new ethers.providers.JsonRpcProvider(

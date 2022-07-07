@@ -122,9 +122,7 @@ const addTokenDataForMarket = async (market) => {
       underlyingSymbol,
       underlyingDecimals,
     };
-    console.log(cTokens[market]);
   } catch (e) {
-    console.log('error', e);
     // market is cether; don't set underlying
     cTokens[market] = {
       name,

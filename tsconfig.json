@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "typeRoots": ["packages/api/src"],
     "sourceMap": true,
     // "inlineSources": true,
     "allowJs": false,
@@ -24,5 +25,5 @@
     "**/.yalc/",
     "**/.yalc/**/*",
     ".yalc/**/*"
-  ]
+  ],
 }

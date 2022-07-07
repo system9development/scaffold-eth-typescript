@@ -11,11 +11,11 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
   const { getNamedAccounts, deployments } = hre;
   const { deploy } = deployments;
   const { deployer } = await getNamedAccounts();
-  await deploy('Comp', {
+  await deploy('BDAMM', {
     from: deployer,
     log: true,
     args: [deployer],
   });
 };
 export default func;
-func.tags = ['Comp'];
+func.tags = ['BDAMM'];

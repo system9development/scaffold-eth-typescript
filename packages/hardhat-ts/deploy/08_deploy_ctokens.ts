@@ -8,6 +8,10 @@ import { ethers } from 'hardhat';
 import { DeployFunction } from 'hardhat-deploy/types';
 import { THardhatRuntimeEnvironmentExtended } from 'helpers/types/THardhatRuntimeEnvironmentExtended';
 
+import { mainnetTokens } from '../../api/src/config';
+
+
+const dTokens: string[] = [];
 
 const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => {
   const { getNamedAccounts, deployments } = hre;
@@ -18,69 +22,97 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
   const Unitroller = await ethers.getContract<IUnitroller>('Unitroller');
   const USDT = await ethers.getContract<IUSDT>('USDT');
   const USDC = await ethers.getContract<IUSDC>('USDC');
-  const COMP = await ethers.getContract('Comp');
+  const BDAMM = await ethers.getContract('BDAMM');
   const JumpRateModelV2 = await ethers.getContract<IJumpRateModelV2>('JumpRateModelV2');
   const Comptroller = (await ethers.getContract<IComptroller>('ComptrollerImplementation')).attach(Unitroller.address);
   const CTokenDelegate = await ethers.getContract<ICTokenDelegate>('CErc20Delegate');
 
-  // cUSDT:
-  const cUSDT = await deploy('cUSDT', {
-    contract: 'CErc20Delegator',
-    from: deployer,
-    log: true,
-    args: [
-      USDT.address,
-      Comptroller.address,
-      JumpRateModelV2.address,
-      BN.from('200000000000000'),
-      'Compound Tether USD',
-      'cUSDT',
-      8,
-      deployer,
-      CTokenDelegate.address,
-      '0x',
-    ],
-  });
-  // cUSDC:
-  const cUSDC = await deploy('cUSDC', {
-    contract: 'CErc20Delegator',
-    from: deployer,
-    log: true,
-    args: [
-      USDC.address,
-      Comptroller.address,
-      JumpRateModelV2.address,
-      BN.from('200000000000000'),
-      'Compound USD Coin',
-      'cUSDC',
-      8,
-      deployer,
-      CTokenDelegate.address,
-      '0x',
-    ],
-  });
+  const tokenList = Object.keys(mainnetTokens);
 
-  // cCOMP:
-  const cCOMP = await deploy('cCOMP', {
+  // BDAMM and cBDAMM don't have mainnet equivalents yet.
+  const dBDAMM = await deploy('dBDAMM', {
     contract: 'CErc20Delegator',
     from: deployer,
     log: true,
     args: [
-      COMP.address,
+      BDAMM.address,
       Comptroller.address,
       JumpRateModelV2.address,
       BN.from('200000000000000000000000000'),
-      'Compound COMP',
-      'cCOMP',
+      'dToken Bonded dAMM',
+      'dBDAMM',
       8,
       deployer,
       CTokenDelegate.address,
       '0x',
     ],
   });
-  await Comptroller._supportMarket(cUSDT.address);
-  await Comptroller._supportMarket(cUSDC.address);
-  await Comptroller._supportMarket(cCOMP.address);
+  await Comptroller._supportMarket(dBDAMM.address);
+  dTokens.push('dBDAMM');
+  for (let i = 0; i < tokenList.length; i += 1) {
+    const symbol = tokenList[i];
+    if (symbol === 'USDT') {
+      const dUSDT = await deploy('dUSDT', {
+        contract: 'CErc20Delegator',
+        from: deployer,
+        log: true,
+        args: [
+          USDT.address,
+          Comptroller.address,
+          JumpRateModelV2.address,
+          BN.from('200000000000000'),
+          'dToken Tether USD',
+          'dUSDT',
+          8,
+          deployer,
+          CTokenDelegate.address,
+          '0x',
+        ],
+      });
+      await Comptroller._supportMarket(dUSDT.address);
+      dTokens.push('dUSDT');
+    } else if (symbol === 'USDC') {
+      const cUSDC = await deploy('dUSDC', {
+        contract: 'CErc20Delegator',
+        from: deployer,
+        log: true,
+        args: [
+          USDC.address,
+          Comptroller.address,
+          JumpRateModelV2.address,
+          BN.from('200000000000000'),
+          'dToken USD Coin',
+          'dUSDC',
+          8,
+          deployer,
+          CTokenDelegate.address,
+          '0x',
+        ],
+      });
+      await Comptroller._supportMarket(cUSDC.address);
+      dTokens.push('dUSDC');
+    } else if (symbol !== 'ETH') {
+      const contract = await ethers.getContract(symbol);
+      const dToken = await deploy(`d${symbol}`, {
+        contract: 'CErc20Delegator',
+        from: deployer,
+        log: true,
+        args: [
+          contract.address,
+          Comptroller.address,
+          JumpRateModelV2.address,
+          BN.from('200000000000000'),
+          `dToken ${symbol}`,
+          `d${symbol}`,
+          8,
+          deployer,
+          CTokenDelegate.address,
+          '0x',
+        ],
+      });
+      await Comptroller._supportMarket(dToken.address);
+    }
+  }
 };
 export default func;
-func.tags = ['cUSDT', 'cUSDC', 'cCOMP'];
+func.tags = dTokens;

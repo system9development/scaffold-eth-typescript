@@ -1384,7 +1384,7 @@ contract ComptrollerG7 is ComptrollerV5Storage, ComptrollerInterface, Comptrolle
    * @return The amount of COMP which was NOT transferred to the user
    */
   function grantCompInternal(address user, uint256 amount) internal returns (uint256) {
-    Comp comp = Comp(getCompAddress());
+    BDAMM comp = BDAMM(getCompAddress());
     uint256 compRemaining = comp.balanceOf(address(this));
     if (amount > 0 && amount <= compRemaining) {
       comp.transfer(user, amount);

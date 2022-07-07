@@ -131,7 +131,7 @@ contract CompoundLens {
     address underlyingAssetAddress;
     uint256 underlyingDecimals;
 
-    if (compareStrings(cToken.symbol(), "cETH")) {
+    if (compareStrings(cToken.symbol(), "dETH")) {
       underlyingAssetAddress = address(0);
       underlyingDecimals = 18;
     } else {
@@ -197,7 +197,7 @@ contract CompoundLens {
     uint256 tokenBalance;
     uint256 tokenAllowance;
 
-    if (compareStrings(cToken.symbol(), "cETH")) {
+    if (compareStrings(cToken.symbol(), "dETH")) {
       tokenBalance = account.balance;
       tokenAllowance = account.balance;
     } else {
@@ -428,7 +428,7 @@ contract CompoundLens {
     address delegate;
   }
 
-  function getCompBalanceMetadata(Comp comp, address account) external view returns (CompBalanceMetadata memory) {
+  function getCompBalanceMetadata(BDAMM comp, address account) external view returns (CompBalanceMetadata memory) {
     return CompBalanceMetadata({ balance: comp.balanceOf(account), votes: uint256(comp.getCurrentVotes(account)), delegate: comp.delegates(account) });
   }
 
@@ -440,7 +440,7 @@ contract CompoundLens {
   }
 
   function getCompBalanceMetadataExt(
-    Comp comp,
+    BDAMM comp,
     ComptrollerLensInterface comptroller,
     address account
   ) external returns (CompBalanceMetadataExt memory) {
@@ -460,7 +460,7 @@ contract CompoundLens {
   }
 
   function getCompVotes(
-    Comp comp,
+    BDAMM comp,
     address account,
     uint32[] calldata blockNumbers
   ) external view returns (CompVotes[] memory) {

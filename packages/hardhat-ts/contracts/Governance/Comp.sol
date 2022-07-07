@@ -1,18 +1,18 @@
 // SPDX-License-Identifier: BSD-3-Clause
 pragma solidity ^0.8.10;
 
-contract Comp {
+contract BDAMM {
   /// @notice EIP-20 token name for this token
-  string public constant name = "dAMM Finance";
+  string public constant name = "Bonded dAMM";
 
   /// @notice EIP-20 token symbol for this token
-  string public constant symbol = "DAMM";
+  string public constant symbol = "BDAMM";
 
   /// @notice EIP-20 token decimals for this token
   uint8 public constant decimals = 18;
 
   /// @notice Total number of tokens in circulation
-  uint256 public constant totalSupply = 25000000e18; // 25 million dAMM
+  uint256 public constant totalSupply = 25000000e18; // 25 million bdAMM
 
   /// @notice Allowance amounts on behalf of others
   mapping(address => mapping(address => uint96)) internal allowances;
@@ -88,7 +88,7 @@ contract Comp {
     if (rawAmount == type(uint256).max) {
       amount = type(uint96).max;
     } else {
-      amount = safe96(rawAmount, "Comp::approve: amount exceeds 96 bits");
+      amount = safe96(rawAmount, "BDAMM::approve: amount exceeds 96 bits");
     }
 
     allowances[msg.sender][spender] = amount;
@@ -113,7 +113,7 @@ contract Comp {
    * @return Whether or not the transfer succeeded
    */
   function transfer(address dst, uint256 rawAmount) external returns (bool) {
-    uint96 amount = safe96(rawAmount, "Comp::transfer: amount exceeds 96 bits");
+    uint96 amount = safe96(rawAmount, "BDAMM::transfer: amount exceeds 96 bits");
     _transferTokens(msg.sender, dst, amount);
     return true;
   }
@@ -132,10 +132,10 @@ contract Comp {
   ) external returns (bool) {
     address spender = msg.sender;
     uint96 spenderAllowance = allowances[src][spender];
-    uint96 amount = safe96(rawAmount, "Comp::approve: amount exceeds 96 bits");
+    uint96 amount = safe96(rawAmount, "BDAMM::approve: amount exceeds 96 bits");
 
     if (spender != src && spenderAllowance != type(uint96).max) {
-      uint96 newAllowance = sub96(spenderAllowance, amount, "Comp::transferFrom: transfer amount exceeds spender allowance");
+      uint96 newAllowance = sub96(spenderAllowance, amount, "BDAMM::transferFrom: transfer amount exceeds spender allowance");
       allowances[src][spender] = newAllowance;
 
       emit Approval(src, spender, newAllowance);
@@ -174,9 +174,9 @@ contract Comp {
     bytes32 structHash = keccak256(abi.encode(DELEGATION_TYPEHASH, delegatee, nonce, expiry));
     bytes32 digest = keccak256(abi.encodePacked("\x19\x01", domainSeparator, structHash));
     address signatory = ecrecover(digest, v, r, s);
-    require(signatory != address(0), "Comp::delegateBySig: invalid signature");
-    require(nonce == nonces[signatory]++, "Comp::delegateBySig: invalid nonce");
-    require(block.timestamp <= expiry, "Comp::delegateBySig: signature expired");
+    require(signatory != address(0), "BDAMM::delegateBySig: invalid signature");
+    require(nonce == nonces[signatory]++, "BDAMM::delegateBySig: invalid nonce");
+    require(block.timestamp <= expiry, "BDAMM::delegateBySig: signature expired");
     return _delegate(signatory, delegatee);
   }
 
@@ -198,7 +198,7 @@ contract Comp {
    * @return The number of votes the account had as of the given block
    */
   function getPriorVotes(address account, uint256 blockNumber) public view returns (uint96) {
-    require(blockNumber < block.number, "Comp::getPriorVotes: not yet determined");
+    require(blockNumber < block.number, "BDAMM::getPriorVotes: not yet determined");
 
     uint32 nCheckpoints = numCheckpoints[account];
     if (nCheckpoints == 0) {
@@ -246,11 +246,11 @@ contract Comp {
     address dst,
     uint96 amount
   ) internal {
-    require(src != address(0), "Comp::_transferTokens: cannot transfer from the zero address");
-    require(dst != address(0), "Comp::_transferTokens: cannot transfer to the zero address");
+    require(src != address(0), "BDAMM::_transferTokens: cannot transfer from the zero address");
+    require(dst != address(0), "BDAMM::_transferTokens: cannot transfer to the zero address");
 
-    balances[src] = sub96(balances[src], amount, "Comp::_transferTokens: transfer amount exceeds balance");
-    balances[dst] = add96(balances[dst], amount, "Comp::_transferTokens: transfer amount overflows");
+    balances[src] = sub96(balances[src], amount, "BDAMM::_transferTokens: transfer amount exceeds balance");
+    balances[dst] = add96(balances[dst], amount, "BDAMM::_transferTokens: transfer amount overflows");
     emit Transfer(src, dst, amount);
 
     _moveDelegates(delegates[src], delegates[dst], amount);
@@ -265,14 +265,14 @@ contract Comp {
       if (srcRep != address(0)) {
         uint32 srcRepNum = numCheckpoints[srcRep];
         uint96 srcRepOld = srcRepNum > 0 ? checkpoints[srcRep][srcRepNum - 1].votes : 0;
-        uint96 srcRepNew = sub96(srcRepOld, amount, "Comp::_moveVotes: vote amount underflows");
+        uint96 srcRepNew = sub96(srcRepOld, amount, "BDAMM::_moveVotes: vote amount underflows");
         _writeCheckpoint(srcRep, srcRepNum, srcRepOld, srcRepNew);
       }
 
       if (dstRep != address(0)) {
         uint32 dstRepNum = numCheckpoints[dstRep];
         uint96 dstRepOld = dstRepNum > 0 ? checkpoints[dstRep][dstRepNum - 1].votes : 0;
-        uint96 dstRepNew = add96(dstRepOld, amount, "Comp::_moveVotes: vote amount overflows");
+        uint96 dstRepNew = add96(dstRepOld, amount, "BDAMM::_moveVotes: vote amount overflows");
         _writeCheckpoint(dstRep, dstRepNum, dstRepOld, dstRepNew);
       }
     }
@@ -284,7 +284,7 @@ contract Comp {
     uint96 oldVotes,
     uint96 newVotes
   ) internal {
-    uint32 blockNumber = safe32(block.number, "Comp::_writeCheckpoint: block number exceeds 32 bits");
+    uint32 blockNumber = safe32(block.number, "BDAMM::_writeCheckpoint: block number exceeds 32 bits");
 
     if (nCheckpoints > 0 && checkpoints[delegatee][nCheckpoints - 1].fromBlock == blockNumber) {
       checkpoints[delegatee][nCheckpoints - 1].votes = newVotes;

@@ -14,7 +14,7 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
   const Unitroller = await ethers.getContract<IUnitroller>('Unitroller');
   const Comptroller = (await ethers.getContract<IComptroller>('ComptrollerImplementation')).attach(Unitroller.address);
   const WhitePaperInterestRateModel = await ethers.getContract<IWhitePaperInterestRateModel>('WhitePaperInterestRateModel');
-  const CEther = await deploy('cETH', {
+  const CEther = await deploy('dETH', {
     contract: 'CEther',
     from: deployer,
     log: true,
@@ -22,8 +22,8 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
       Comptroller.address,
       WhitePaperInterestRateModel.address,
       BN.from('200000000000000000000000000'),
-      'Compound Ether',
-      'cETH',
+      'dToken Ether',
+      'dETH',
       8,
       deployer,
     ],
@@ -32,4 +32,4 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
 };
 
 export default func;
-func.tags = ['CEther'];
+func.tags = ['dETH'];

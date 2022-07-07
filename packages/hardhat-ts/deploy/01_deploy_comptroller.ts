@@ -12,8 +12,7 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
   const { getNamedAccounts, deployments } = hre;
   const { deploy } = deployments;
   const { deployer } = await getNamedAccounts();
-  // const Comp = await ethers.getContract('Comp', deployer);
-  const Comp = await ethers.getContract('Comp');
+  const Comp = await ethers.getContract('BDAMM');
   await deploy('ComptrollerImplementation', {
     contract: 'ComptrollerG7',
     from: deployer,

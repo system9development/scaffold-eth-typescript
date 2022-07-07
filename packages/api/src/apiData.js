@@ -4,6 +4,7 @@ const Comptroller = require('./Comptroller');
 const Lens = require('./Lens');
 const Erc20ReadAbi = require('./abis/Erc20Read');
 const CTokenReadAbi = require('./abis/CTokenRead');
+const BigNumber = require('bignumber.js');
 const BlockCache = require('./lib/BlockCache');
 
 /**
@@ -42,9 +43,21 @@ const cTokenMetadataToJson = async ([
     underlyingName,
   } = cTokens[cToken];
   const underlyingPriceUsd = mainnetCache.getPriceBySymbol(underlyingSymbol);
-  const totalReservesUsd = ethers.utils.formatUnits(totalReserves * underlyingPriceUsd, 8);
-  const totalSupplyUsd = ethers.utils.formatUnits(totalSupply * underlyingPriceUsd, 8);
-  const totalBorrowsUsd = ethers.utils.formatUnits(totalBorrows * underlyingPriceUsd, 8);
+  const totalReservesUsd = underlyingPriceUsd ? ethers.utils.formatUnits(
+    // @ts-ignore
+    new BigNumber(totalReserves.toString()).times(underlyingPriceUsd).toString(),
+    8,
+  ) : '0.0'; // ternery is necessary because underlyingPrice might not always be set
+  const totalSupplyUsd = underlyingPriceUsd ? ethers.utils.formatUnits(
+    // @ts-ignore
+    new BigNumber(totalSupply.toString()).times(underlyingPriceUsd).toString(),
+    8,
+  ) : '0.0';
+  const totalBorrowsUsd = underlyingPriceUsd ? ethers.utils.formatUnits(
+    // @ts-ignore
+    new BigNumber(totalBorrows.toString()).times(underlyingPriceUsd).toString(),
+    8,
+  ) : '0.0';
   const liquidity = (parseFloat(totalReservesUsd) + parseFloat(totalSupplyUsd) - parseFloat(totalBorrowsUsd)).toString();
   return {
     address: cToken,
@@ -65,10 +78,12 @@ const cTokenMetadataToJson = async ([
     underlyingPrice: underlyingPriceUsd,
     totalBorrows: totalBorrows.toString(),
     totalBorrows2: ethers.utils.formatUnits(totalBorrows, 8),
-    totalBorrowsUsd: parseFloat(ethers.utils.formatUnits(totalBorrows, 8)) * mainnetCache.getPriceBySymbol(underlyingSymbol),
+    totalBorrowsUsd,
+    // totalBorrowsUsd: parseFloat(ethers.utils.formatUnits(totalBorrows, 8)) * mainnetCache.getPriceBySymbol(underlyingSymbol),
     totalSupply: totalSupply.toString(),
     totalSupply2: ethers.utils.formatUnits(totalSupply, 8),
-    totalSupplyUsd: parseFloat(ethers.utils.formatUnits(totalSupply, 8)) * mainnetCache.getPriceBySymbol(underlyingSymbol),
+    totalSupplyUsd,
+    // totalSupplyUsd: parseFloat(ethers.utils.formatUnits(totalSupply, 8)) * mainnetCache.getPriceBySymbol(underlyingSymbol),
     cash: totalCash.toString(),
     totalReserves: totalReserves.toString(),
     reserveFactor: reserveFactorMantissa.toString(),

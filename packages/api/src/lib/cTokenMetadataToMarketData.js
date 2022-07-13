@@ -44,6 +44,9 @@ const cTokenMetadataToMarketData = ({
     8,
   ) : '0.0';
   const liquidity = (parseFloat(totalReservesUsd) + parseFloat(totalSupplyUsd) - parseFloat(totalBorrowsUsd)).toString();
+  // @ts-ignore
+  const exponent = BigNumber(10).pow(36 - underlyingDecimals.toNumber());
+
   return {
     address: cToken,
     symbol,
@@ -60,7 +63,7 @@ const cTokenMetadataToMarketData = ({
     borrowRatePerBlock: borrowRatePerBlock.toString(),
     supplyRatePerBlock: supplyRatePerBlock.toString(),
     exchangeRate: exchangeRateCurrent.toString(),
-    underlyingPrice: underlyingPriceUsd,
+    underlyingPrice: exponent.times(underlyingPriceUsd).toFixed(0),
     totalBorrows: totalBorrows.toString(),
     totalBorrows2: ethers.utils.formatUnits(totalBorrows, 8),
     totalBorrowsUsd,
@@ -78,7 +81,7 @@ const cTokenMetadataToMarketData = ({
     // borrowDammApy (???)
     // supplyDammApy (???)
     liquidity,
-    // tokenPrice: (get from oracle ???)
+    tokenPrice: underlyingPriceUsd,
     // totalDistributed: (???)
     // totalDistributed2: (???)
     borrowCaps: borrowCap.toString(),

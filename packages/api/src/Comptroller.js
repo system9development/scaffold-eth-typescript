@@ -1,10 +1,10 @@
 const ethers = require('ethers');
-const { provider, networkConfig } = require('./config');
+const { dammProvider, networkConfig } = require('./config');
 
 const Comptroller = new ethers.Contract(
   networkConfig['Unitroller'].address,
   networkConfig['ComptrollerImplementation'].abi,
-  provider,
+  dammProvider,
 );
 
 module.exports = Comptroller;

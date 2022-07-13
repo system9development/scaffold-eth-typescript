@@ -3,7 +3,7 @@
     "typeRoots": ["packages/api/src"],
     "sourceMap": true,
     // "inlineSources": true,
-    "allowJs": false,
+    "allowJs": true,
     "declarationMap": true,
     "declaration": true,
     "strict": true,

@@ -20,7 +20,7 @@ const chainlinkOracles = Object.fromEntries(
  * 
  * @param {string} token - the token symbol
  */
-const getChainlinkUSDPrice = async (token, ethPriceUsd) => {
+const getChainlinkUSDPrice = async (token, ethPriceUsd = null) => {
   // const { address: tokenAddress, decimals: tokenDecimals } = mainnetTokens[token];
   if (!(`${token}_USD` in chainlinkOracles)) {
     if (
@@ -30,8 +30,15 @@ const getChainlinkUSDPrice = async (token, ethPriceUsd) => {
     ) {
       const btcOracle = chainlinkOracles['BTC_USD'];
       const wBtcOracle = chainlinkOracles['WBTC_BTC'];
-      const btcUsdPrice = ethers.utils.formatUnits(await btcOracle.latestAnswer(), 8);
-      const wbtcBtcPrice = ethers.utils.formatUnits(await wBtcOracle.latestAnswer(), 8);
+      const [btcUsdLatestAnswer, wbtcBtcLatestAnswer] = await Promise.all([
+        btcOracle.latestAnswer(),
+        wBtcOracle.latestAnswer(),
+      ]).catch((e) => [null, null]);
+      if (!btcUsdLatestAnswer || !wbtcBtcLatestAnswer) {
+        return 0;
+      }
+      const btcUsdPrice = ethers.utils.formatUnits(btcUsdLatestAnswer, 8);
+      const wbtcBtcPrice = ethers.utils.formatUnits(wbtcBtcLatestAnswer, 8);
       // @ts-ignore
       return BigNumber(btcUsdPrice).times(wbtcBtcPrice).toNumber();
     } else if (
@@ -41,13 +48,24 @@ const getChainlinkUSDPrice = async (token, ethPriceUsd) => {
     ) {
       const stethOracle = chainlinkOracles['STETH_USD'];
       const wStethOracle = chainlinkOracles['WSTETH_USD'];
-      const stethUsdPrice = ethers.utils.formatUnits(await stethOracle.latestAnswer(), 8);
-      const wstethStethPrice = ethers.utils.formatUnits(await wStethOracle.latestAnswer(), 8);
+      const [stethUsdLatestAnswer, wstethStethLatestAnswer] = await Promise.all([
+        stethOracle.latestAnswer(),
+        wStethOracle.latestAnswer(),
+      ]).catch((e) => [null, null]);
+      if (!stethUsdLatestAnswer || !wstethStethLatestAnswer) {
+        return 0;
+      }
+      const stethUsdPrice = ethers.utils.formatUnits(stethUsdLatestAnswer, 8);
+      const wstethStethPrice = ethers.utils.formatUnits(wstethStethLatestAnswer, 8);
       // @ts-ignore
       return BigNumber(stethUsdPrice).times(wstethStethPrice).toNumber();
     } else if (`${token}_ETH` in chainlinkOracles) {
       const tokenEthOracle = chainlinkOracles[`${token}_ETH`];
-      const tokenEthPrice = ethers.utils.formatUnits(await tokenEthOracle.latestAnswer(), 8);
+      const tokenEthLatestAnswer = await tokenEthOracle.latestAnswer().catch((e) => null);
+      if (!tokenEthLatestAnswer) {
+        return 0;
+      }
+      const tokenEthPrice = ethers.utils.formatUnits(tokenEthLatestAnswer, 8);
       // @ts-ignore
       return BigNumber(tokenEthPrice).times(ethPriceUsd).toNumber();
     } else {

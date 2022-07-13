@@ -14,15 +14,15 @@ if (!ALCHEMY_API_TOKEN) {
   process.exit(1);
 }
 
-const provider = new ethers.providers.JsonRpcProvider(
+const mainnetProvider = new ethers.providers.AlchemyProvider('homestead', ALCHEMY_API_TOKEN);
+
+const dammProvider = NETWORK_URL && CHAIN_ID ? new ethers.providers.JsonRpcProvider(
   NETWORK_URL,
   {
     name: NETWORK_NAME,
     chainId: CHAIN_ID
   }
-);
-
-const mainnetProvider = new ethers.providers.AlchemyProvider('homestead', ALCHEMY_API_TOKEN);
+) : mainnetProvider;
 
 const networkConfig = contractsConfig[CHAIN_ID]?.find((config) => config.name === NETWORK_NAME)?.contracts;
 
@@ -159,7 +159,7 @@ const uniswapV2PoolAddresses = {
 };
 
 module.exports = {
-  provider,
+  dammProvider,
   networkConfig,
   mainnetProvider,
   mainnetTokens,

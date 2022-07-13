@@ -5,7 +5,7 @@ const { ethers } = require('ethers');
 dotenv.config();
 
 const NETWORK_URL = process.env.ETHERS_NETWORK_URL || 'http://localhost:8545';
-const CHAIN_ID = parseInt(process.env.ETHERS_CHAIN_ID) || 31337;
+const CHAIN_ID = process.env.ETHERS_CHAIN_ID ? parseInt(process.env.ETHERS_CHAIN_ID) : 31337;
 const NETWORK_NAME = process.env.ETHERS_NETWORK_NAME || 'localhost';
 const { ALCHEMY_API_TOKEN } = process.env;
 

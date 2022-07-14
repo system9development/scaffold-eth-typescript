@@ -3,10 +3,6 @@ const Comptroller = require('./Comptroller');
 const MainnetPriceCache = require('./lib/MainnetPriceCache');
 const DammTokenCache = require('./lib/DammTokenCache');
 
-/**
- * map contract addresses to { name, decimals, symbol, reader }
- */
-
 const mainnetCache = new MainnetPriceCache(
   mainnetProvider,
   Object.keys(mainnetTokens),

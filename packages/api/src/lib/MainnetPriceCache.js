@@ -1,8 +1,9 @@
 const ethers = require('ethers');
 const { getChainlinkUSDPrice } = require('./Chainlink');
-const { getUniV3USDPrice } = require('./UniswapV3');
-const { getUniV2USDPrice } = require('./UniswapV2');
+const { getUniV3USDPrice, getUniV3ToTokenPrice } = require('./UniswapV3');
+const { getUniV2USDPrice, getUniV2ToTokenPrice } = require('./UniswapV2');
 const BlockCache = require('./BlockCache');
+const { uniswapV2PoolAddresses, uniswapV3PoolAddresses } = require('../config');
 
 /*
   Cache the prices of each token at each block. Upon receiving new price for a token for the current block, discard any old data
@@ -14,6 +15,11 @@ class MainnetPriceCache extends BlockCache {
   #isInitialized = false;
   #prices = {};
   #isMainnet = true;
+
+  /*
+    an array of functions passed in as arguments to MainnetPriceCache.onPriceUpdate(), which are run every time
+    the price of any of the tracked tokens updates on a given block
+  */
   #priceUpdateFns = [];
 
   /*
@@ -64,6 +70,42 @@ class MainnetPriceCache extends BlockCache {
       this.setPriceBySymbol(token, uniV2Price);
       return true;
     }
+    const potentialV3PriceMarkets = Object.keys(uniswapV3PoolAddresses)
+      .filter((market) => market.startsWith(`${symbol}_`) || market.endsWith(`_${symbol}`));
+    for (let i = 0; i < potentialV3PriceMarkets.length; i += 1) {
+      const [matchingMarketBase, matchingMarketQuote] = potentialV3PriceMarkets[i].split('_');
+      const quote = matchingMarketBase === symbol
+        ? matchingMarketQuote
+        : matchingMarketBase;
+      if (this.getPriceBySymbol(quote)) {
+        const uniV3Price = await getUniV3ToTokenPrice(symbol, quote);
+        if (uniV3Price) {
+          const newTokenUsdPrice = uniV3Price * this.getPriceBySymbol(quote);
+          if (!newTokenUsdPrice || newTokenUsdPrice === this.getPriceBySymbol(symbol)) {
+            return false;
+          }
+          this.setPriceBySymbol(symbol, newTokenUsdPrice);
+          return true;
+        }
+      }
+    }
+    const potentialV2PriceMarkets = Object.keys(uniswapV2PoolAddresses)
+      .filter((market) => market.startsWith(`${symbol}_`) || market.endsWith(`_${symbol}`));
+    for (let i = 0; i < potentialV2PriceMarkets.length; i += 1) {
+      const [matchingMarketBase, matchingMarketQuote] = potentialV2PriceMarkets[i].split('_');
+      const quote = matchingMarketBase === symbol
+        ? matchingMarketQuote
+        : matchingMarketBase;
+      if (this.getPriceBySymbol(quote)) {
+        const uniV2Price = await getUniV2ToTokenPrice(symbol, quote);
+        const newTokenUsdPrice = uniV2Price * this.getPriceBySymbol(quote);
+        if (!newTokenUsdPrice || newTokenUsdPrice === this.getPriceBySymbol(symbol)) {
+          return false;
+        }
+        this.setPriceBySymbol(symbol, newTokenUsdPrice)
+        return true;
+      }
+    }
     return false;
   }
 
@@ -100,6 +142,10 @@ class MainnetPriceCache extends BlockCache {
   get blockNumber() {
     return this.#blockNumber;
   };
+
+  get isMainnet() {
+    return this.#isMainnet;
+  }
 
   getPriceBySymbol(symbol) {
     return this.#prices[symbol] || null;

@@ -118,7 +118,15 @@ const mainnetTokens = {
   SNX: {
     address: '0xC011a73ee8576Fb46F5E1c5751cA3B9Fe0af2a6F',
     decimals: 18,
-  }
+  },
+  AGEUR: {
+    address: '0x1a7e4e63778B4f12a199C062f3eFdD288afCBce8',
+    decimals: 18,
+  },
+  ANGLE: {
+    address: '0x31429d1856aD1377A8A0079410B297e1a9e214c2',
+    decimals: 18,
+  },
 };
 
 const chainlinkOracleAddresses = {
@@ -142,17 +150,21 @@ const chainlinkOracleAddresses = {
   COMP_USD: '0xdbd020CAeF83eFd542f4De03e3cF0C28A4428bd5',
   APE_USD: '0xD10aBbC76679a20055E167BB80A24ac851b37056',
   SNX_USD: '0xdc3ea94cd0ac27d9a86c180091e7f78c683d3699',
+  AGEUR_USD: '0xb49f677943BC038e9857d61E7d053CaA2C1734C1', // Actually using EUR/USD oracle
 };
 
 const uniswapV3PoolAddresses = {
   RBN_ETH: '0x94981F69F7483AF3ae218CbfE65233cC3c60d93a', // TVL ~2.5M USD
   ETH_BTRFLY: '0xdF9aB3C649005EbFDf682d2302ca1f673e0d37a2', // TVL ~1.5M USD
+  AGEUR_USDC: '0x735a26a57A0A0069dfABd41595A970faF5E1ee8b',
   /* ---- Test pools ---- */
   USDC_ETH: '0x8ad599c3A0ff1De082011EFDDc58f1908eb6e6D8',
   ETH_USDT: '0x4e68Ccd3E89f51C3074ca5072bbAC773960dFa36',
-}
+};
+
 const uniswapV2PoolAddresses = {
   WOO_ETH: '0x6AdA49AECCF6E556Bb7a35ef0119Cc8ca795294A', // TVL ~3M USD
+  AGEUR_ANGLE: '0x1f4c763BdE1D4832B3EA0640e66Da00B98831355', // TVL ~1M USD
   /* ---- Test pools ---- */
   USDC_ETH: '0xB4e16d0168e52d35CaCD2c6185b44281Ec28C9Dc',
   ETH_USDT: '0x0d4a11d5EEaaC28EC3F61d100daF4d40471f1852',

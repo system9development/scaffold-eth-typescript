@@ -9,7 +9,7 @@ const BigNumber = require('bignumber.js');
 
 const uniswapV2Pools = Object.fromEntries(
   Object.entries(uniswapV2PoolAddresses).map(
-    ([tokenName, poolAddress]) => {
+    ([marketName, poolAddress]) => {
       const poolContract = new ethers.Contract(poolAddress, IUniswapV2PoolABI, mainnetProvider);
       const poolData = { reader: poolContract };
       // return the data synchronously but patch in the token0/1 values when the promise resolves
@@ -18,20 +18,47 @@ const uniswapV2Pools = Object.fromEntries(
         poolContract.token1()
       ]).then(([token0, token1]) => Object.assign(poolData, { token0, token1 }));
       return [
-        tokenName,
+        marketName,
         poolData,
       ];
     }
   ),
 );
 
+/*
+  Get the price of baseToken expressed in quoteToken, e.g. if your LP is AAA/BBB and 1 AAA = 2 BBB,
+  then getUniV2ToTokenPrice('AAA', 'BBB') will resolve to 2, and getUniV2ToTokenPrice('BBB', 'AAA') will
+  resolve to 0.5
+*/
+const getUniV2ToTokenPrice = async (baseToken, quoteToken) => {
+  const { decimals: baseDecimals } = mainnetTokens[baseToken];
+  const { decimals: quoteDecimals } = mainnetTokens[baseToken];
+  const baseTokenIsBase = `${baseToken}_${quoteToken}` in uniswapV2Pools;
+  const baseTokenIsQuote = `${quoteToken}_${baseToken}` in uniswapV2Pools;
+  if (!baseTokenIsBase && !baseTokenIsQuote) {
+    return 0;
+  }
+  const poolData = baseTokenIsBase
+    ? uniswapV2Pools[`${baseToken}_${quoteToken}`]
+    : uniswapV2Pools[`${quoteToken}_${baseToken}`];
+
+  const reserves = await poolData.reader.getReserves();
+  // @ts-ignore
+  const reserves0 = BigNumber(ethers.utils.formatUnits(reserves[0], baseTokenIsBase ? baseDecimals : quoteDecimals).toString());
+  // @ts-ignore
+  const reserves1 = BigNumber(ethers.utils.formatUnits(reserves[1], baseTokenIsBase ? quoteDecimals : baseDecimals).toString());
+
+  return baseTokenIsBase
+    ? reserves1.dividedBy(reserves0).toNumber()
+    : reserves0.dividedBy(reserves1).toNumber();
+}
 /**
  * 
  * @param {string} token - the token symbol
  * @param {number} ethPriceUsd - the price of ethereum in USD
  */
 const getUniV2USDPrice = async (token, ethPriceUsd) => {
-  const { address: tokenAddress, decimals: tokenDecimals } = mainnetTokens[token];
+  const { decimals: tokenDecimals } = mainnetTokens[token];
   const tokenIsBase = `${token}_ETH` in uniswapV2Pools || `${token}_WETH` in uniswapV2Pools;
   const tokenIsQuote = `ETH_${token}` in uniswapV2Pools || `WETH_${token}` in uniswapV2Pools;
   if (!tokenIsBase && !tokenIsQuote) {
@@ -56,4 +83,5 @@ const getUniV2USDPrice = async (token, ethPriceUsd) => {
 
 module.exports = {
   getUniV2USDPrice,
+  getUniV2ToTokenPrice,
 };

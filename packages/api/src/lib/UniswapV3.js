@@ -35,6 +35,43 @@ const uniswapV3Pools = Object.fromEntries(
   ),
 );
 
+/*
+  Get the price of baseToken expressed in quoteToken, e.g. if your LP is AAA/BBB and 1 AAA = 2 BBB,
+  then getUniV3ToTokenPrice('AAA', 'BBB') will resolve to 2, and getUniV3ToTokenPrice('BBB', 'AAA') will
+  resolve to 0.5
+*/
+const getUniV3ToTokenPrice = async (baseToken, quoteToken) => {
+  const { decimals: baseTokenDecimals } = mainnetTokens[baseToken];
+  const { decimals: quoteTokenDecimals } = mainnetTokens[quoteToken];
+  const baseTokenIsBase = `${baseToken}_${quoteToken}` in uniswapV3Pools;
+  const baseTokenIsQuote = `${quoteToken}_${baseToken}` in uniswapV3Pools;
+  if (!baseTokenIsBase && !baseTokenIsQuote) {
+    return 0;
+  }
+  const poolData = baseTokenIsBase
+    ? uniswapV3Pools[`${baseToken}_${quoteToken}`]
+    : uniswapV3Pools[`${quoteToken}_${baseToken}`];
+
+  const slot0Data = await poolData.reader.slot0();
+  // @ts-ignore
+  const sqrtPrice = BigNumber(slot0Data[0].toString());
+  // @ts-ignore
+  const decimalAdjustment = BigNumber(10).pow(
+    baseTokenIsBase
+      ? quoteTokenDecimals - baseTokenDecimals
+      : baseTokenDecimals - quoteTokenDecimals
+  );
+  if (baseTokenIsBase) {
+    // @ts-ignore
+    return sqrtPrice.pow(2).dividedBy(Q192).dividedBy(decimalAdjustment).toNumber();
+  } else {
+    // @ts-ignore
+    return new BigNumber(1).dividedBy(
+      sqrtPrice.pow(2).dividedBy(Q192)
+    // @ts-ignore
+    ).times(decimalAdjustment).toNumber();
+  }
+}
 /**
  * 
  * @param {string} token - the token symbol
@@ -42,7 +79,7 @@ const uniswapV3Pools = Object.fromEntries(
  */
 
 const getUniV3USDPrice = async (token, ethPriceUsd) => {
-  const { address: tokenAddress, decimals: tokenDecimals } = mainnetTokens[token];
+  const { decimals: tokenDecimals } = mainnetTokens[token];
   const tokenIsBase = `${token}_ETH` in uniswapV3Pools || `${token}_WETH` in uniswapV3Pools;
   const tokenIsQuote = `ETH_${token}` in uniswapV3Pools || `WETH_${token}` in uniswapV3Pools;
   if (!tokenIsBase && !tokenIsQuote) {
@@ -70,4 +107,5 @@ const getUniV3USDPrice = async (token, ethPriceUsd) => {
 
 module.exports = {
   getUniV3USDPrice,
+  getUniV3ToTokenPrice,
 };

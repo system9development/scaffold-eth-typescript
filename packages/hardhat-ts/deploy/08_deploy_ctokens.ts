@@ -27,6 +27,8 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
   const Comptroller = (await ethers.getContract<IComptroller>('ComptrollerImplementation')).attach(Unitroller.address);
   const CTokenDelegate = await ethers.getContract<ICTokenDelegate>('CErc20Delegate');
 
+  const currentlySupportedMarkets = new Set((await Comptroller.callStatic.getAllMarkets()).map(ethers.utils.getAddress));
+
   const tokenList = Object.keys(mainnetTokens);
 
   // BDAMM and cBDAMM don't have mainnet equivalents yet.
@@ -47,7 +49,14 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
       '0x',
     ],
   });
-  await Comptroller._supportMarket(dBDAMM.address);
+
+  if (!currentlySupportedMarkets.has(ethers.utils.getAddress(dBDAMM.address))) {
+    console.log('adding dBDAMM to Comptroller active markets');
+    await (await Comptroller._supportMarket(dBDAMM.address)).wait();
+    currentlySupportedMarkets.add(ethers.utils.getAddress(dBDAMM.address));
+  } else {
+    console.log('Skipping Comptroller._supportMarkets for dBDAMM; already supported');
+  }
   dTokens.push('dBDAMM');
   for (let i = 0; i < tokenList.length; i += 1) {
     const symbol = tokenList[i];
@@ -69,10 +78,16 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
           '0x',
         ],
       });
-      await Comptroller._supportMarket(dUSDT.address);
+      if (!currentlySupportedMarkets.has(ethers.utils.getAddress(dUSDT.address))) {
+        console.log('adding dUSDT to Comptroller active markets');
+        await (await Comptroller._supportMarket(dUSDT.address)).wait();
+        currentlySupportedMarkets.add(ethers.utils.getAddress(dUSDT.address));
+      } else {
+        console.log('Skipping Comptroller._supportMarkets for dUSDT; already supported');
+      }
       dTokens.push('dUSDT');
     } else if (symbol === 'USDC') {
-      const cUSDC = await deploy('dUSDC', {
+      const dUSDC = await deploy('dUSDC', {
         contract: 'CErc20Delegator',
         from: deployer,
         log: true,
@@ -89,7 +104,13 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
           '0x',
         ],
       });
-      await Comptroller._supportMarket(cUSDC.address);
+      if (!currentlySupportedMarkets.has(ethers.utils.getAddress(dUSDC.address))) {
+        console.log('adding dUSDC to Comptroller active markets');
+        await (await Comptroller._supportMarket(dUSDC.address)).wait();
+        currentlySupportedMarkets.add(ethers.utils.getAddress(dUSDC.address));
+      } else {
+        console.log('Skipping Comptroller._supportMarkets for dUSDC; already supported');
+      }
       dTokens.push('dUSDC');
     } else if (symbol !== 'ETH') {
       const contract = await ethers.getContract(symbol);
@@ -110,7 +131,14 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
           '0x',
         ],
       });
-      await Comptroller._supportMarket(dToken.address);
+      if (!currentlySupportedMarkets.has(ethers.utils.getAddress(dToken.address))) {
+        console.log(`adding d${symbol} to Comptroller active markets`);
+        await (await Comptroller._supportMarket(dToken.address)).wait();
+        currentlySupportedMarkets.add(ethers.utils.getAddress(dToken.address));
+      } else {
+        console.log(`Skipping Comptroller._supportMarkets for d${symbol}; already supported`);
+      }
+      dTokens.push(`d${symbol}`);
     }
   }
 };

@@ -18,17 +18,21 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
   const Oracle = await ethers.getContract<IOracle>('Oracle');
   const Unitroller = await ethers.getContract<IUnitroller>('Unitroller');
   const Comptroller = (await ethers.getContract<IComptroller>('ComptrollerImplementation')).attach(Unitroller.address);
-  await Comptroller._setPriceOracle(Oracle.address);
+  console.log(`setting Comptroller price oracle to ${Oracle.address}`);
+  await (await Comptroller._setPriceOracle(Oracle.address)).wait();
 
   const BN = ethers.BigNumber;
   const dUSDC = await ethers.getContract<IUSDC>('dUSDC');
   const dUSDT = await ethers.getContract('dUSDT');
   const dBDAMM = await ethers.getContract('dBDAMM');
   // const dEther = await ethers.getContract('dETH');
-  await Oracle.setUnderlyingPrice(dUSDC.address, BN.from('1000000000000000000'));
-  await Oracle.setUnderlyingPrice(dUSDT.address, BN.from('1000000000000000000'));
+  console.log('setting underlying price for dUSDC');
+  await (await Oracle.setUnderlyingPrice(dUSDC.address, BN.from('1000000000000000000'))).wait();
+  console.log('setting underlying price for dUSDT');
+  await (await Oracle.setUnderlyingPrice(dUSDT.address, BN.from('1000000000000000000'))).wait();
   // await Oracle.setUnderlyingPrice(dEther.address, BN.from('10100000000000000000000'));
-  await Oracle.setUnderlyingPrice(dBDAMM.address, BN.from('2000000000000000000'));
+  console.log('setting underlying price for dBDAMM to $2 (meaning BDAMM is considered to be $2)');
+  await (await Oracle.setUnderlyingPrice(dBDAMM.address, BN.from('2000000000000000000'))).wait();
 };
 
 export default func;

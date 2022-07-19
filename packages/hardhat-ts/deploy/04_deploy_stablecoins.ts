@@ -22,7 +22,12 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
     args: ['USD Coin', 'USDC', 6],
   });
   const USDC = await ethers.getContract<IUSDC>('USDC');
-  await USDC.mint(deployer, BN.from('1000000000000'));
+  if ((await USDC.callStatic.balanceOf(deployer)).isZero()) {
+    console.log(`Minting 1,000,000 USDC to deployer address ${deployer}`);
+    await (await USDC.mint(deployer, BN.from('1000000000000'))).wait();
+  } else {
+    console.log('skipping USDC mint; deployer address already has USDC balance');
+  }
 };
 export default func;
 func.tags = ['USDT', 'USDC'];

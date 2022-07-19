@@ -24,7 +24,7 @@ import { getMnemonic } from './tasks/functions/mnemonic';
  */
 
 // this loads the .env file into process.env
-envConfig({ path: '../vite-app-ts/.env' });
+envConfig({ path: '../../.env' });
 
 /**
  * this loads all the tasks from the tasks folder
@@ -39,6 +39,7 @@ if (process.env.BUILDING !== 'true') {
  * Set your target network!!!
  */
 console.log('HARDHAT_TARGET_NETWORK: ', process.env.HARDHAT_TARGET_NETWORK);
+console.log('INFURA_API_TOKEN', process.env.INFURA_API_TOKEN?.replace?.(/(.{4}).*(.{4})/, "$1...$2"));
 
 /**
  * loads network list and config from '@scaffold-eth/common/src
@@ -65,6 +66,20 @@ const networks = {
     accounts: {
       mnemonic: getMnemonic(),
       accountsBalance: '10000000000000000000000',
+    },
+  },
+  gorli: {
+    url: `https://goerli.infura.io/v3/${process.env.INFURA_API_TOKEN}`,
+    chainId: 5,
+    accounts: {
+      mnemonic: getMnemonic(),
+    },
+  },
+  sepolia: {
+    url: 'https://rpc.sepolia.online',
+    chainId: 1115511,
+    accounts: {
+      mnemonic: getMnemonic(),
     },
   },
 };

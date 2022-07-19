@@ -28,7 +28,12 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
       deployer,
     ],
   });
-  await Comptroller._supportMarket(CEther.address);
+  if ((await Comptroller.callStatic.markets(CEther.address))[0]) {
+    console.log('Skipping Comptroller._supportMarket for dETH; already supported');
+  } else {
+    console.log('adding dETH to the Comptroller active markets');
+    await (await Comptroller._supportMarket(CEther.address)).wait();
+  }
 };
 
 export default func;

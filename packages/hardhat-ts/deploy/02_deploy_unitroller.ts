@@ -23,8 +23,15 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
   });
   const Comptroller = await ethers.getContract<IComptroller>('ComptrollerImplementation');
   const Unitroller = await ethers.getContract<IUnitroller>('Unitroller');
-  await Unitroller._setPendingImplementation(Comptroller.address);
-  await Comptroller._become(Unitroller.address);
+  const currentImplementation = await Unitroller.callStatic.comptrollerImplementation();
+  if (currentImplementation === Comptroller.address) {
+    console.log('skipping Unitroller._setPendingImplementation; already set');
+  } else {
+    console.log(`setting Unitroller comptroller implementation to ${Comptroller.address}`)
+    await (await Unitroller._setPendingImplementation(Comptroller.address)).wait();
+    console.log(`Comptroller: becoming Unitroller at ${Unitroller.address}`);
+    await (await Comptroller._become(Unitroller.address)).wait();
+  }
 };
 export default func;
 func.tags = ['Unitroller'];

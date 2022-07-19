@@ -1,5 +1,6 @@
 const { ethers } = require('ethers');
-const { dammProvider, networkConfig } = require('./config');
+const { dammProvider } = require('./config');
+const networkConfig = require('./networkConfig');
 
 const Lens = new ethers.Contract(
   networkConfig['Lens'].address,

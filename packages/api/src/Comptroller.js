@@ -1,5 +1,6 @@
 const ethers = require('ethers');
-const { dammProvider, networkConfig } = require('./config');
+const { dammProvider } = require('./config');
+const networkConfig = require('./networkConfig');
 
 const Comptroller = new ethers.Contract(
   networkConfig['Unitroller'].address,

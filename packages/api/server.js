@@ -1,10 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const { ethers } = require('ethers');
-const { networkConfig } = require('./src/config');
 const apiData = require('./src/apiData');
-const Lens = require('./src/Lens');
-const Comptroller = require('./src/Comptroller');
 
 const app = express();
 

@@ -1,4 +1,3 @@
-const contractsConfig = require('../../common/src/generated/hardhat_contracts.json');
 const dotenv = require('dotenv');
 const { ethers } = require('ethers');
 
@@ -23,13 +22,6 @@ const dammProvider = NETWORK_URL && CHAIN_ID ? new ethers.providers.JsonRpcProvi
     chainId: CHAIN_ID
   }
 ) : mainnetProvider;
-
-const networkConfig = contractsConfig[CHAIN_ID]?.find((config) => config.name === NETWORK_NAME)?.contracts;
-
-if (!networkConfig) {
-  console.error(`no network config found for ${NETWORK_NAME} with chainID ${CHAIN_ID}}`);
-  process.exit(1);
-}
 
 const mainnetTokens = {
   ETH: {
@@ -172,7 +164,6 @@ const uniswapV2PoolAddresses = {
 
 module.exports = {
   dammProvider,
-  networkConfig,
   mainnetProvider,
   mainnetTokens,
   chainlinkOracleAddresses,

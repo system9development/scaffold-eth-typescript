@@ -12,6 +12,7 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
   const { deploy } = deployments;
   const { deployer } = await getNamedAccounts();
   await deploy('BDAMM', {
+    contract: 'Comp',
     from: deployer,
     log: true,
     args: [deployer],

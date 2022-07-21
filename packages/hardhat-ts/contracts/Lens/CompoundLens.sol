@@ -428,7 +428,7 @@ contract CompoundLens {
     address delegate;
   }
 
-  function getCompBalanceMetadata(BDAMM comp, address account) external view returns (CompBalanceMetadata memory) {
+  function getCompBalanceMetadata(Comp comp, address account) external view returns (CompBalanceMetadata memory) {
     return CompBalanceMetadata({ balance: comp.balanceOf(account), votes: uint256(comp.getCurrentVotes(account)), delegate: comp.delegates(account) });
   }
 
@@ -440,7 +440,7 @@ contract CompoundLens {
   }
 
   function getCompBalanceMetadataExt(
-    BDAMM comp,
+    Comp comp,
     ComptrollerLensInterface comptroller,
     address account
   ) external returns (CompBalanceMetadataExt memory) {
@@ -460,7 +460,7 @@ contract CompoundLens {
   }
 
   function getCompVotes(
-    BDAMM comp,
+    Comp comp,
     address account,
     uint32[] calldata blockNumbers
   ) external view returns (CompVotes[] memory) {

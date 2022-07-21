@@ -30,17 +30,17 @@ const cTokenMetadataToMarketData = ({
   const underlying = underlyingAssetAddress;
   const totalReservesUsd = underlyingPriceUsd ? ethers.utils.formatUnits(
     // @ts-ignore
-    new BigNumber(totalReserves.toString()).times(underlyingPriceUsd).toString(),
+    new BigNumber(totalReserves.toString()).times(underlyingPriceUsd).toFixed(0),
     8,
   ) : '0.0'; // ternery is necessary because underlyingPrice might not always be set
   const totalSupplyUsd = underlyingPriceUsd ? ethers.utils.formatUnits(
     // @ts-ignore
-    new BigNumber(totalSupply.toString()).times(underlyingPriceUsd).toString(),
+    new BigNumber(totalSupply.toString()).times(underlyingPriceUsd).toFixed(0),
     8,
   ) : '0.0';
   const totalBorrowsUsd = underlyingPriceUsd ? ethers.utils.formatUnits(
     // @ts-ignore
-    new BigNumber(totalBorrows.toString()).times(underlyingPriceUsd).toString(),
+    new BigNumber(totalBorrows.toString()).times(underlyingPriceUsd).toFixed(0),
     8,
   ) : '0.0';
   const liquidity = (parseFloat(totalReservesUsd) + parseFloat(totalSupplyUsd) - parseFloat(totalBorrowsUsd)).toString();

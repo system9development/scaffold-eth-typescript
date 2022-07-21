@@ -40,7 +40,7 @@ contract USDC is Context, AccessControlEnumerable, ERC20Burnable, ERC20Pausable 
     string memory name,
     string memory symbol,
     uint256 decimals_
-  ) ERC20(name, symbol, decimals_, _msgSender()) {
+  ) ERC20(name, symbol, 0, _msgSender()) {
     _setupRole(DEFAULT_ADMIN_ROLE, _msgSender());
 
     _setupRole(MINTER_ROLE, _msgSender());

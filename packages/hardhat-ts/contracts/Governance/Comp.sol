@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: BSD-3-Clause
 pragma solidity ^0.8.10;
 
-contract BDAMM {
+contract Comp {
   /// @notice EIP-20 token name for this token
   string public constant name = "Bonded dAMM";
 

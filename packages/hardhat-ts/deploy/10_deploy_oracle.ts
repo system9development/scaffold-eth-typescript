@@ -21,18 +21,40 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
   console.log(`setting Comptroller price oracle to ${Oracle.address}`);
   await (await Comptroller._setPriceOracle(Oracle.address)).wait();
 
-  const BN = ethers.BigNumber;
+  const { parseUnits } = ethers.utils;
   const dUSDC = await ethers.getContract<IUSDC>('dUSDC');
   const dUSDT = await ethers.getContract('dUSDT');
   const dBDAMM = await ethers.getContract('dBDAMM');
+  const dETH = await ethers.getContract('dETH');
   // const dEther = await ethers.getContract('dETH');
-  console.log('setting underlying price for dUSDC');
-  await (await Oracle.setUnderlyingPrice(dUSDC.address, BN.from('1000000000000000000'))).wait();
-  console.log('setting underlying price for dUSDT');
-  await (await Oracle.setUnderlyingPrice(dUSDT.address, BN.from('1000000000000000000'))).wait();
-  // await Oracle.setUnderlyingPrice(dEther.address, BN.from('10100000000000000000000'));
-  console.log('setting underlying price for dBDAMM to $2 (meaning BDAMM is considered to be $2)');
-  await (await Oracle.setUnderlyingPrice(dBDAMM.address, BN.from('2000000000000000000'))).wait();
+  const previousPriceUSDC = await Oracle.getUnderlyingPrice(dUSDC.address);
+  const previousPriceUSDT = await Oracle.getUnderlyingPrice(dUSDT.address);
+  const previousPriceBDAMM = await Oracle.getUnderlyingPrice(dBDAMM.address);
+  const previousPriceETH = await Oracle.getUnderlyingPrice(dETH.address);
+  if (previousPriceUSDC.eq(0)) {
+    console.log('setting underlying price for dUSDC');
+    await (await Oracle.setUnderlyingPrice(dUSDC.address, parseUnits('1', 36 - 6))).wait();
+  } else {
+    console.log('underlying price for dUSDC is already set; skipping Oracle.setUnderlyingPrice call');
+  }
+  if (previousPriceUSDT.eq(0)) {
+    console.log('setting underlying price for dUSDT');
+    await (await Oracle.setUnderlyingPrice(dUSDT.address, parseUnits('1', 36 - 6))).wait();
+  } else {
+    console.log('underlying price for dUSDT is already set; skipping Oracle.setUnderlyingPrice call');
+  }
+  if (previousPriceBDAMM.eq(0)) {
+    console.log('setting underlying price for dBDAMM to $2 (meaning BDAMM is considered to be $2)');
+    await (await Oracle.setUnderlyingPrice(dBDAMM.address, parseUnits('1', 36 - 18))).wait();
+  } else {
+    console.log('underlying price for dBDAMM is already set; skipping Oracle.setUnderlyingPrice call');
+  }
+  if (previousPriceETH.eq(0)) {
+    console.log('setting underlying price for dETH to $1510');
+    await (await Oracle.setUnderlyingPrice(dETH.address, parseUnits('1510', 36 - 18))).wait();
+  } else {
+    console.log('underlying price for dETH is already set; skipping Oracle.setUnderlyingPrice call');
+  }
 };
 
 export default func;

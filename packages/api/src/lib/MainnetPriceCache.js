@@ -123,7 +123,9 @@ class MainnetPriceCache extends BlockCache {
     this.#blockNumber = blockNumber;
     mainnetTokens.forEach((token) => this.#prices[token] = null);
     this.#prices['ETH'] = null;
+    console.log('MainnetPriceCache:init: Updating prices');
     await this.#updateMainnetPrices();
+    console.log('MainnetPriceCache:init: Initialized prices');
     this.#isInitialized = true;
     this.#provider.on('block', async (blockNumber) => {
       this.#blockNumber = blockNumber;

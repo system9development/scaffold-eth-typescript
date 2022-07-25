@@ -15,6 +15,7 @@ if (!ALCHEMY_API_TOKEN) {
 
 const mainnetProvider = new ethers.providers.AlchemyProvider('homestead', ALCHEMY_API_TOKEN);
 
+console.log('Creating DAMM provider', NETWORK_URL, CHAIN_ID);
 const dammProvider = NETWORK_URL && CHAIN_ID ? new ethers.providers.JsonRpcProvider(
   NETWORK_URL,
   {

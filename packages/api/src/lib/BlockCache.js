@@ -6,7 +6,6 @@ const Lens = require('../Lens');
 const Erc20ReadAbi = require('../abis/Erc20Read');
 const CTokenReadAbi = require('../abis/CTokenRead');
 const cTokenMetadataToJson = require('./cTokenMetadataToJson');
-const cTokenMetadataToMarketData = require('./cTokenMetadataToMarketData');
 
 /*
   Cache the prices of each token at each block. Upon receiving new price for a token for the current block, discard any old data

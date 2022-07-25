@@ -97,6 +97,7 @@ class DammTokenCache extends BlockCache {
 
 
   async #updateDammMarketMetadata() {
+    console.log('DammTokenCache: updating metadata');
     const rawMetadataJsonArray = (await Lens.callStatic.cTokenMetadataAll(this.#dammTokens)).map(cTokenMetadataToJson);
     this.#metadata = rawMetadataJsonArray
   }
@@ -110,9 +111,15 @@ class DammTokenCache extends BlockCache {
     this.#blockNumber = blockNumber;
     this.#dammTokens = await Comptroller.getAllMarkets();
     const dammTokenSet = new Set(this.#dammTokens);
+    console.log('DammTokenCache:init: Initializing static data');
     await Promise.all((this.#dammTokens).map((dToken) => this.#initializeDammTokenStaticData(dToken)));
+    console.log(`DammTokenCache:init: Initialized static data for ${Object.keys(this.#dammTokenAddressesToStaticData).length} markets`);
+    console.log('DammTokenCache:init: Initializing market metadata');
     await this.#updateDammMarketMetadata();
-    await this.#mainnetCache.initialize();
+    console.log('DammTokenCache:init: Initialized market metadata');
+    console.log('DammTokenCache:init: Initializing mainnetCache');
+    await this.#mainnetCache.initialize(Object.values(this.#dammTokenAddressesToStaticData).map((token) => token.symbol));
+    console.log('DammTokenCache:init: mainnetCache initialized');
     this.#isInitialized = true;
     this.#provider.on('block', async (blockNumber) => {
       this.#blockNumber = blockNumber;

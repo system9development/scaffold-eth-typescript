@@ -57,18 +57,21 @@ const cTokenMetadataToMarketData = ({
   // }
 
   // @ts-ignore
-  const totalSupplyUnderlying = new BigNumber(totalSupplyDtokenFormatted)
+  const totalSupplyUnderlyingFormatted = new BigNumber(totalSupplyDtokenFormatted)
     .times(exchangeRateCurrent.toString())
     // @ts-ignore
-    .dividedBy((new BigNumber(10)).pow(18 + underlyingDecimals - 8));
-  const totalSupplyUnderlyingFormatted = ethers.utils.formatUnits(totalSupplyUnderlying?.toString() || 0, underlyingDecimals);
+    .dividedBy((new BigNumber(10)).pow(18 + underlyingDecimals.toNumber() - 8));
+
   const totalSupplyUsd = underlyingPriceUsd
     // @ts-ignore
     ? (new BigNumber(underlyingPriceUsd)).times(totalSupplyUnderlyingFormatted).toFixed(2)
     : '0.00';
 
   // @ts-ignore
-  const totalBorrowsFormatted = new BigNumber(ethers.utils.formatUnits(totalBorrows?.toString() || 0, underlyingDecimals));
+  const totalBorrowsFormatted = new BigNumber(ethers.utils.formatUnits(
+    totalBorrows?.toString() || 0,
+    underlyingDecimals.toNumber())
+  );
   const totalBorrowsUsd = underlyingPriceUsd
     ? totalBorrowsFormatted.times(underlyingPriceUsd).toFixed(2)
     : '0.00'

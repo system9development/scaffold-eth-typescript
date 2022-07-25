@@ -103,7 +103,7 @@ const cTokenMetadataToMarketData = ({
     totalBorrowsUsd,
     // totalBorrowsUsd: parseFloat(ethers.utils.formatUnits(totalBorrows, 8)) * mainnetCache.getPriceBySymbol(underlyingSymbol),
     totalSupply: totalSupplyDtoken.toString(),
-    totalSupply2: totalSupplyDtokenFormatted,
+    totalSupply2: totalSupplyUnderlyingFormatted.toString(),
     totalSupplyUsd,
     // totalSupplyUsd: parseFloat(ethers.utils.formatUnits(totalSupply, 8)) * mainnetCache.getPriceBySymbol(underlyingSymbol),
     cash: totalCash.toString(),

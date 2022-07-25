@@ -9,7 +9,7 @@ const cTokenMetadataToMarketData = ({
   reserveFactorMantissa,
   totalBorrows,
   totalReserves,
-  totalSupply,
+  totalSupply: totalSupplyDtoken,
   totalCash,
   isListed,
   collateralFactorMantissa,
@@ -24,28 +24,59 @@ const cTokenMetadataToMarketData = ({
   symbol,
   underlyingSymbol,
   underlyingName,
-  underlyingPriceUsd,
+  underlyingPriceUsd, // type number or null
   blockNumber,
 }) => {
   const underlying = underlyingAssetAddress;
-  const totalReservesUsd = underlyingPriceUsd ? ethers.utils.formatUnits(
-    // @ts-ignore
-    new BigNumber(totalReserves.toString()).times(underlyingPriceUsd).toFixed(0),
-    8,
-  ) : '0.0'; // ternery is necessary because underlyingPrice might not always be set
-  const totalSupplyUsd = underlyingPriceUsd ? ethers.utils.formatUnits(
-    // @ts-ignore
-    new BigNumber(totalSupply.toString()).times(underlyingPriceUsd).toFixed(0),
-    8,
-  ) : '0.0';
-  const totalBorrowsUsd = underlyingPriceUsd ? ethers.utils.formatUnits(
-    // @ts-ignore
-    new BigNumber(totalBorrows.toString()).times(underlyingPriceUsd).toFixed(0),
-    8,
-  ) : '0.0';
-  const liquidity = (parseFloat(totalReservesUsd) + parseFloat(totalSupplyUsd) - parseFloat(totalBorrowsUsd)).toString();
   // @ts-ignore
-  const exponent = BigNumber(10).pow(36 - underlyingDecimals.toNumber());
+  const totalReservesFormatted = new BigNumber(ethers.utils.formatUnits(totalReserves || 0, underlyingDecimals));
+
+  // ternery is necessary because underlyingPrice might not always be set:
+  const totalReservesUsd = underlyingPriceUsd
+    ? totalReservesFormatted.times(underlyingPriceUsd).toFixed(2)
+    : '0.00';
+
+  // const totalSupply = totalSupplyDtoken.toString()
+  // const totalSupplyDtoken = underlyingPriceUsd ? ethers.utils.formatUnits(
+  //   // @ts-ignore
+  //   new BigNumber(totalSupply.toString()).times(underlyingPriceUsd).toFixed(0),
+  //   8,
+  // ) : '0.0';
+
+  // get the total supply of the dToken (needs to be converted to underlying based on exchangeRate)
+  // let totalSupplyDtokenFormatted = '0';
+  // try {
+  const totalSupplyDtokenFormatted = ethers.utils.formatUnits(
+    // @ts-ignore
+    totalSupplyDtoken?.toString() || 0,
+    8,
+  );
+  // } catch (e) {
+  //   console.log('throwing on totalsupplydtoken', totalSupplyDtoken, totalSupplyDtoken.toString());
+  //   throw e;
+  // }
+
+  // @ts-ignore
+  const totalSupplyUnderlying = new BigNumber(totalSupplyDtokenFormatted)
+    .times(exchangeRateCurrent.toString())
+    // @ts-ignore
+    .dividedBy((new BigNumber(10)).pow(18 + underlyingDecimals - 8));
+  const totalSupplyUnderlyingFormatted = ethers.utils.formatUnits(totalSupplyUnderlying?.toString() || 0, underlyingDecimals);
+  const totalSupplyUsd = underlyingPriceUsd
+    // @ts-ignore
+    ? (new BigNumber(underlyingPriceUsd)).times(totalSupplyUnderlyingFormatted).toFixed(2)
+    : '0.00';
+
+  // @ts-ignore
+  const totalBorrowsFormatted = new BigNumber(ethers.utils.formatUnits(totalBorrows?.toString() || 0, underlyingDecimals));
+  const totalBorrowsUsd = underlyingPriceUsd
+    ? totalBorrowsFormatted.times(underlyingPriceUsd).toFixed(2)
+    : '0.00'
+
+  // @ts-ignore
+  const liquidity = (new BigNumber(totalReservesUsd)).plus(totalSupplyUsd).minus(totalBorrowsUsd).toFixed(2);
+  // @ts-ignore
+  const underlyingPriceExponent = BigNumber(10).pow(36 - underlyingDecimals.toNumber());
 
   return {
     address: cToken,
@@ -63,17 +94,17 @@ const cTokenMetadataToMarketData = ({
     borrowRatePerBlock: borrowRatePerBlock.toString(),
     supplyRatePerBlock: supplyRatePerBlock.toString(),
     exchangeRate: exchangeRateCurrent.toString(),
-    underlyingPrice: exponent.times(underlyingPriceUsd).toFixed(0),
+    underlyingPrice: underlyingPriceExponent.times(underlyingPriceUsd).toFixed(0),
     totalBorrows: totalBorrows.toString(),
-    totalBorrows2: ethers.utils.formatUnits(totalBorrows, 8),
+    totalBorrows2: totalBorrowsFormatted.toString(),
     totalBorrowsUsd,
     // totalBorrowsUsd: parseFloat(ethers.utils.formatUnits(totalBorrows, 8)) * mainnetCache.getPriceBySymbol(underlyingSymbol),
-    totalSupply: totalSupply.toString(),
-    totalSupply2: ethers.utils.formatUnits(totalSupply, 8),
+    totalSupply: totalSupplyDtoken.toString(),
+    totalSupply2: totalSupplyDtokenFormatted,
     totalSupplyUsd,
     // totalSupplyUsd: parseFloat(ethers.utils.formatUnits(totalSupply, 8)) * mainnetCache.getPriceBySymbol(underlyingSymbol),
     cash: totalCash.toString(),
-    totalReserves: totalReserves.toString(),
+    totalReserves: totalReservesFormatted.toString(),
     reserveFactor: reserveFactorMantissa.toString(),
     collateralFactor: collateralFactorMantissa.toString(),
     borrowApy: borrowRatePerBlock.toString(), // need to multiply by blocks per year and also format by decimals?

@@ -22,7 +22,7 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
   const Unitroller = await ethers.getContract<IUnitroller>('Unitroller');
   const USDT = await ethers.getContract<IUSDT>('USDT');
   const USDC = await ethers.getContract<IUSDC>('USDC');
-  const BDAMM = await ethers.getContract('BDAMM');
+  // const BDAMM = await ethers.getContract('BDAMM');
   const JumpRateModelV2 = await ethers.getContract<IJumpRateModelV2>('JumpRateModelV2');
   const Comptroller = (await ethers.getContract<IComptroller>('ComptrollerImplementation')).attach(Unitroller.address);
   const CTokenDelegate = await ethers.getContract<ICTokenDelegate>('CErc20Delegate');
@@ -32,32 +32,32 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
   const tokenList = Object.keys(mainnetTokens);
 
   // BDAMM and cBDAMM don't have mainnet equivalents yet.
-  const dBDAMM = await deploy('dBDAMM', {
-    contract: 'CErc20Delegator',
-    from: deployer,
-    log: true,
-    args: [
-      BDAMM.address,
-      Comptroller.address,
-      JumpRateModelV2.address,
-      BN.from('200000000000000000000000000'),
-      'dToken Bonded dAMM',
-      'dBDAMM',
-      8,
-      deployer,
-      CTokenDelegate.address,
-      '0x',
-    ],
-  });
+  // const dBDAMM = await deploy('dBDAMM', {
+  //   contract: 'CErc20Delegator',
+  //   from: deployer,
+  //   log: true,
+  //   args: [
+  //     BDAMM.address,
+  //     Comptroller.address,
+  //     JumpRateModelV2.address,
+  //     BN.from('200000000000000000000000000'),
+  //     'dToken Bonded dAMM',
+  //     'dBDAMM',
+  //     8,
+  //     deployer,
+  //     CTokenDelegate.address,
+  //     '0x',
+  //   ],
+  // });
 
-  if (!currentlySupportedMarkets.has(ethers.utils.getAddress(dBDAMM.address))) {
-    console.log('adding dBDAMM to Comptroller active markets');
-    await (await Comptroller._supportMarket(dBDAMM.address)).wait();
-    currentlySupportedMarkets.add(ethers.utils.getAddress(dBDAMM.address));
-  } else {
-    console.log('Skipping Comptroller._supportMarkets for dBDAMM; already supported');
-  }
-  dTokens.push('dBDAMM');
+  // if (!currentlySupportedMarkets.has(ethers.utils.getAddress(dBDAMM.address))) {
+  //   console.log('adding dBDAMM to Comptroller active markets');
+  //   await (await Comptroller._supportMarket(dBDAMM.address)).wait();
+  //   currentlySupportedMarkets.add(ethers.utils.getAddress(dBDAMM.address));
+  // } else {
+  //   console.log('Skipping Comptroller._supportMarkets for dBDAMM; already supported');
+  // }
+  // dTokens.push('dBDAMM');
   for (let i = 0; i < tokenList.length; i += 1) {
     const symbol = tokenList[i];
     if (symbol === 'USDT') {

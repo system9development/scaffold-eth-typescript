@@ -120,6 +120,10 @@ const mainnetTokens = {
     address: '0x31429d1856aD1377A8A0079410B297e1a9e214c2',
     decimals: 18,
   },
+  CNV: {
+    address: '0x000000007a58f5f58e697e51ab0357bc9e260a04',
+    decimals: 18,
+  }
 };
 
 const chainlinkOracleAddresses = {
@@ -150,6 +154,7 @@ const uniswapV3PoolAddresses = {
   RBN_ETH: '0x94981F69F7483AF3ae218CbfE65233cC3c60d93a', // TVL ~2.5M USD
   ETH_BTRFLY: '0xdF9aB3C649005EbFDf682d2302ca1f673e0d37a2', // TVL ~1.5M USD
   AGEUR_USDC: '0x735a26a57A0A0069dfABd41595A970faF5E1ee8b',
+  CNV_ETH: '0x0311125b58d9602352cba5c925927ecb86a5905a',
   /* ---- Test pools ---- */
   USDC_ETH: '0x8ad599c3A0ff1De082011EFDDc58f1908eb6e6D8',
   ETH_USDT: '0x4e68Ccd3E89f51C3074ca5072bbAC773960dFa36',

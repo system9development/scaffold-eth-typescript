@@ -20,7 +20,8 @@
     "lint": "eslint --config ./.eslintrc.js --ignore-path ./.eslintignore ./deploy/**/*.ts ./tasks/**/*.ts ./test/**/*.ts ./helpers/**/*.ts",
     "solhint": "solhint ./contracts/**/*.sol",
     "format": "yarn prettier -w ./deploy/**/*.ts ./tasks/**/*.ts ./test/**/*.ts ./helpers/**/*.ts contracts/**/*.sol ",
-    "format:check": "yarn prettier -c ./deploy/**/*.ts ./tasks/**/*.ts ./test/**/*.ts ./helpers/**/*.ts ./contracts/**/*.sol "
+    "format:check": "yarn prettier -c ./deploy/**/*.ts ./tasks/**/*.ts ./test/**/*.ts ./helpers/**/*.ts ./contracts/**/*.sol ",
+    "seed": "SEED_ARGS=\"${@}\" hardhat run './seed.js'"
   },
   "dependencies": {
     "@atixlabs/hardhat-time-n-mine": "^0.0.5",

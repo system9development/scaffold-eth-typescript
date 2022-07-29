@@ -58,7 +58,7 @@ const main = async () => {
         }
       }
     };
-  };    
+  };
 };
 
 main();

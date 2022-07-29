@@ -54,7 +54,7 @@ const main = async () => {
           console.log(`sending 1000 ${token} to ${address}`);
           await (await contract.transfer(address, ethers.utils.parseUnits('1000', metadata.decimals))).wait();
         } else {
-          console.log(`${address} has balance of ${addressBalance.toString()} ${token}`);
+          console.log(`${address} has balance of ${ethers.utils.formatUnits(addressBalance, metadata.decimals)} ${token}`);
         }
       }
     };

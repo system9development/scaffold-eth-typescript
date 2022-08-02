@@ -65,7 +65,7 @@ const getChainlinkUSDPrice = async (token, ethPriceUsd = null) => {
       if (!tokenEthLatestAnswer) {
         return 0;
       }
-      const tokenEthPrice = ethers.utils.formatUnits(tokenEthLatestAnswer, 8);
+      const tokenEthPrice = ethers.utils.formatUnits(tokenEthLatestAnswer, 18);
       // @ts-ignore
       return BigNumber(tokenEthPrice).times(ethPriceUsd).toNumber();
     } else {

@@ -168,6 +168,8 @@ const uniswapV2PoolAddresses = {
   ETH_USDT: '0x0d4a11d5EEaaC28EC3F61d100daF4d40471f1852',
 };
 
+const BLOCKS_PER_YEAR = 2102400;
+
 module.exports = {
   dammProvider,
   mainnetProvider,
@@ -175,4 +177,5 @@ module.exports = {
   chainlinkOracleAddresses,
   uniswapV3PoolAddresses,
   uniswapV2PoolAddresses,
+  BLOCKS_PER_YEAR,
 };

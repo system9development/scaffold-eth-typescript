@@ -1,5 +1,8 @@
 const ethers = require('ethers');
 const BigNumber = require('bignumber.js');
+// @ts-ignore
+BigNumber.config({ POW_PRECISION: 20 });
+const { BLOCKS_PER_YEAR } = require('../config.js')
 
 const cTokenMetadataToMarketData = ({
   cToken,
@@ -81,6 +84,9 @@ const cTokenMetadataToMarketData = ({
   // @ts-ignore
   const underlyingPriceExponent = BigNumber(10).pow(36 - underlyingDecimals.toNumber());
 
+  const borrowRatePerBlockFormatted = ethers.utils.formatUnits(borrowRatePerBlock, 18);
+  const supplyRatePerBlockFormatted = ethers.utils.formatUnits(supplyRatePerBlock, 18);
+
   return {
     address: cToken,
     symbol,
@@ -110,8 +116,10 @@ const cTokenMetadataToMarketData = ({
     totalReserves: totalReservesFormatted.toString(),
     reserveFactor: reserveFactorMantissa.toString(),
     collateralFactor: collateralFactorMantissa.toString(),
-    borrowApy: borrowRatePerBlock.toString(), // need to multiply by blocks per year and also format by decimals?
-    supplyApy: supplyRatePerBlock.toString(), // ditto
+    // @ts-ignore
+    borrowApy: borrowRatePerBlock.isZero() ? '0' : `-${(new BigNumber(borrowRatePerBlockFormatted)).plus(1).pow(BLOCKS_PER_YEAR).minus(1).shiftedBy(2).toString()}`,
+    // @ts-ignore
+    supplyApy: (new BigNumber(supplyRatePerBlockFormatted)).plus(1).pow(BLOCKS_PER_YEAR).minus(1).shiftedBy(2).toString(),
     // borrowDammApy (???)
     // supplyDammApy (???)
     liquidity,

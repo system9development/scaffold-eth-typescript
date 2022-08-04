@@ -39,7 +39,7 @@ const main = async () => {
         const addressBalance = await dammProvider.getBalance(address);
         if (addressBalance.lt((1e16).toString())) {
           if (dammProvider?.network?.chainId === 31337) {
-            console.log(`sending 1 ETH to ${addressBalance}`);
+            console.log(`sending 1 ETH to ${address}`);
             await (await deployer.sendTransaction({ to: address, value: ethers.utils.parseEther("1.0")})).wait();
           } else {
             console.log(`sending 0.1 ETH to ${addressBalance}`);

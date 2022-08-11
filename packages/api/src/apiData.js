@@ -55,7 +55,7 @@ const apiDataHandler = async (req, res) => {
       res.set('Cache-Control', `max-age=${1 + (blockSkew - 1)*7}`);
     }
   } else {
-    res.set('Cache-Control', "max-age=300"); // cache results for 5 minutes when no blockNumber is specified
+    res.set('Cache-Control', "max-age=30"); // cache results for 30 seconds when no blockNumber is specified
   }
   res.send(await apiData());
 }

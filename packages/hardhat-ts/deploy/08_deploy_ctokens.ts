@@ -17,7 +17,6 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
   const { getNamedAccounts, deployments } = hre;
   const { deploy } = deployments;
   const { deployer } = await getNamedAccounts();
-  const BN = ethers.BigNumber;
   // const signer = await ethers.getSigner(deployer);
   const Unitroller = await ethers.getContract<IUnitroller>('Unitroller');
   const USDT = await ethers.getContract<IUSDT>('USDT');
@@ -29,7 +28,15 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
 
   const currentlySupportedMarkets = new Set((await Comptroller.callStatic.getAllMarkets()).map(ethers.utils.getAddress));
 
-  const tokenList = Object.keys(mainnetTokens);
+  const [tokenList, decimalList] = Object.entries(mainnetTokens)
+    .reduce<[string[], number[]]>((
+      [symbolReduction, decimalReduction]: [string[], number[]],
+      [curSymbol, curMetadata]: [string, { decimals: number }]
+    ) => {
+      symbolReduction.push(curSymbol);
+      decimalReduction.push(curMetadata.decimals);
+      return [symbolReduction, decimalReduction];
+    }, [[], []]);
 
   // BDAMM and cBDAMM don't have mainnet equivalents yet.
   // const dBDAMM = await deploy('dBDAMM', {
@@ -60,6 +67,7 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
   // dTokens.push('dBDAMM');
   for (let i = 0; i < tokenList.length; i += 1) {
     const symbol = tokenList[i];
+    const decimals = decimalList[i];
     if (symbol === 'USDT') {
       const dUSDT = await deploy('dUSDT', {
         contract: 'CErc20Delegator',
@@ -69,7 +77,7 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
           USDT.address,
           Comptroller.address,
           JumpRateModelV2.address,
-          BN.from('200000000000000'),
+          ethers.utils.parseUnits('0.02', 10 + decimals),
           'dToken Tether USD',
           'dUSDT',
           8,
@@ -95,7 +103,7 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
           USDC.address,
           Comptroller.address,
           JumpRateModelV2.address,
-          BN.from('200000000000000'),
+          ethers.utils.parseUnits('0.02', 10 + decimals),
           'dToken USD Coin',
           'dUSDC',
           8,
@@ -122,7 +130,7 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
           contract.address,
           Comptroller.address,
           JumpRateModelV2.address,
-          BN.from('200000000000000'),
+          ethers.utils.parseUnits('0.02', 10 + decimals),
           `dToken ${symbol}`,
           `d${symbol}`,
           8,

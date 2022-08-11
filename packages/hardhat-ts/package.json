@@ -8,6 +8,7 @@
     "test": "yarn hardhat test --network hardhat",
     "compile": "cross-env BUILDING=true hardhat compile",
     "deploy": "cross-env BUILDING=true hardhat deploy --export-all ../common/src/generated/hardhat_contracts.json && yarn run deploy:post",
+    "redeploy": "cross-env BUILDING=true hardhat deploy --reset --export-all ../common/src/generated/hardhat_contracts.json && yarn run deploy:post",
     "clean": "cross-env BUILDING=true hardhat clean",
     "deploy:post": "hardhat run scripts/publish.ts",
     "watch:compile": "yarn hardhat watch compile",
@@ -21,7 +22,8 @@
     "solhint": "solhint ./contracts/**/*.sol",
     "format": "yarn prettier -w ./deploy/**/*.ts ./tasks/**/*.ts ./test/**/*.ts ./helpers/**/*.ts contracts/**/*.sol ",
     "format:check": "yarn prettier -c ./deploy/**/*.ts ./tasks/**/*.ts ./test/**/*.ts ./helpers/**/*.ts ./contracts/**/*.sol ",
-    "seed": "SEED_ARGS=\"${@}\" hardhat run './seed.js'"
+    "seed": "SEED_ARGS=\"${@}\" hardhat run './seed.js'",
+    "json:update": "FILE_ARG=\"${@}\" hardhat run ./scripts/jsonupdate.ts"
   },
   "dependencies": {
     "@atixlabs/hardhat-time-n-mine": "^0.0.5",

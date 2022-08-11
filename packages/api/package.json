@@ -2,6 +2,7 @@
   "name": "api",
   "packageManager": "yarn@3.2.1",
   "dependencies": {
+    "@ethersproject/hardware-wallets": "^5.6.1",
     "@uniswap/sdk": "^3.0.3",
     "@uniswap/sdk-core": "^3.0.1",
     "@uniswap/v3-periphery": "^1.4.1",

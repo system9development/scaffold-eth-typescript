@@ -27,102 +27,127 @@ const dammProvider = NETWORK_URL && CHAIN_ID ? new ethers.providers.JsonRpcProvi
 const mainnetTokens = {
   ETH: {
     decimals: 18,
+    coingeckoId: 'ethereum',
   },
   RBN: {
     address: '0x6123B0049F904d730dB3C36a31167D9d4121fA6B',
     decimals: 18,
+    coingeckoId: 'ribbon-finance',
   },
   WOO: {
     address: '0x4691937a7508860F876c9c0a2a617E7d9E945D4B',
     decimals: 18,
+    coingeckoId: 'woo-network',
   },
   BTRFLY: {
     address: '0xC0d4Ceb216B3BA9C3701B291766fDCbA977ceC3A',
     decimals: 9,
+    coingeckoId: 'redacted',
   },
   WETH: {
     address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
     decimals: 18,
+    coingeckoId: 'weth',
   },
   USDT: {
     address: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
     decimals: 6,
+    coingeckoId: 'tether',
   },
   USDC: {
     address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
     decimals: 6,
+    coingeckoId: 'usd-coin',
   },
   LINK: {
     address: '0x514910771AF9Ca656af840dff83E8264EcF986CA',
     decimals: 18,
+    coingeckoId: 'chainlink',
   },
   FRAX: {
     address: '0x853d955aCEf822Db058eb8505911ED77F175b99e',
     decimals: 18,
+    coingeckoId: 'frax',
   },
   WBTC: {
     address: '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599',
     decimals: 8,
+    coingeckoId: 'wrapped-bitcoin',
   },
   FXS: {
     address: '0x3432B6A60D23Ca0dFCa7761B7ab56459D9C964D0',
     decimals: 18,
+    coingeckoId: 'frax-share',
   },
   DAI: {
     address: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
     decimals: 18,
+    coingeckoId: 'dai',
   },
   STETH: {
     address: '0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84',
     decimals: 18,
+    coingeckoId: 'staked-ether',
   },
   KNC: {
     address: '0xdeFA4e8a7bcBA345F687a2f1456F5Edd9CE97202',
     decimals: 18,
+    coingeckoId: 'kyber-network-crystal',
   },
   CVX: {
     address: '0x4e3FBD56CD56c3e72c1403e103b45Db9da5B9D2B',
     decimals: 18,
+    coingeckoId: 'convex-finance',
   },
   CRV: {
     address: '0xD533a949740bb3306d119CC777fa900bA034cd52',
     decimals: 18,
+    coingeckoId: 'curv-dao-token',
   },
   UNI: {
     address: '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984',
     decimals: 18,
+    coingeckoId: 'uniswap',
   },
   MATIC: {
     address: '0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0',
     decimals: 18,
+    coingeckoId: 'matic-network',
   },
   COMP: {
     address: '0xc00e94Cb662C3520282E6f5717214004A7f26888',
     decimals: 18,
+    coingeckoId: 'compound-governance-token',
   },
   AAVE: {
     address: '0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9',
     decimals: 18,
+    coingeckoId: 'aave',
   },
   APE: {
     address: '0x4d224452801ACEd8B2F0aebE155379bb5D594381',
     decimals: 18,
+    coingeckoId: 'apecoin',
   },
   SNX: {
     address: '0xC011a73ee8576Fb46F5E1c5751cA3B9Fe0af2a6F',
     decimals: 18,
+    coingeckoId: 'havven',
   },
   AGEUR: {
     address: '0x1a7e4e63778B4f12a199C062f3eFdD288afCBce8',
     decimals: 18,
+    coingeckoId: 'ageur',
   },
   ANGLE: {
     address: '0x31429d1856aD1377A8A0079410B297e1a9e214c2',
     decimals: 18,
+    coingeckoId: 'angle-protocol',
   },
   CNV: {
     address: '0x000000007a58f5f58e697e51ab0357bc9e260a04',
     decimals: 18,
+    coingeckoId: 'concave',
   }
 };
 

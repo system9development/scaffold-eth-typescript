@@ -22,7 +22,7 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
   const { getNamedAccounts, deployments } = hre;
   const { deploy } = deployments;
   const { deployer } = await getNamedAccounts();
-  const tokenList = Object.keys(mainnetTokens).filter((t) => t !== 'ETH')
+  const tokenList = Object.keys(mainnetTokens).filter((t) => t !== 'ETH');
   const tokenContractEntries = (await Promise.all(tokenList.map(getContractEntries)))
     .filter((entry): entry is [string, Ethers.Contract] => Boolean(entry[1]));
   const tokenContracts: {[key: string]: Ethers.Contract} = Object.fromEntries(tokenContractEntries);

@@ -9,10 +9,8 @@ contract SimplePriceOracle is PriceOracle, Ownable {
   mapping(address => uint) prices;
   event PricePosted(address asset, uint previousPriceMantissa, uint requestedPriceMantissa, uint newPriceMantissa);
 
-  function setDirectPrices(address[] memory tokens, uint256[] memory pricesToSet) public onlyOwner {
-    if (tokens.length != pricesToSet.length) {
-      return;
-    }
+  function setDirectPrices(address[] calldata tokens, uint256[] calldata pricesToSet) external onlyOwner {
+    require(tokens.length == pricesToSet.length, "tokens and prices must have the same length");
     for (uint i = 0; i < tokens.length; i ++) {
       setDirectPrice(tokens[i], pricesToSet[i]);
     }

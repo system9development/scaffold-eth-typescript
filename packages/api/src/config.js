@@ -102,7 +102,7 @@ const mainnetTokens = {
   CRV: {
     address: '0xD533a949740bb3306d119CC777fa900bA034cd52',
     decimals: 18,
-    coingeckoId: 'curv-dao-token',
+    coingeckoId: 'curve-dao-token',
   },
   UNI: {
     address: '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984',

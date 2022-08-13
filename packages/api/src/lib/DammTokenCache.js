@@ -99,7 +99,7 @@ class DammTokenCache extends BlockCache {
   async #updateDammMarketMetadata() {
     console.log('DammTokenCache: updating metadata');
     const rawMetadataJsonArray = (await Lens.callStatic.cTokenMetadataAll(this.#dammTokens)).map(cTokenMetadataToJson);
-    this.#metadata = rawMetadataJsonArray
+    this.#metadata = rawMetadataJsonArray;
   }
 
   // Set blockNumber, ETH price and token prices, and add a block listener to trigger new updates

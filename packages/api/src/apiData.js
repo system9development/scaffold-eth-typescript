@@ -1,3 +1,4 @@
+const BigNumber = require('bignumber.js');
 const { dammProvider, mainnetProvider, mainnetTokens } = require('./config');
 const Comptroller = require('./Comptroller');
 const MainnetPriceCache = require('./lib/MainnetPriceCache');
@@ -21,6 +22,12 @@ const apiData = async () => {
   const response = {
     status: true,
     data: {
+      // @ts-ignore
+      liquidity: metadata.reduce((prev, cur) => prev.plus(cur.liquidity), new BigNumber(0)),
+      // @ts-ignore
+      totalSupply: metadata.reduce((prev, cur) => prev.plus(cur.totalSupplyUsd), new BigNumber(0)),
+      // @ts-ignore
+      totalBorrows: metadata.reduce((prev, cur) => prev.plus(cur.totalBorrowsUsd), new BigNumber(0)),
       markets: metadata,
       mainnetBlock: mainnetProvider.blockNumber,
       dammNetBlock: dammProvider.blockNumber,

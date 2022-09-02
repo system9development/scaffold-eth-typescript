@@ -19,8 +19,8 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
   const { deployer } = await getNamedAccounts();
   // const signer = await ethers.getSigner(deployer);
   const Unitroller = await ethers.getContract<IUnitroller>('Unitroller');
-  const USDT = await ethers.getContract<IUSDT>('USDT');
-  const USDC = await ethers.getContract<IUSDC>('USDC');
+  const USDT = mainnetTokens.USDT;
+  const USDC = mainnetTokens.USDC;
   // const BDAMM = await ethers.getContract('BDAMM');
   const JumpRateModelV2 = await ethers.getContract<IJumpRateModelV2>('JumpRateModelV2');
   const Comptroller = (await ethers.getContract<IComptroller>('ComptrollerImplementation')).attach(Unitroller.address);
@@ -121,7 +121,7 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
       }
       dTokens.push('dUSDC');
     } else if (symbol !== 'ETH') {
-      const contract = await ethers.getContract(symbol);
+      const contract = mainnetTokens[symbol];
       const dToken = await deploy(`d${symbol}`, {
         contract: 'CErc20Delegator',
         from: deployer,

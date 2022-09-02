@@ -24,128 +24,119 @@ const dammProvider = NETWORK_URL && CHAIN_ID ? new ethers.providers.JsonRpcProvi
   }
 ) : mainnetProvider;
 
+// NOTE: These have been changed to goerli addresses; change back before running API
 const mainnetTokens = {
-  RBN: {
-    address: '0x6123B0049F904d730dB3C36a31167D9d4121fA6B',
-    decimals: 18,
-    coingeckoId: 'ribbon-finance',
+  "AAVE": {
+    "address": "0x53128A42E8c52D96065031644B3DbC136ee14825",
+    "coingeckoId": "aave",
+    "decimals": 18
   },
-  WOO: {
-    address: '0x4691937a7508860F876c9c0a2a617E7d9E945D4B',
-    decimals: 18,
-    coingeckoId: 'woo-network',
+  "AGEUR": {
+    "address": "0x01a8bFD46883562212B94F6CCbF451E3F88F8a32",
+    "coingeckoId": "ageur",
+    "decimals": 18
   },
-  BTRFLY: {
-    address: '0xC0d4Ceb216B3BA9C3701B291766fDCbA977ceC3A',
-    decimals: 9,
-    coingeckoId: 'redacted',
+  "ANGLE": {
+    "address": "0x8eDe66aF4B32e580498f31517463109Df86959Eb",
+    "coingeckoId": "angle-protocol",
+    "decimals": 18
   },
-  WETH: {
-    address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
-    decimals: 18,
-    coingeckoId: 'weth',
+  "APE": {
+    "address": "0x1A0fc6D6065da966389A4DdA864110804D1eaedD",
+    "coingeckoId": "apecoin",
+    "decimals": 18
   },
-  USDT: {
-    address: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
-    decimals: 6,
-    coingeckoId: 'tether',
+  "CNV": {
+    "address": "0x3b4a5F6309F458E8254949144cd97dE0DB95cfeC",
+    "coingeckoId": "concave",
+    "decimals": 18
   },
-  USDC: {
-    address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
-    decimals: 6,
-    coingeckoId: 'usd-coin',
+  "COMP": {
+    "address": "0xeaddc9B19A86963E08323D8F0cD7Bb266d57bAf5",
+    "coingeckoId": "compound-governance-token",
+    "decimals": 18
   },
-  LINK: {
-    address: '0x514910771AF9Ca656af840dff83E8264EcF986CA',
-    decimals: 18,
-    coingeckoId: 'chainlink',
+  "CRV": {
+    "address": "0x331400F969C71a6Fa08C2Bc5F0b30cFB33B1070a",
+    "coingeckoId": "curve-dao-token",
+    "decimals": 18
   },
-  FRAX: {
-    address: '0x853d955aCEf822Db058eb8505911ED77F175b99e',
-    decimals: 18,
-    coingeckoId: 'frax',
+  "CVX": {
+    "address": "0x9E705143926b227397DE3491B51c67629842975d",
+    "coingeckoId": "convex-finance",
+    "decimals": 18
   },
-  WBTC: {
-    address: '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599',
-    decimals: 8,
-    coingeckoId: 'wrapped-bitcoin',
+  "DAI": {
+    "address": "0xE79416455409419FcffeC6eD744F1b37A100ECE3",
+    "coingeckoId": "dai",
+    "decimals": 18
   },
-  FXS: {
-    address: '0x3432B6A60D23Ca0dFCa7761B7ab56459D9C964D0',
-    decimals: 18,
-    coingeckoId: 'frax-share',
+  "FRAX": {
+    "address": "0x541F80F4bC4Af050679281C923394B1Cf9B6fFa8",
+    "coingeckoId": "frax",
+    "decimals": 18
   },
-  DAI: {
-    address: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
-    decimals: 18,
-    coingeckoId: 'dai',
+  "FXS": {
+    "address": "0xC66786080106C89733c7aC2ab4f355CcFce42330",
+    "coingeckoId": "frax-share",
+    "decimals": 18
   },
-  STETH: {
-    address: '0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84',
-    decimals: 18,
-    coingeckoId: 'staked-ether',
+  "KNC": {
+    "address": "0x42b2f0b1c77381B8208EC26FEae88E85371f406f",
+    "coingeckoId": "kyber-network-crystal",
+    "decimals": 18
   },
-  KNC: {
-    address: '0xdeFA4e8a7bcBA345F687a2f1456F5Edd9CE97202',
-    decimals: 18,
-    coingeckoId: 'kyber-network-crystal',
+  "LINK": {
+    "address": "0x98E823419133d1167A751393ec357377796415D9",
+    "coingeckoId": "chainlink",
+    "decimals": 18
   },
-  CVX: {
-    address: '0x4e3FBD56CD56c3e72c1403e103b45Db9da5B9D2B',
-    decimals: 18,
-    coingeckoId: 'convex-finance',
+  "MATIC": {
+    "address": "0x4De2ebeAE9bFDfD0acf128fB2C949B6330C3a2f6",
+    "coingeckoId": "matic-network",
+    "decimals": 18
   },
-  CRV: {
-    address: '0xD533a949740bb3306d119CC777fa900bA034cd52',
-    decimals: 18,
-    coingeckoId: 'curve-dao-token',
+  "SNX": {
+    "address": "0xD191748a5f9856C1393931b3149C9b08F7900Ab5",
+    "coingeckoId": "haven",
+    "decimals": 18
   },
-  UNI: {
-    address: '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984',
-    decimals: 18,
-    coingeckoId: 'uniswap',
+  "STETH": {
+    "address": "0x780116B4FCc29E1674b351089B4D847F74dc31dc",
+    "coingeckoId": "staked-ether",
+    "decimals": 18
   },
-  MATIC: {
-    address: '0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0',
-    decimals: 18,
-    coingeckoId: 'matic-network',
+  "UNI": {
+    "address": "0x8B55fa20D95f167BE166E882346262471d34F1dB",
+    "coingeckoId": "uniswap",
+    "decimals": 18
   },
-  COMP: {
-    address: '0xc00e94Cb662C3520282E6f5717214004A7f26888',
-    decimals: 18,
-    coingeckoId: 'compound-governance-token',
+  "USDC": {
+    "address": "0x332Da217c42CEfc57d133b5624291F88B8ac6b6D",
+    "coingeckoId": "usd-coin",
+    "decimals": 6
   },
-  AAVE: {
-    address: '0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9',
-    decimals: 18,
-    coingeckoId: 'aave',
+  "USDT": {
+    "address": "0x29A14c43a26CD86f08744eF7afe1BBc73941AbD0",
+    "coingeckoId": "tether",
+    "decimals": 6
   },
-  APE: {
-    address: '0x4d224452801ACEd8B2F0aebE155379bb5D594381',
-    decimals: 18,
-    coingeckoId: 'apecoin',
+  "WBTC": {
+    "address": "0xc9c66d0302cb187094471735Ad7B477c09e16199",
+    "coingeckoId": "wrapped-bitcoin",
+    "decimals": 8
   },
-  SNX: {
-    address: '0xC011a73ee8576Fb46F5E1c5751cA3B9Fe0af2a6F',
-    decimals: 18,
-    coingeckoId: 'havven',
+  "WETH": {
+    "address": "0x635F77FE6D1e0DC382f70532A3292Eab31bE31Ff",
+    "coingeckoId": "weth",
+    "decimals": 18
   },
-  AGEUR: {
-    address: '0x1a7e4e63778B4f12a199C062f3eFdD288afCBce8',
-    decimals: 18,
-    coingeckoId: 'ageur',
-  },
-  ANGLE: {
-    address: '0x31429d1856aD1377A8A0079410B297e1a9e214c2',
-    decimals: 18,
-    coingeckoId: 'angle-protocol',
-  },
-  CNV: {
-    address: '0x000000007a58f5f58e697e51ab0357bc9e260a04',
-    decimals: 18,
-    coingeckoId: 'concave',
-  }
-};
+  "WOO": {
+    "address": "0xa285134097eFfE738C26E6a56353293e2EFA5d9E",
+    "coingeckoId": "woo-network",
+    "decimals": 18
+  };
+}
 
 const chainlinkOracleAddresses = {
   ETH_USD: '0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419',

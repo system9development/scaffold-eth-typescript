@@ -25,10 +25,6 @@ const dammProvider = NETWORK_URL && CHAIN_ID ? new ethers.providers.JsonRpcProvi
 ) : mainnetProvider;
 
 const mainnetTokens = {
-  ETH: {
-    decimals: 18,
-    coingeckoId: 'ethereum',
-  },
   RBN: {
     address: '0x6123B0049F904d730dB3C36a31167D9d4121fA6B',
     decimals: 18,

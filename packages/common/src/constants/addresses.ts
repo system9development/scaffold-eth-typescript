@@ -1,0 +1,3 @@
+// EXTERNAL CONTRACTS
+
+export const ADDRESSES_TS_UNUSED = true;

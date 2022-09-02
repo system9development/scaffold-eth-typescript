@@ -1,6 +1,7 @@
 import { getNetwork } from '@ethersproject/networks';
 import { Alert, PageHeader } from 'antd';
 import { Account } from 'eth-components/ant';
+import { EthComponentsSettingsContext } from 'eth-components/models';
 import { useGasPrice } from 'eth-hooks';
 import {
   useEthersAppContext,
@@ -9,12 +10,13 @@ import {
   CouldNotActivateError,
   UserClosedModalError,
 } from 'eth-hooks/context';
-import React, { FC, ReactElement, ReactNode, useCallback } from 'react';
+import React, { FC, ReactElement, ReactNode, useCallback, useContext } from 'react';
 
-import { FaucetHintButton } from '~~/components/common/FaucetHintButton';
-import { useAntNotification } from '~~/components/main/hooks/useAntNotification';
-import { IScaffoldAppProviders } from '~~/components/main/hooks/useScaffoldAppProviders';
-import { getNetworkInfo } from '~~/functions';
+import { FaucetHintButton } from '~common/components';
+import { useAntNotification } from '~common/components/hooks';
+import { getNetworkInfo } from '~common/functions';
+import { IScaffoldAppProviders } from '~common/models';
+import { FAUCET_ENABLED } from '~~/config/app.config';
 
 // displays a page header
 export interface IMainPageHeaderProps {
@@ -29,6 +31,7 @@ export interface IMainPageHeaderProps {
  * @returns
  */
 export const MainPageHeader: FC<IMainPageHeaderProps> = (props) => {
+  const settingsContext = useContext(EthComponentsSettingsContext);
   const ethersAppContext = useEthersAppContext();
   const selectedChainId = ethersAppContext.chainId;
 
@@ -102,7 +105,12 @@ export const MainPageHeader: FC<IMainPageHeaderProps> = (props) => {
         blockExplorer={props.scaffoldAppProviders.targetNetwork.blockExplorer}
         hasContextConnect={true}
       />
-      <FaucetHintButton scaffoldAppProviders={props.scaffoldAppProviders} gasPrice={gasPrice} />
+      <FaucetHintButton
+        ethComponentSettings={settingsContext}
+        scaffoldAppProviders={props.scaffoldAppProviders}
+        gasPrice={gasPrice}
+        faucetEnabled={FAUCET_ENABLED}
+      />
       {props.children}
     </div>
   );

@@ -24,7 +24,7 @@ import { getMnemonic } from './tasks/functions/mnemonic';
  */
 
 // this loads the .env file into process.env
-envConfig({ path: '../vite-app-ts/.env' });
+envConfig({ path: '../../.env' });
 
 /**
  * this loads all the tasks from the tasks folder
@@ -39,6 +39,7 @@ if (process.env.BUILDING !== 'true') {
  * Set your target network!!!
  */
 console.log('HARDHAT_TARGET_NETWORK: ', process.env.HARDHAT_TARGET_NETWORK);
+console.log('INFURA_API_TOKEN', process.env.INFURA_API_TOKEN?.replace?.(/(.{4}).*(.{4})/, "$1...$2"));
 
 /**
  * loads network list and config from '@scaffold-eth/common/src
@@ -47,6 +48,7 @@ const networks = {
   ...getNetworks({
     accounts: {
       mnemonic: getMnemonic(),
+      accountsBalance: '10000000000000000000000',
     },
   }),
   localhost: {
@@ -55,9 +57,30 @@ const networks = {
       if there is no mnemonic, it will just use account 0 of the hardhat node to deploy
       (you can put in a mnemonic here to set the deployer locally)
     */
-    // accounts: {
-    //   mnemonic: getMnemonic(),
-    // },
+    accounts: {
+      mnemonic: getMnemonic(),
+      accountsBalance: '10000000000000000000000',
+    },
+  },
+  hardhat: {
+    accounts: {
+      mnemonic: getMnemonic(),
+      accountsBalance: '10000000000000000000000',
+    },
+  },
+  gorli: {
+    url: `https://goerli.infura.io/v3/${process.env.INFURA_API_TOKEN}`,
+    chainId: 5,
+    accounts: {
+      mnemonic: getMnemonic(),
+    },
+  },
+  sepolia: {
+    url: 'https://rpc.sepolia.online',
+    chainId: 1115511,
+    accounts: {
+      mnemonic: getMnemonic(),
+    },
   },
 };
 
@@ -79,6 +102,48 @@ export const config: HardhatUserConfig = {
     compilers: [
       {
         version: '0.8.10',
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 250,
+          },
+          outputSelection: {
+            '*': {
+              '*': ['storageLayout'],
+            },
+          },
+        },
+      },
+      {
+        version: '0.8.11',
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 250,
+          },
+          outputSelection: {
+            '*': {
+              '*': ['storageLayout'],
+            },
+          },
+        },
+      },
+      {
+        version: '0.8.13',
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 250,
+          },
+          outputSelection: {
+            '*': {
+              '*': ['storageLayout'],
+            },
+          },
+        },
+      },
+      {
+        version: '0.4.17',
         settings: {
           optimizer: {
             enabled: true,

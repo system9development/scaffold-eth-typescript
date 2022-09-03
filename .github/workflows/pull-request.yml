@@ -40,6 +40,9 @@ jobs:
         run: |
           yarn w:hardhat compile --force
 
+      - name: 'Generate a mnemonic'
+        run: yarn generate
+
       - name: 'Build contracts'
         run: |
           yarn shx cp ./packages/common/scripts/hardhat_contracts.json.bak ./packages/common/src/generated/hardhat_contracts.json
@@ -48,15 +51,6 @@ jobs:
       - name: 'Check hardhat run tasks'
         run: |
           yarn hardhat
-
-      - name: 'Build vite production'
-        run: |
-          yarn run start:vite optimize --force 
-          yarn cross-env NODE_OPTIONS=--max_old_space_size=4096 yarn build:vite
-
-      - name: 'Build nextjs production'
-        run: |
-          yarn cross-env NODE_OPTIONS=--max_old_space_size=4096 yarn build:nextjs
 
       - name: 'Run tests'
         run: yarn test

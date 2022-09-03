@@ -78,40 +78,6 @@
     "syncpack": "^8.0.0",
     "ts-node": "^10.8.1"
   },
-  "lint-staged": {
-    "packages/vite-app-ts/src/**/*.{ts,tsx}": [
-      "yarn workspace @scaffold-eth/vite-app lint --fix",
-      "yarn workspace @scaffold-eth/vite-app format"
-    ],
-    "packages/nextjs-app-ts/src/**/*.{ts,tsx}": [
-      "yarn workspace @scaffold-eth/nextjs-app lint --fix",
-      "yarn workspace @scaffold-eth/nextjs-app format"
-    ],
-    "packages/common/src/**/*.{ts,tsx}": [
-      "yarn workspace @scaffold-eth/common lint --fix",
-      "yarn workspace @scaffold-eth/common format"
-    ],
-    "packages/hardhat-ts/test/**/*.ts": [
-      "yarn workspace @scaffold-eth/hardhat lint --fix",
-      "yarn workspace @scaffold-eth/hardhat format"
-    ],
-    "packages/hardhat-ts/helpers/**/*.ts": [
-      "yarn workspace @scaffold-eth/hardhat lint --fix",
-      "yarn workspace @scaffold-eth/hardhat format"
-    ],
-    "packages/hardhat-ts/tasks/**/*.ts": [
-      "yarn workspace @scaffold-eth/hardhat lint --fix",
-      "yarn workspace @scaffold-eth/hardhat format"
-    ],
-    "packages/hardhat-ts/deploy/**/*.ts": [
-      "yarn workspace @scaffold-eth/hardhat lint --fix",
-      "yarn workspace @scaffold-eth/hardhat format"
-    ],
-    "packages/hardhat-ts/**/*.sol": [
-      "yarn workspace @scaffold-eth/hardhat format",
-      "yarn workspace @scaffold-eth/hardhat solhint --fix"
-    ]
-  },
   "volta": {
     "node": "16.15.0"
   }

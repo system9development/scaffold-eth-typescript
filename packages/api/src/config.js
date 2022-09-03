@@ -135,8 +135,8 @@ const mainnetTokens = {
     "address": "0xa285134097eFfE738C26E6a56353293e2EFA5d9E",
     "coingeckoId": "woo-network",
     "decimals": 18
-  };
-}
+  },
+};
 
 const chainlinkOracleAddresses = {
   ETH_USD: '0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419',

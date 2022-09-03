@@ -22,7 +22,9 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
   const USDT = mainnetTokens.USDT;
   const USDC = mainnetTokens.USDC;
   // const BDAMM = await ethers.getContract('BDAMM');
-  const JumpRateModelV2 = await ethers.getContract<IJumpRateModelV2>('JumpRateModelV2');
+  const StablecoinIRM = await ethers.getContract<IJumpRateModelV2>('StablecoinIRM');
+  const WethWbtcIRM = await ethers.getContract<IJumpRateModelV2>('WethWbtcIRM');
+  const AltcoinIRM = await ethers.getContract<IJumpRateModelV2>('AltcoinIRM');
   const Comptroller = (await ethers.getContract<IComptroller>('ComptrollerImplementation')).attach(Unitroller.address);
   const CTokenDelegate = await ethers.getContract<ICTokenDelegate>('CErc20Delegate');
 
@@ -76,7 +78,7 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
         args: [
           USDT.address,
           Comptroller.address,
-          JumpRateModelV2.address,
+          StablecoinIRM.address,
           ethers.utils.parseUnits('0.02', 10 + decimals),
           'dToken Tether USD',
           'dUSDT',
@@ -102,7 +104,7 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
         args: [
           USDC.address,
           Comptroller.address,
-          JumpRateModelV2.address,
+          StablecoinIRM.address,
           ethers.utils.parseUnits('0.02', 10 + decimals),
           'dToken USD Coin',
           'dUSDC',
@@ -122,6 +124,12 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
       dTokens.push('dUSDC');
     } else if (symbol !== 'ETH') {
       const contract = mainnetTokens[symbol];
+      // Determine which interest rate model to use for the token
+      const IRMAddress = symbol === 'WETH' || symbol === 'WBTC'
+        ? WethWbtcIRM.address
+        : symbol === 'DAI' || symbol === 'AGEUR'
+        ? StablecoinIRM.address
+        : AltcoinIRM.address;
       const dToken = await deploy(`d${symbol}`, {
         contract: 'CErc20Delegator',
         from: deployer,
@@ -129,7 +137,7 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
         args: [
           contract.address,
           Comptroller.address,
-          JumpRateModelV2.address,
+          IRMAddress,
           ethers.utils.parseUnits('0.02', 10 + decimals),
           `dToken ${symbol}`,
           `d${symbol}`,

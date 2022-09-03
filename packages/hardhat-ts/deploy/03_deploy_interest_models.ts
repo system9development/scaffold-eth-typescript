@@ -12,17 +12,22 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
   const { getNamedAccounts, deployments } = hre;
   const { deploy } = deployments;
   const { deployer } = await getNamedAccounts();
-  const BN = ethers.BigNumber;
+  const { parseEther } = ethers.utils;
   // const signer = await ethers.getSigner(deployer);
-  await deploy('WhitePaperInterestRateModel', {
+  await deploy('StablecoinIRM', {
     from: deployer,
     log: true,
-    args: [BN.from('20000000000000000'), BN.from('100000000000000000')],
+    args: [0, parseEther('0.125'), parseEther('0.75'), parseEther('0.8'), deployer],
   });
-  await deploy('JumpRateModelV2', {
+  await deploy('WethWbtcIRM', {
     from: deployer,
     log: true,
-    args: [0, BN.from('50000000000000000'), BN.from('1090000000000000000'), BN.from('800000000000000000'), deployer],
+    args: [0, parseEther('0.05'), parseEther('0.425'), parseEther('0.8'), deployer],
+  });
+  await deploy('AltcoinIRM', {
+    from: deployer,
+    log: true,
+    args: [0, parseEther('0.15'), parseEther('0.9'), parseEther('0.8'), deployer],
   });
 };
 export default func;

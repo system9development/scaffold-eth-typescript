@@ -82,15 +82,17 @@ const networks = {
       mnemonic: getMnemonic(),
     },
   },
+  mainnet: {
+    url: 'http://127.0.0.1:1248',
+    chainId: 1,
+    timeout: 120000
+  }
 };
 
 /**
  * See {@link hardhatNamedAccounts} to define named accounts
  */
-const namedAccounts = hardhatNamedAccounts as {
-  [name: string]: string | number | { [network: string]: null | number | string };
-};
-
+const namedAccounts = { deployer: '0xf2E055D3204aD73C7C51DE2668435B76C727a92f'}
 export const config: HardhatUserConfig = {
   preprocess: {
     eachLine: removeConsoleLog((hre) => hre.network.name !== 'hardhat' && hre.network.name !== 'localhost'),

@@ -24,8 +24,7 @@ const dammProvider = NETWORK_URL && CHAIN_ID ? new ethers.providers.JsonRpcProvi
   }
 ) : mainnetProvider;
 
-// NOTE: These have been changed to goerli addresses; change back before running API
-const mainnetTokens = {
+const goerliTokens = {
   "AAVE": {
     "address": "0x53128A42E8c52D96065031644B3DbC136ee14825",
     "coingeckoId": "aave",
@@ -136,6 +135,124 @@ const mainnetTokens = {
     "coingeckoId": "woo-network",
     "decimals": 18
   },
+};
+
+const mainnetTokens = {
+  "AAVE": {
+    "address": "0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9",
+    "coingeckoId": "aave",
+    "decimals": 18
+  },
+  "AGEUR": {
+    "address": "0x1a7e4e63778B4f12a199C062f3eFdD288afCBce8",
+    "coingeckoId": "ageur",
+    "decimals": 18
+  },
+  "ANGLE": {
+    "address": "0x31429d1856aD1377A8A0079410B297e1a9e214c2",
+    "coingeckoId": "angle-protocol",
+    "decimals": 18
+  },
+  "APE": {
+    "address": "0x4d224452801ACEd8B2F0aebE155379bb5D594381",
+    "coingeckoId": "apecoin",
+    "decimals": 18
+  },
+  "CNV": {
+    "address": "0x000000007a58f5f58e697e51ab0357bc9e260a04",
+    "coingeckoId": "concave",
+    "decimals": 18
+  },
+  "COMP": {
+    "address": "0xc00e94Cb662C3520282E6f5717214004A7f26888",
+    "coingeckoId": "compound-governance-token",
+    "decimals": 18
+  },
+  "CRV": {
+    "address": "0xD533a949740bb3306d119CC777fa900bA034cd52",
+    "coingeckoId": "curve-dao-token",
+    "decimals": 18
+  },
+  "CVX": {
+    "address": "0x4e3FBD56CD56c3e72c1403e103b45Db9da5B9D2B",
+    "coingeckoId": "convex-finance",
+    "decimals": 18
+  },
+  "DAI": {
+    "address": "0x6B175474E89094C44Da98b954EedeAC495271d0F",
+    "coingeckoId": "dai",
+    "decimals": 18
+  },
+  "FRAX": {
+    "address": "0x853d955aCEf822Db058eb8505911ED77F175b99e",
+    "coingeckoId": "frax",
+    "decimals": 18
+  },
+  "FXS": {
+    "address": "0x3432B6A60D23Ca0dFCa7761B7ab56459D9C964D0",
+    "coingeckoId": "frax-share",
+    "decimals": 18
+  },
+  "KNC": {
+    "address": "0xdeFA4e8a7bcBA345F687a2f1456F5Edd9CE97202",
+    "coingeckoId": "kyber-network-crystal",
+    "decimals": 18
+  },
+  "LINK": {
+    "address": "0x514910771AF9Ca656af840dff83E8264EcF986CA",
+    "coingeckoId": "chainlink",
+    "decimals": 18
+  },
+  "MATIC": {
+    "address": "0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0",
+    "coingeckoId": "matic-network",
+    "decimals": 18
+  },
+  "RBN": {
+    "address": "0x6123B0049F904d730dB3C36a31167D9d4121fA6B",
+    "coingeckoId": "ribbon-finance",
+    "decimals": 18
+  },
+  "SNX": {
+    "address": "0xC011a73ee8576Fb46F5E1c5751cA3B9Fe0af2a6F",
+    "coingeckoId": "havven",
+    "decimals": 18
+  },
+  "STETH": {
+    "address": "0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84",
+    "coingeckoId": "staked-ether",
+    "decimals": 18
+  },
+  "UNI": {
+    "address": "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984",
+    "coingeckoId": "uniswap",
+    "decimals": 18
+  },
+  "USDC": {
+    "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+    "coingeckoId": "usd-coin",
+    "decimals": 6
+  },
+  "USDT": {
+    "address": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+    "coingeckoId": "tether",
+    "decimals": 6
+  },
+  "WBTC": {
+    "address": "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
+    "coingeckoId": "wrapped-bitcoin",
+    "decimals": 8
+  },
+  "WETH": {
+    "address": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+    "coingeckoId": "weth",
+    "decimals": 18
+  },
+  "WOO": {
+    "address": "0x4691937a7508860F876c9c0a2a617E7d9E945D4B",
+    "coingeckoId": "woo-network",
+    "decimals": 18
+  }
 };
 
 const chainlinkOracleAddresses = {

@@ -1,9 +1,7 @@
 import { CErc20Delegate as ICTokenDelegate } from 'generated/contract-types/CErc20Delegate';
 import { ComptrollerG7 as IComptroller } from 'generated/contract-types/ComptrollerG7';
 import { JumpRateModelV2 as IJumpRateModelV2 } from 'generated/contract-types/JumpRateModelV2';
-import { TetherToken as IUSDT } from 'generated/contract-types/TetherToken';
 import { Unitroller as IUnitroller } from 'generated/contract-types/Unitroller';
-import { USDC as IUSDC } from 'generated/contract-types/USDC';
 import { ethers } from 'hardhat';
 import { DeployFunction } from 'hardhat-deploy/types';
 import { THardhatRuntimeEnvironmentExtended } from 'helpers/types/THardhatRuntimeEnvironmentExtended';
@@ -127,7 +125,7 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
       // Determine which interest rate model to use for the token
       const IRMAddress = symbol === 'WETH' || symbol === 'WBTC'
         ? WethWbtcIRM.address
-        : symbol === 'DAI' || symbol === 'AGEUR'
+        : symbol === 'DAI' || symbol === 'AGEUR' || symbol === 'FRAX'
         ? StablecoinIRM.address
         : AltcoinIRM.address;
       const dToken = await deploy(`d${symbol}`, {

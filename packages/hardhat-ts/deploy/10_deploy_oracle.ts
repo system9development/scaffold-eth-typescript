@@ -14,11 +14,16 @@ interface CoinGeckoResponse {
   }
 }
 
-const getTokenAddress = async (symbol: string): Promise<string> => {
+const getTokenAddress = (symbol: string): string => {
   if (symbol === 'ETH') {
     return '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE';
   }
-  return (await ethers.getContract(symbol)).address;
+  const symbolData = mainnetTokens[symbol];
+  const address = symbolData.address;
+  if (address !== undefined) {
+    return address;
+  }
+  return '';
 }
 
 const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => {

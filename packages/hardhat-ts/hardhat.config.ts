@@ -2,6 +2,7 @@
 import 'tsconfig-paths/register';
 
 import './helpers/hardhat-imports';
+import '@nomiclabs/hardhat-etherscan';
 
 import path from 'path';
 
@@ -68,16 +69,16 @@ const networks = {
       accountsBalance: '10000000000000000000000',
     },
   },
+  // mainnet: {
+  //   url: `https://mainnet.infura.io/v3/${process.env.INFURA_API_TOKEN}`,
+  //   chainId: 1,
+  //   accounts: {
+  //     mnemonic: getMnemonic(),
+  //   },
+  // },
   gorli: {
     url: `https://goerli.infura.io/v3/${process.env.INFURA_API_TOKEN}`,
     chainId: 5,
-    accounts: {
-      mnemonic: getMnemonic(),
-    },
-  },
-  sepolia: {
-    url: 'https://rpc.sepolia.online',
-    chainId: 1115511,
     accounts: {
       mnemonic: getMnemonic(),
     },
@@ -86,14 +87,31 @@ const networks = {
     url: 'http://127.0.0.1:1248',
     chainId: 1,
     timeout: 120000
-  }
+  },
+  sepolia: {
+    url: 'https://rpc.sepolia.online',
+    chainId: 1115511,
+    accounts: {
+      mnemonic: getMnemonic(),
+    },
+  },
 };
 
+const namedAccounts = { deployer: '0xf2E055D3204aD73C7C51DE2668435B76C727a92f'}
 /**
  * See {@link hardhatNamedAccounts} to define named accounts
+ *
+ * const namedAccounts = hardhatNamedAccounts as {
+ *   [name: string]: string | number | { [network: string]: null | number | string };
+ * };
  */
-const namedAccounts = { deployer: '0xf2E055D3204aD73C7C51DE2668435B76C727a92f'}
+
 export const config: HardhatUserConfig = {
+  etherscan: {
+    // Your API key for Etherscan
+    // Obtain one at https://etherscan.io/
+    apiKey: "XXX",
+  },
   preprocess: {
     eachLine: removeConsoleLog((hre) => hre.network.name !== 'hardhat' && hre.network.name !== 'localhost'),
   },

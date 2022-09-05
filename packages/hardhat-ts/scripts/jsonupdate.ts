@@ -32,8 +32,16 @@ const updateCErcTokens: (data: TokenData) => Promise<TokenData> = async (data) =
   const tokens = Object.keys(data);
   for (let i = 0; i < tokens.length; i += 1) {
     const symbol = tokens[i];
-    const contract = await ethers.getContract(`d${symbol.toUpperCase()}`);
-    data[symbol][chainId] = contract.address;
+    try {
+      const contract = await ethers.getContract(`d${symbol.toUpperCase()}`);
+      data[symbol][chainId] = contract.address;
+    } catch (e) {
+      console.error(e);
+      if (!(symbol in data)) {
+        data[symbol] = {};
+      }
+      data[symbol][chainId] = "";
+    }
   }
   return data;
 }
@@ -42,8 +50,16 @@ const updateTokens: (data: TokenData) => Promise<TokenData> = async (data) => {
   const tokens = Object.keys(data).filter((symbol) => symbol.toUpperCase() !== 'ETH');
   for (let i = 0; i < tokens.length; i += 1) {
     const symbol = tokens[i];
-    const contract = await ethers.getContract(symbol.toUpperCase());
-    data[symbol][chainId] = contract.address;
+    try {
+      const contract = await ethers.getContract(symbol.toUpperCase());
+      data[symbol][chainId] = contract.address;
+    } catch (e) {
+      console.error(e);
+      if (!(symbol in data)) {
+        data[symbol] = {};
+      }
+      data[symbol][chainId] = "";
+    }
   }
   return data;
 }

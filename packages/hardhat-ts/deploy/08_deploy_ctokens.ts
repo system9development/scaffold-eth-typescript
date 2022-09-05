@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import { CErc20Delegate as ICTokenDelegate } from 'generated/contract-types/CErc20Delegate';
 import { ComptrollerG7 as IComptroller } from 'generated/contract-types/ComptrollerG7';
 import { JumpRateModelV2 as IJumpRateModelV2 } from 'generated/contract-types/JumpRateModelV2';
@@ -8,7 +9,6 @@ import { THardhatRuntimeEnvironmentExtended } from 'helpers/types/THardhatRuntim
 
 import { mainnetTokens } from '../../api/src/config';
 
-
 const dTokens: string[] = [];
 
 const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => {
@@ -17,8 +17,8 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
   const { deployer } = await getNamedAccounts();
   // const signer = await ethers.getSigner(deployer);
   const Unitroller = await ethers.getContract<IUnitroller>('Unitroller');
-  const USDT = mainnetTokens.USDT;
-  const USDC = mainnetTokens.USDC;
+  const USDT = (await ethers.getContractOrNull('USDT'))?.address ?? mainnetTokens.USDT.address;
+  const USDC = (await ethers.getContractOrNull('USDC'))?.address ?? mainnetTokens.USDC.address;
   // const BDAMM = await ethers.getContract('BDAMM');
   const StablecoinIRM = await ethers.getContract<IJumpRateModelV2>('StablecoinIRM');
   const WethWbtcIRM = await ethers.getContract<IJumpRateModelV2>('WethWbtcIRM');
@@ -74,7 +74,7 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
         from: deployer,
         log: true,
         args: [
-          USDT.address,
+          USDT,
           Comptroller.address,
           StablecoinIRM.address,
           ethers.utils.parseUnits('0.02', 10 + decimals),
@@ -100,7 +100,7 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
         from: deployer,
         log: true,
         args: [
-          USDC.address,
+          USDC,
           Comptroller.address,
           StablecoinIRM.address,
           ethers.utils.parseUnits('0.02', 10 + decimals),
@@ -121,7 +121,7 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
       }
       dTokens.push('dUSDC');
     } else if (symbol !== 'ETH') {
-      const contract = mainnetTokens[symbol];
+      const underlyingAddress = (await ethers.getContractOrNull(symbol))?.address ?? mainnetTokens[symbol].address;
       // Determine which interest rate model to use for the token
       const IRMAddress = symbol === 'WETH' || symbol === 'WBTC'
         ? WethWbtcIRM.address
@@ -133,7 +133,7 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
         from: deployer,
         log: true,
         args: [
-          contract.address,
+          underlyingAddress,
           Comptroller.address,
           IRMAddress,
           ethers.utils.parseUnits('0.02', 10 + decimals),
@@ -151,6 +151,15 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
         currentlySupportedMarkets.add(ethers.utils.getAddress(dToken.address));
       } else {
         console.log(`Skipping Comptroller._supportMarkets for d${symbol}; already supported`);
+      }
+
+      const dTokenContract = (await ethers.getContract<ICTokenDelegate>('dWETH')).attach(dToken.address);
+      const currentReserveFactor = await dTokenContract.reserveFactorMantissa();
+      if (currentReserveFactor.isZero()) {
+        console.log(`setting reserve factor for d${symbol}`);
+        await (await dTokenContract._setReserveFactor(ethers.utils.parseUnits('0.175'))).wait();
+      } else {
+        console.log(`Skipping d${symbol}._setReserveFactor: already set to ${ethers.utils.formatEther(currentReserveFactor)}`);
       }
       dTokens.push(`d${symbol}`);
     }

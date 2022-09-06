@@ -183,6 +183,11 @@ const mainnetTokens = {
     "coingeckoId": "dai",
     "decimals": 18
   },
+  "ETH": {
+    "address": "",
+    "coingeckoId": "ethereum",
+    "decimals": 18
+  },
   "FRAX": {
     "address": "0x853d955aCEf822Db058eb8505911ED77F175b99e",
     "coingeckoId": "frax",

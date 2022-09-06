@@ -97,7 +97,7 @@ const goerliTokens = {
   },
   "SNX": {
     "address": "0xD191748a5f9856C1393931b3149C9b08F7900Ab5",
-    "coingeckoId": "haven",
+    "coingeckoId": "havven",
     "decimals": 18
   },
   "STETH": {

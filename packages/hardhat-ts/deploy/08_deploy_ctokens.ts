@@ -33,8 +33,10 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
       [symbolReduction, decimalReduction]: [string[], number[]],
       [curSymbol, curMetadata]: [string, { decimals: number }]
     ) => {
-      symbolReduction.push(curSymbol);
-      decimalReduction.push(curMetadata.decimals);
+      if (curSymbol !== 'ETH') {
+        symbolReduction.push(curSymbol);
+        decimalReduction.push(curMetadata.decimals);
+      }
       return [symbolReduction, decimalReduction];
     }, [[], []]);
 

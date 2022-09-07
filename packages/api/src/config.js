@@ -70,6 +70,11 @@ const goerliTokens = {
     "coingeckoId": "dai",
     "decimals": 18
   },
+  "ETH": {
+    "address": "",
+    "coingeckoId": "ethereum",
+    "decimals": 18,
+  },
   "FRAX": {
     "address": "0x541F80F4bC4Af050679281C923394B1Cf9B6fFa8",
     "coingeckoId": "frax",
@@ -308,6 +313,7 @@ module.exports = {
   dammProvider,
   mainnetProvider,
   mainnetTokens,
+  goerliTokens,
   chainlinkOracleAddresses,
   uniswapV3PoolAddresses,
   uniswapV2PoolAddresses,

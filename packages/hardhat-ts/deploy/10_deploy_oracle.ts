@@ -76,6 +76,9 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
   for (let i = 0; i < priceDataKeys.length && !priceChanged; i += 1) {
     const coingeckoId = priceDataKeys[i];
     const symbol = coingeckoIdToSymbols[coingeckoId];
+    if (symbol === 'ETH') {
+      continue;
+    }
     const dToken = await ethers.getContract(`d${symbol}`);
     const previousPriceBigNumber = await Oracle.getUnderlyingPrice(dToken.address);
     const previousPrice = parseFloat(
@@ -96,8 +99,10 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
         [symbolReduction, decimalReduction]: [string[], number[]],
         [curSymbol, curMetadata]: [string, { decimals: number }]
       ) => {
-        symbolReduction.push(curSymbol);
-        decimalReduction.push(curMetadata.decimals);
+        if (curSymbol !== 'ETH') {
+          symbolReduction.push(curSymbol);
+          decimalReduction.push(curMetadata.decimals);
+        }
         return [symbolReduction, decimalReduction];
       }, [[], []]);
     const tokenAddresses = await Promise.all(symbols.map(getTokenAddress));

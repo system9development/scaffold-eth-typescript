@@ -110,7 +110,7 @@ export const config: HardhatUserConfig = {
   etherscan: {
     // Your API key for Etherscan
     // Obtain one at https://etherscan.io/
-    apiKey: "XXX",
+    apiKey: process.env?.ETHERSCAN_API_KEY ?? '',
   },
   preprocess: {
     eachLine: removeConsoleLog((hre) => hre.network.name !== 'hardhat' && hre.network.name !== 'localhost'),

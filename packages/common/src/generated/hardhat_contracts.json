@@ -5,7 +5,7 @@
       "chainId": "1",
       "contracts": {
         "AltcoinIRM": {
-          "address": "0x6CAb8c54B510bcF4ed027A9d4dfD771D7Fb4806C",
+          "address": "0xb2Edc8a2783752AC2748a3Fe2d1760821d3D5A8C",
           "abi": [
             {
               "inputs": [
@@ -5532,7 +5532,7 @@
           ]
         },
         "StablecoinIRM": {
-          "address": "0xA52CD4419fa2ef621ADEF135794dE234B9D443Ea",
+          "address": "0x99094979Cf6971E687B779dAe012BB870349AcF4",
           "abi": [
             {
               "inputs": [
@@ -6060,7 +6060,7 @@
           ]
         },
         "WethWbtcIRM": {
-          "address": "0x8125df117315DE00e726f5708293ec172417E5DD",
+          "address": "0xe957140A474aD695c0cCCc318ba960f019F89738",
           "abi": [
             {
               "inputs": [

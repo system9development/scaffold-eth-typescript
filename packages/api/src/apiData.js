@@ -39,7 +39,7 @@ const apiData = async () => {
 const apiDataHandler = async (req, res) => {
   const { blockNumber } = req.query;
   if (blockNumber && dammProvider.blockNumber) {
-    res.set('Cache-Control', "max-age=31536000"); // default cache TTL when blockNumber is specified
+    res.set('Cache-Control', "s-maxage=31536000, max-age=60"); // default cache TTL when blockNumber is specified
     if (blockNumber.search(/[^0-9]/) !== -1) {
       // Use default TTL
       res.status(400).send({ error: 'blockNumber invalid; allowed characters: 0-9' });
@@ -59,10 +59,10 @@ const apiDataHandler = async (req, res) => {
         without the cached response having expired, but still keeps the response in the cache
         long enough to prevent DDOS
       */
-      res.set('Cache-Control', `max-age=${1 + (blockSkew - 1)*7}`);
+      res.set('Cache-Control', `s-maxage=${1 + (blockSkew - 1)*7}, max-age=60`);
     }
   } else {
-    res.set('Cache-Control', "max-age=30"); // cache results for 30 seconds when no blockNumber is specified
+    res.set('Cache-Control', "s-maxage=30, max-age=60"); // cache results for 30 seconds when no blockNumber is specified
   }
   res.send(await apiData());
 }

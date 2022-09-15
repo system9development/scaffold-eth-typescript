@@ -146,6 +146,12 @@ class DammTokenCache extends BlockCache {
         }
       }
       if (newDammTokens.length > 0 || removedDammTokens.length > 0) {
+        if (newDammTokens.length > 0) {
+          console.log('adding tokens', newDammTokens);
+        }
+        if (removedDammTokens.length > 0) {
+          console.log('removing tokens', removedDammTokens);
+        }
         removedDammTokens.forEach((removedDammToken) => {
           delete this.#dammTokenAddressesToStaticData[removedDammToken];
         });

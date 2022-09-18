@@ -21,4 +21,4 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
   });
 };
 export default func;
-func.tags = ['ComptrollerG7'];
+func.tags = ['core'];

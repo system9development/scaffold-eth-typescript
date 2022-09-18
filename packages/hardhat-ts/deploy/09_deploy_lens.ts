@@ -14,4 +14,4 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
 };
 
 export default func;
-func.tags = ['Lens'];
+func.tags = ['core'];

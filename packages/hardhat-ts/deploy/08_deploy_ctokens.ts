@@ -10,7 +10,7 @@ import { THardhatRuntimeEnvironmentExtended } from 'helpers/types/THardhatRuntim
 import { mainnetTokens, goerliTokens, IMainnetMetaData } from '../../api/src/config';
 
 const { HARDHAT_TARGET_NETWORK } = process.env;
-const tokenData = ['mainnet', 'homestead'].includes(HARDHAT_TARGET_NETWORK || '') ? mainnetTokens : goerliTokens;
+const tokenData = ['mainnet', 'homestead'].includes(HARDHAT_TARGET_NETWORK ?? '') ? mainnetTokens : goerliTokens;
 
 const dTokens: string[] = [];
 
@@ -184,4 +184,5 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
   }
 };
 export default func;
-func.tags = dTokens;
+// func.tags = dTokens;
+func.tags = ['core'];

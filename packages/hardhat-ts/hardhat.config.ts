@@ -39,7 +39,11 @@ if (process.env.BUILDING !== 'true') {
 /**
  * Set your target network!!!
  */
-console.log('HARDHAT_TARGET_NETWORK: ', process.env.HARDHAT_TARGET_NETWORK);
+const HARDHAT_TARGET_NETWORK = (process.env.HARDHAT_TARGET_NETWORK ?? '');
+const targetNetwork = HARDHAT_TARGET_NETWORK === ''
+  ? 'localhost'
+  : HARDHAT_TARGET_NETWORK;
+console.log('HARDHAT_TARGET_NETWORK: ', targetNetwork);
 console.log('INFURA_API_TOKEN', process.env.INFURA_API_TOKEN?.replace?.(/(.{4}).*(.{4})/, "$1...$2"));
 
 /**
@@ -86,7 +90,7 @@ const networks = {
   mainnet: {
     url: 'http://127.0.0.1:1248',
     chainId: 1,
-    timeout: 120000
+    timeout: 120000,
   },
   sepolia: {
     url: 'https://rpc.sepolia.online',
@@ -97,14 +101,15 @@ const networks = {
   },
 };
 
-const namedAccounts = { deployer: '0xf2E055D3204aD73C7C51DE2668435B76C727a92f'}
 /**
  * See {@link hardhatNamedAccounts} to define named accounts
- *
- * const namedAccounts = hardhatNamedAccounts as {
- *   [name: string]: string | number | { [network: string]: null | number | string };
- * };
  */
+const namedAccounts =  ['mainnet', 'homestead'].includes(targetNetwork)
+  // production deployer address
+  ? { deployer: '0xf2E055D3204aD73C7C51DE2668435B76C727a92f'}
+  // signers from auto-generated mnemonic
+  : hardhatNamedAccounts as {[name: string]: string | number | { [network: string]: null | number | string }};
+
 
 export const config: HardhatUserConfig = {
   etherscan: {
@@ -115,7 +120,7 @@ export const config: HardhatUserConfig = {
   preprocess: {
     eachLine: removeConsoleLog((hre) => hre.network.name !== 'hardhat' && hre.network.name !== 'localhost'),
   },
-  defaultNetwork: process.env.HARDHAT_TARGET_NETWORK,
+  defaultNetwork: targetNetwork,
   namedAccounts: namedAccounts,
   networks: networks,
   solidity: {

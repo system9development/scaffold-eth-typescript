@@ -34,4 +34,4 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
   });
 };
 export default func;
-func.tags = ['JumpRateModelV2', 'WhitePaperInterestRateModel'];
+func.tags = ['core'];

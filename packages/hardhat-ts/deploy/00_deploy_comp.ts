@@ -18,5 +18,5 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
     args: [deployer],
   });
 };
+func.tags = ['core'];
 export default func;
-func.tags = ['BDAMM'];

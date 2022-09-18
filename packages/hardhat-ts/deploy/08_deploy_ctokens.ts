@@ -9,8 +9,9 @@ import { THardhatRuntimeEnvironmentExtended } from 'helpers/types/THardhatRuntim
 
 import { mainnetTokens, goerliTokens, IMainnetMetaData } from '../../api/src/config';
 
-const { HARDHAT_TARGET_NETWORK } = process.env;
-const tokenData = ['mainnet', 'homestead'].includes(HARDHAT_TARGET_NETWORK ?? '') ? mainnetTokens : goerliTokens;
+// const { HARDHAT_TARGET_NETWORK } = process.env;
+// const tokenData = ['mainnet', 'homestead'].includes(HARDHAT_TARGET_NETWORK ?? '') ? mainnetTokens : goerliTokens;
+const tokenData = mainnetTokens;
 
 const dTokens: string[] = [];
 
@@ -30,7 +31,8 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
   const CTokenDelegate = await ethers.getContract<ICTokenDelegate>('CErc20Delegate');
 
   const currentlySupportedMarkets = new Set((await Comptroller.callStatic.getAllMarkets()).map(ethers.utils.getAddress));
-  const [tokenList, decimalList] = Object.entries(tokenData as { [key: string]: IMainnetMetaData})
+  const [tokenList, decimalList] = Object
+    .entries(tokenData as { [key: string]: IMainnetMetaData})
     .reduce<[string[], number[]]>((
       [symbolReduction, decimalReduction]: [string[], number[]],
       [curSymbol, curMetadata]: [string, { decimals: number }]

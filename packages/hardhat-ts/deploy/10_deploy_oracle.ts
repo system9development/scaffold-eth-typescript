@@ -14,12 +14,12 @@ interface CoinGeckoResponse {
   }
 }
 
-const getTokenAddress = (symbol: string): string => {
+const getTokenAddress = async (symbol: string): Promise<string> => {
   if (symbol === 'ETH') {
     return '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE';
   }
   const symbolData = mainnetTokens[symbol];
-  const address = symbolData.address;
+  const address = (await ethers.getContractOrNull(symbol))?.address ?? symbolData.address;
   if (address !== undefined) {
     return address;
   }

@@ -27,10 +27,15 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
   if (currentImplementation === Comptroller.address) {
     console.log('skipping Unitroller._setPendingImplementation; already set');
   } else {
+    // updating comptroller implementation
     console.log(`setting Unitroller comptroller implementation to ${Comptroller.address}`)
     await (await Unitroller._setPendingImplementation(Comptroller.address)).wait();
     console.log(`Comptroller: becoming Unitroller at ${Unitroller.address}`);
     await (await Comptroller._become(Unitroller.address)).wait();
+    if (await Comptroller.getCompAddress() !== await (Comptroller.attach(Unitroller.address).getCompAddress())) {
+      console.log(`Updating comp address to ${await Comptroller.getCompAddress()}`);
+      await (await Comptroller.attach(Unitroller.address).updateCompAddress()).wait();
+    }
   }
 };
 export default func;

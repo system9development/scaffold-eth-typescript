@@ -71,6 +71,11 @@ contract ComptrollerG7 is ComptrollerV5Storage, ComptrollerInterface, Comptrolle
     /// @notice Emitted when COMP is granted by admin
     event CompGranted(address recipient, uint amount);
 
+    /**
+    * @notice Emits updated _compAddress in unitroller storage
+    */
+    event NewCompAddress(address oldAddress, address newAddress);
+
     /// @notice The initial COMP index for a market
     uint224 public constant compInitialIndex = 1e36;
 
@@ -1363,5 +1368,16 @@ contract ComptrollerG7 is ComptrollerV5Storage, ComptrollerInterface, Comptrolle
      */
     function getCompAddress() public view returns (address) {
         return _compAddress;
+    }
+
+    function updateCompAddress() public {
+        require(msg.sender == admin, "can only be called by admin");
+        (bool success, bytes memory compAddressEncoded) = comptrollerImplementation.call(abi.encodeWithSignature("getCompAddress()"));
+        require(success, "failed at comptrollerImplementation.getCompAddress()");
+        address newCompAddress = abi.decode(compAddressEncoded, (address));
+        if (newCompAddress != address(0) && _compAddress != newCompAddress) {
+            emit NewCompAddress(_compAddress, newCompAddress);
+            _compAddress = newCompAddress;
+        }
     }
 }

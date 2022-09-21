@@ -1361,7 +1361,7 @@ contract ComptrollerG7 is ComptrollerV5Storage, ComptrollerInterface, Comptrolle
      * @notice Return the address of the COMP token
      * @return The address of COMP
      */
-    function getCompAddress() public view returns (address) {
-        return _compAddress;
+    function getCompAddress() public pure returns (address) {
+        return 0x0000000000000000000000000000000000000000;
     }
 }

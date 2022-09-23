@@ -3,17 +3,51 @@ import { CErc20Delegate as ICTokenDelegate } from 'generated/contract-types/CErc
 import { ComptrollerG7 as IComptroller } from 'generated/contract-types/ComptrollerG7';
 import { JumpRateModelV2 as IJumpRateModelV2 } from 'generated/contract-types/JumpRateModelV2';
 import { Unitroller as IUnitroller } from 'generated/contract-types/Unitroller';
+import { ERC20 as IERC20 } from 'generated/contract-types/ERC20';
 import { ethers } from 'hardhat';
 import { DeployFunction } from 'hardhat-deploy/types';
 import { THardhatRuntimeEnvironmentExtended } from 'helpers/types/THardhatRuntimeEnvironmentExtended';
 
-import { mainnetTokens, goerliTokens, IMainnetMetaData } from '../../api/src/config';
+import {
+  mainnetTokens,
+  IMainnetMetaData,
+  STABLECOIN_UNDERLYING_SYMBOLS_SET,
+  CHAIN_ID,
+  aaveMarkets,
+  compoundMarkets,
+  IExternalDeployment,
+} from '../../api/src/config';
 
 // const { HARDHAT_TARGET_NETWORK } = process.env;
 // const tokenData = ['mainnet', 'homestead'].includes(HARDHAT_TARGET_NETWORK ?? '') ? mainnetTokens : goerliTokens;
 const tokenData = mainnetTokens;
+const aaveTokenEntries = Object.entries(aaveMarkets as { [key: string]: IExternalDeployment});
+const compoundTokenEntries = Object.entries(compoundMarkets as { [key: string]: IExternalDeployment});
 
+// unused:
 const dTokens: string[] = [];
+
+const getExternalUnderlyingDataFromSymbol: (symbol: string) => Promise<[string, number]> = async (symbol) => {
+  const existingContract = await ethers.getContractOrNull<IERC20>(symbol);
+  if (existingContract) {
+    return [ existingContract.address, await existingContract.decimals() ];
+  }
+  if (CHAIN_ID === 1 || CHAIN_ID === 5) {
+    if (symbol in tokenData) {
+      return [tokenData[symbol].address, tokenData[symbol].decimals];
+    }
+    if (symbol in aaveMarkets) {
+      const { address, decimals } = aaveMarkets[symbol][CHAIN_ID];
+      return [ address, decimals ];
+    }
+    if (symbol in compoundMarkets) {
+      const { address, decimals } = compoundMarkets[symbol][CHAIN_ID];
+      return [ address, decimals ];
+    }
+  }
+  throw new Error(`could not get underlying data for ${symbol}`);
+  return ['', 0];
+}
 
 const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => {
   const { getNamedAccounts, deployments } = hre;
@@ -31,6 +65,7 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
   const CTokenDelegate = await ethers.getContract<ICTokenDelegate>('CErc20Delegate');
 
   const currentlySupportedMarkets = new Set((await Comptroller.callStatic.getAllMarkets()).map(ethers.utils.getAddress));
+  // get list of token symbols and decimals from tokenList
   const [tokenList, decimalList] = Object
     .entries(tokenData as { [key: string]: IMainnetMetaData})
     .reduce<[string[], number[]]>((
@@ -44,7 +79,30 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
       return [symbolReduction, decimalReduction];
     }, [[], []]);
 
-  // BDAMM and cBDAMM don't have mainnet equivalents yet.
+  if (CHAIN_ID === 1 || CHAIN_ID === 5) {
+    for (let i = 0; i < aaveTokenEntries.length; i += 1) {
+      const [ aTokenSymbol, aTokenData ] = aaveTokenEntries[i];
+      const aTokenChainData = aTokenData[CHAIN_ID];
+      if (aTokenChainData) {
+        tokenList.push(aTokenSymbol);
+        decimalList.push(aTokenChainData.decimals as number);
+      }
+    }
+    for (let i = 0; i < compoundTokenEntries.length; i += 1) {
+      const [ cTokenSymbol, cTokenData ] = compoundTokenEntries[i];
+      const cTokenChainData = cTokenData[CHAIN_ID];
+      if (compoundTokenEntries) {
+        tokenList.push(cTokenSymbol);
+        decimalList.push(cTokenChainData.decimals as number);
+      }
+    }
+  } else {
+    for (let i = 0; i < compoundTokenEntries.length; i += 1) {
+      const [ cTokenSymbol ] = compoundTokenEntries[i];
+      tokenList.push(cTokenSymbol.replace(/C/, 'd'));
+      decimalList.push(8);
+    }
+  }
   // const dBDAMM = await deploy('dBDAMM', {
   //   contract: 'CErc20Delegator',
   //   from: deployer,
@@ -79,7 +137,7 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
       // In case this market was already deployed, update the IRM if changed
       const interestRateModelAddress = symbol === 'WETH' || symbol === 'WBTC'
         ? WethWbtcIRM.address
-        : ['USDC', 'USDT', 'DAI', 'AGEUR', 'FRAX'].includes(symbol)
+        : STABLECOIN_UNDERLYING_SYMBOLS_SET.has(symbol)
         ? StablecoinIRM.address
         : AltcoinIRM.address;
       if ( interestRateModelAddress !== await dTokenContract.interestRateModel()) {
@@ -139,11 +197,11 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
       }
       dTokens.push('dUSDC');
     } else if (symbol !== 'ETH') {
-      const underlyingAddress = (await ethers.getContractOrNull(symbol))?.address ?? tokenData[symbol].address;
+      const [underlyingAddress] = await getExternalUnderlyingDataFromSymbol(symbol);
       // Determine which interest rate model to use for the token
       const IRMAddress = symbol === 'WETH' || symbol === 'WBTC'
         ? WethWbtcIRM.address
-        : symbol === 'DAI' || symbol === 'AGEUR' || symbol === 'FRAX'
+        : STABLECOIN_UNDERLYING_SYMBOLS_SET.has(symbol)
         ? StablecoinIRM.address
         : AltcoinIRM.address;
       const dToken = await deploy(`d${symbol}`, {

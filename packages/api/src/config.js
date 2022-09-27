@@ -291,10 +291,18 @@ const compoundMarkets = {
       address: "0x5d3a536E4D6DbD6114cc1Ead35777bAB948E3643",
       decimals: 8,
     },
+    "5": {
+      address: "0x0545a8eaF7ff6bB6F708CbB544EA55DBc2ad7b2a",
+      decimals: 8,
+    },
   },
   CETH: {
     "1": {
       address: "0x4Ddc2D193948926D02f9B1fE9e1daa0718270ED5",
+      decimals: 8,
+    },
+    "5": {
+      address: "0x64078a6189Bf45f80091c6Ff2fCEe1B15Ac8dbde",
       decimals: 8,
     },
   },
@@ -303,10 +311,18 @@ const compoundMarkets = {
       address: "0xFAce851a4921ce59e912d19329929CE6da6EB0c7",
       decimals: 8,
     },
+    "5": {
+      address: "0x73506770799Eb04befb5AaE4734e58C2C624F493",
+      decimals: 8,
+    },
   },
   CUNI: {
     "1": {
       address: "0x35A18000230DA775CAc24873d00Ff85BccdeD550",
+      decimals: 8,
+    },
+    "5": {
+      address: "0x2073d38198511F5Ed8d893AB43A03bFDEae0b1A5",
       decimals: 8,
     },
   },
@@ -315,10 +331,18 @@ const compoundMarkets = {
       address: "0x12392F67bdf24faE0AF363c24aC620a2f67DAd86",
       decimals: 8,
     },
+    "5": {
+      address: "0x73506770799Eb04befb5AaE4734e58C2C624F493",
+      decimals: 8,
+    },
   },
   CWBTC: {
     "1": {
       address: "0xC11b1268C1A384e55C48c2391d8d480264A3A7F4",
+      decimals: 8,
+    },
+    "5": {
+      address: "0xDa6F609F3636062E06fFB5a1701Df3c5F1ab3C8f",
       decimals: 8,
     },
   },
@@ -350,10 +374,18 @@ const aaveMarkets = {
       address: "0x028171bCA77440897B824Ca71D1c56caC55b68A3",
       decimals: 18,
     },
+    "5": {
+      address: "0x65E2fe35C30eC218b46266F89847c63c2eDa7Dc7",
+      decimals: 18,
+    },
   },
   AETH: {
     "1": {
       address: "0x3a3A65aAb0dd2A17E3F1947bA16138cd37d08c04",
+      decimals: 18,
+    },
+    "5": {
+      address: "0x65E2fe35C30eC218b46266F89847c63c2eDa7Dc7",
       decimals: 18,
     },
   },
@@ -362,10 +394,18 @@ const aaveMarkets = {
       address: "0xa06bC25B5805d5F8d82847D191Cb4Af5A3e873E0",
       decimals: 18,
     },
+    "5": {
+      address: "0x65E2fe35C30eC218b46266F89847c63c2eDa7Dc7",
+      decimals: 18,
+    },
   },
   AUNI: {
     "1": {
       address: "0xB9D7CB55f463405CDfBe4E90a6D2Df01C2B92BF1",
+      decimals: 18,
+    },
+    "5": {
+      address: "0x65E2fe35C30eC218b46266F89847c63c2eDa7Dc7",
       decimals: 18,
     },
   },
@@ -374,10 +414,18 @@ const aaveMarkets = {
       address: "0x101cc05f4a51c0319f570d5e146a8c625198e636",
       decimals: 18,
     },
+    "5": {
+      address: "0x65E2fe35C30eC218b46266F89847c63c2eDa7Dc7",
+      decimals: 18,
+    },
   },
   AWBTC: {
     "1": {
       address: "0x9ff58f4ffb29fa2266ab25e75e2a8b3503311656",
+      decimals: 8,
+    },
+    "5": {
+      address: "0x65E2fe35C30eC218b46266F89847c63c2eDa7Dc7",
       decimals: 8,
     },
   },

@@ -3,7 +3,7 @@ import { CErc20Delegate as ICTokenDelegate } from 'generated/contract-types/CErc
 import { ComptrollerG7 as IComptroller } from 'generated/contract-types/ComptrollerG7';
 import { JumpRateModelV2 as IJumpRateModelV2 } from 'generated/contract-types/JumpRateModelV2';
 import { Unitroller as IUnitroller } from 'generated/contract-types/Unitroller';
-import { ERC20 as IERC20 } from 'generated/contract-types/ERC20';
+import { EIP20Interface as IERC20 } from 'generated/contract-types/EIP20Interface';
 import { ethers } from 'hardhat';
 import { DeployFunction } from 'hardhat-deploy/types';
 import { THardhatRuntimeEnvironmentExtended } from 'helpers/types/THardhatRuntimeEnvironmentExtended';

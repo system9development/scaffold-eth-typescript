@@ -45,6 +45,11 @@ const goerliTokens = {
     "coingeckoId": "apecoin",
     "decimals": 18
   },
+  "BTRFLY": {
+    "address": "0x5829435707ACeDb5260aa0A4f619C377Bd577F8c",
+    "coingeckoId": "redacted",
+    "decimals": 18
+  },
   "CNV": {
     "address": "0x3b4a5F6309F458E8254949144cd97dE0DB95cfeC",
     "coingeckoId": "concave",
@@ -161,6 +166,11 @@ const mainnetTokens = {
   "APE": {
     "address": "0x4d224452801ACEd8B2F0aebE155379bb5D594381",
     "coingeckoId": "apecoin",
+    "decimals": 18
+  },
+  "BTRFLY": {
+    "address": "0xc55126051b22ebb829d00368f4b12bde432de5da",
+    "coingeckoId": "redacted",
     "decimals": 18
   },
   "CNV": {
@@ -457,7 +467,7 @@ const chainlinkOracleAddresses = {
 
 const uniswapV3PoolAddresses = {
   RBN_ETH: '0x94981F69F7483AF3ae218CbfE65233cC3c60d93a', // TVL ~2.5M USD
-  ETH_BTRFLY: '0xdF9aB3C649005EbFDf682d2302ca1f673e0d37a2', // TVL ~1.5M USD
+  ETH_BTRFLY: '0x3e6e23198679419cd73bb6376518dcc5168c8260', // TVL ~1.5M USD
   AGEUR_USDC: '0x735a26a57A0A0069dfABd41595A970faF5E1ee8b',
   CNV_ETH: '0x0311125b58d9602352cba5c925927ecb86a5905a',
   /* ---- Test pools ---- */

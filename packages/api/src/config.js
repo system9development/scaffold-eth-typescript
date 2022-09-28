@@ -26,47 +26,47 @@ const dammProvider = NETWORK_URL && CHAIN_ID ? new ethers.providers.StaticJsonRp
 
 const goerliTokens = {
   "AAVE": {
-    "address": "0x53128A42E8c52D96065031644B3DbC136ee14825",
+    "address": "0xAab60cfb471E77E8CEf9e3a6949DC1cfe43e203e",
     "coingeckoId": "aave",
     "decimals": 18
   },
   "AGEUR": {
-    "address": "0x01a8bFD46883562212B94F6CCbF451E3F88F8a32",
+    "address": "0x0bdb8996f14e930dD57Ea1742A9A79efd78A7B9d",
     "coingeckoId": "ageur",
     "decimals": 18
   },
   "ANGLE": {
-    "address": "0x8eDe66aF4B32e580498f31517463109Df86959Eb",
+    "address": "0x3ad4Db18bf70982956CF9bC299473442bfB5c840",
     "coingeckoId": "angle-protocol",
     "decimals": 18
   },
   "APE": {
-    "address": "0x1A0fc6D6065da966389A4DdA864110804D1eaedD",
+    "address": "0x836ac8eA22123a42bC8A99C6E9a551ACC254754B",
     "coingeckoId": "apecoin",
     "decimals": 18
   },
   "CNV": {
-    "address": "0x3b4a5F6309F458E8254949144cd97dE0DB95cfeC",
+    "address": "0x54E66997016a4AbD937568c8E0427Ab3D21121b2",
     "coingeckoId": "concave",
     "decimals": 18
   },
   "COMP": {
-    "address": "0xeaddc9B19A86963E08323D8F0cD7Bb266d57bAf5",
+    "address": "0xCCAE1Ec628ef597de687Af1cE5F8984c5216c019",
     "coingeckoId": "compound-governance-token",
     "decimals": 18
   },
   "CRV": {
-    "address": "0x331400F969C71a6Fa08C2Bc5F0b30cFB33B1070a",
+    "address": "0x73bd0c08C14C46D1ac5255d8BDcD820dF1F15878",
     "coingeckoId": "curve-dao-token",
     "decimals": 18
   },
   "CVX": {
-    "address": "0x9E705143926b227397DE3491B51c67629842975d",
+    "address": "0x3708e3C7cB5e97ebF22279094010DACEeb3dDBCe",
     "coingeckoId": "convex-finance",
     "decimals": 18
   },
   "DAI": {
-    "address": "0xE79416455409419FcffeC6eD744F1b37A100ECE3",
+    "address": "0xFA8cAD58729B1A1Ae3d4A6D108f274AC2F0d5c2B",
     "coingeckoId": "dai",
     "decimals": 18
   },
@@ -76,67 +76,72 @@ const goerliTokens = {
     "decimals": 18,
   },
   "FRAX": {
-    "address": "0x541F80F4bC4Af050679281C923394B1Cf9B6fFa8",
+    "address": "0xCDBD0971B7D80e9562d7Bb2B4bDb272b174EC0Da",
     "coingeckoId": "frax",
     "decimals": 18
   },
   "FXS": {
-    "address": "0xC66786080106C89733c7aC2ab4f355CcFce42330",
+    "address": "0x81aC2295da65F584b6aab5921Ad67eE5913a3e11",
     "coingeckoId": "frax-share",
     "decimals": 18
   },
   "KNC": {
-    "address": "0x42b2f0b1c77381B8208EC26FEae88E85371f406f",
+    "address": "0x015d036f0F28c381ac50984e928C6478c5c582C7",
     "coingeckoId": "kyber-network-crystal",
     "decimals": 18
   },
   "LINK": {
-    "address": "0x98E823419133d1167A751393ec357377796415D9",
+    "address": "0xdC10b764a93902f45388EeB97E67d79B26d3e409",
     "coingeckoId": "chainlink",
     "decimals": 18
   },
   "MATIC": {
-    "address": "0x4De2ebeAE9bFDfD0acf128fB2C949B6330C3a2f6",
+    "address": "0xFBb4225574a4E2e7f01D79B0eCcff38e5DB60471",
     "coingeckoId": "matic-network",
     "decimals": 18
   },
+  "RBN": {
+    "address": "0x2ed2acF6E66f6b34cB83d6f5Ea5Fb97898e62b9A",
+    "coingeckoId": "ribbon-finance",
+    "decimals": 18
+  },
   "SNX": {
-    "address": "0xD191748a5f9856C1393931b3149C9b08F7900Ab5",
+    "address": "0x3932124F30204DE056F7E6A6F4c070ba950Ad3e4",
     "coingeckoId": "havven",
     "decimals": 18
   },
   "STETH": {
-    "address": "0x780116B4FCc29E1674b351089B4D847F74dc31dc",
+    "address": "0x0AB3Ee1f014C75579a8B20F7e6690F18a98740d2",
     "coingeckoId": "staked-ether",
     "decimals": 18
   },
   "UNI": {
-    "address": "0x8B55fa20D95f167BE166E882346262471d34F1dB",
+    "address": "0xa4218f0591c0D6afCb71d7070CA0178F8488Cd73",
     "coingeckoId": "uniswap",
     "decimals": 18
   },
   "USDC": {
-    "address": "0x332Da217c42CEfc57d133b5624291F88B8ac6b6D",
+    "address": "0x8623C22c571F6fe9494Fe80277848a4901aDD8ba",
     "coingeckoId": "usd-coin",
     "decimals": 6
   },
   "USDT": {
-    "address": "0x29A14c43a26CD86f08744eF7afe1BBc73941AbD0",
+    "address": "0x6AE467061A81636aA153385977f865D1b9A956FE",
     "coingeckoId": "tether",
     "decimals": 6
   },
   "WBTC": {
-    "address": "0xc9c66d0302cb187094471735Ad7B477c09e16199",
+    "address": "0x7Bcf24B72e70b2251E9A43448Fbdbe255E589C59",
     "coingeckoId": "wrapped-bitcoin",
     "decimals": 8
   },
   "WETH": {
-    "address": "0x635F77FE6D1e0DC382f70532A3292Eab31bE31Ff",
+    "address": "0xB6d381409fE32b416D29D9A4C377eC31BE19C303",
     "coingeckoId": "weth",
     "decimals": 18
   },
   "WOO": {
-    "address": "0xa285134097eFfE738C26E6a56353293e2EFA5d9E",
+    "address": "0xDF38cD69e30bd2c090a9CE9a466c0aA8E03e2488",
     "coingeckoId": "woo-network",
     "decimals": 18
   },
@@ -337,7 +342,7 @@ const chainlinkOracleAddresses = {
 
 const uniswapV3PoolAddresses = {
   RBN_ETH: '0x94981F69F7483AF3ae218CbfE65233cC3c60d93a', // TVL ~2.5M USD
-  ETH_BTRFLY: '0xdF9aB3C649005EbFDf682d2302ca1f673e0d37a2', // TVL ~1.5M USD
+  ETH_BTRFLY: '0x3e6E23198679419cD73bB6376518dCc5168c8260',
   AGEUR_USDC: '0x735a26a57A0A0069dfABd41595A970faF5E1ee8b',
   CNV_ETH: '0x0311125b58d9602352cba5c925927ecb86a5905a',
   /* ---- Test pools ---- */

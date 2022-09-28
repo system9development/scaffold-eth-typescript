@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import { CErc20Delegate as ICTokenDelegate } from 'generated/contract-types/CErc20Delegate';
 import { ComptrollerG7 as IComptroller } from 'generated/contract-types/ComptrollerG7';
+import { ERC20 as IERC20 } from 'generated/contract-types/ERC20';
 import { JumpRateModelV2 as IJumpRateModelV2 } from 'generated/contract-types/JumpRateModelV2';
 import { Unitroller as IUnitroller } from 'generated/contract-types/Unitroller';
-import { ERC20 as IERC20 } from 'generated/contract-types/ERC20';
 import { ethers } from 'hardhat';
 import { DeployFunction } from 'hardhat-deploy/types';
 import { THardhatRuntimeEnvironmentExtended } from 'helpers/types/THardhatRuntimeEnvironmentExtended';

@@ -32621,10 +32621,10 @@
                 }
               ],
               "contractDependencies": [
+                205,
                 347,
                 139,
-                169,
-                205
+                169
               ],
               "contractKind": "contract",
               "documentation": "@title Standard ERC20 token\n * @dev Implementation of the basic standard token.\n@dev https://github.com/ethereum/EIPs/issues/20\n@dev Based oncode by FirstBlood: https://github.com/Firstbloodio/token/blob/master/smart_contract/FirstBloodToken.sol",
@@ -37254,11 +37254,11 @@
                 }
               ],
               "contractDependencies": [
-                347,
-                139,
-                169,
                 205,
-                546
+                347,
+                546,
+                139,
+                169
               ],
               "contractKind": "contract",
               "documentation": null,
@@ -37684,13 +37684,13 @@
                 }
               ],
               "contractDependencies": [
-                347,
-                139,
-                169,
                 205,
+                347,
                 546,
                 603,
-                717
+                717,
+                139,
+                169
               ],
               "contractKind": "contract",
               "documentation": null,
@@ -47396,10 +47396,10 @@
             {
               "attributes": {
                 "contractDependencies": [
+                  205,
                   347,
                   139,
-                  169,
-                  205
+                  169
                 ],
                 "contractKind": "contract",
                 "documentation": "@title Standard ERC20 token\n * @dev Implementation of the basic standard token.\n@dev https://github.com/ethereum/EIPs/issues/20\n@dev Based oncode by FirstBlood: https://github.com/Firstbloodio/token/blob/master/smart_contract/FirstBloodToken.sol",
@@ -52508,11 +52508,11 @@
             {
               "attributes": {
                 "contractDependencies": [
-                  347,
-                  139,
-                  169,
                   205,
-                  546
+                  347,
+                  546,
+                  139,
+                  169
                 ],
                 "contractKind": "contract",
                 "documentation": null,
@@ -52940,13 +52940,13 @@
             {
               "attributes": {
                 "contractDependencies": [
-                  347,
-                  139,
-                  169,
                   205,
+                  347,
                   546,
                   603,
-                  717
+                  717,
+                  139,
+                  169
                 ],
                 "contractKind": "contract",
                 "documentation": null,

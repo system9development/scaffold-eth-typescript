@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import { CErc20Delegate as ICTokenDelegate } from 'generated/contract-types/CErc20Delegate';
 import { ComptrollerG7 as IComptroller } from 'generated/contract-types/ComptrollerG7';
-import { ERC20 as IERC20 } from 'generated/contract-types/ERC20';
+import { EIP20Interface as IERC20 } from 'generated/contract-types/EIP20Interface';
 import { JumpRateModelV2 as IJumpRateModelV2 } from 'generated/contract-types/JumpRateModelV2';
 import { Unitroller as IUnitroller } from 'generated/contract-types/Unitroller';
 import { ethers } from 'hardhat';

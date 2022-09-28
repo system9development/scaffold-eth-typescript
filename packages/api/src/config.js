@@ -48,7 +48,7 @@ const goerliTokens = {
   "BTRFLY": {
     "address": "0x5829435707ACeDb5260aa0A4f619C377Bd577F8c",
     "coingeckoId": "redacted",
-    "decimals": 9
+    "decimals": 18
   },
   "CNV": {
     "address": "0x3b4a5F6309F458E8254949144cd97dE0DB95cfeC",

@@ -14,8 +14,10 @@ dist
 
 # hardhat ts
 packages/hardhat-ts/cache
-packages/hardhat-ts/generated
+packages/hardhat-ts/generated/*
 !packages/hardhat-ts/generated/.gitignore
+!packages/hardhat-ts/generated/deployments
+packages/hardhat-ts/generated/deployments/*/solcInputs
 cache
 artifacts
 tenderly.yaml

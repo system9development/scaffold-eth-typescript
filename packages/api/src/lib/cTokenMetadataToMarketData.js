@@ -96,8 +96,8 @@ const cTokenMetadataToMarketData = ({
     underlyingSymbol,
     underlyingDecimal: underlyingDecimals.toNumber(),
     dammSpeeds: compSupplySpeed.toString(),
-    borrowerDailyDamm: compBorrowSpeed.toString(),
-    supplierDailyDamm: compSupplySpeed.toString(),
+    borrowerDailyBdamm: compBorrowSpeed.toString(),
+    supplierDailyBdamm: compSupplySpeed.toString(),
     // venusBorrowIndex (unused)
     // venusSupplyIndex (unused)
     borrowRatePerBlock: borrowRatePerBlock.toString(),

@@ -248,6 +248,11 @@ const mainnetTokens = {
     "coingeckoId": "staked-ether",
     "decimals": 18
   },
+  "TUSD": {
+    "address": "0x0000000000085d4780b73119b644ae5ecd22b376",
+    "coingeckoId": "",
+    "decimals": 18
+  },
   "UNI": {
     "address": "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984",
     "coingeckoId": "uniswap",
@@ -533,6 +538,7 @@ const chainlinkOracleAddresses = {
   APE_USD: '0xD10aBbC76679a20055E167BB80A24ac851b37056',
   SNX_USD: '0xdc3ea94cd0ac27d9a86c180091e7f78c683d3699',
   AGEUR_USD: '0xb49f677943BC038e9857d61E7d053CaA2C1734C1', // Actually using EUR/USD oracle
+  TUSD_USD: '0xec746eCF986E2927Abd291a2A1716c940100f8Ba',
 };
 
 const uniswapV3PoolAddresses = {

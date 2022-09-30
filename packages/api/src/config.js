@@ -361,7 +361,7 @@ const compoundMarkets = {
   },
   CWBTC: {
     "1": {
-      address: "0xC11b1268C1A384e55C48c2391d8d480264A3A7F4",
+      address: "0xccF4429DB6322D5C611ee964527D42E5d685DD6a",
       decimals: 8,
     },
     "5": {
@@ -412,7 +412,7 @@ const aaveMarkets = {
   },
   AETH: {
     "1": {
-      address: "0x3a3A65aAb0dd2A17E3F1947bA16138cd37d08c04",
+      address: "0x030bA81f1c18d280636F32af80b9AAd02Cf0854e",
       decimals: 18,
     },
     "5": {

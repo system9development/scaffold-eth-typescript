@@ -3,7 +3,13 @@ const { getChainlinkUSDPrice } = require('./Chainlink');
 const { getUniV3USDPrice, getUniV3ToTokenPrice } = require('./UniswapV3');
 const { getUniV2USDPrice, getUniV2ToTokenPrice } = require('./UniswapV2');
 const BlockCache = require('./BlockCache');
-const { uniswapV2PoolAddresses, uniswapV3PoolAddresses } = require('../config');
+const { uniswapV2PoolAddresses, uniswapV3PoolAddresses, CHAIN_ID } = require('../config');
+const { compoundMarkets } = require('../config');
+const CTokenRead = require('../abis/CTokenRead');
+const { dammProvider } = require('../config');
+const { default: BigNumber } = require('bignumber.js');
+const { mainnetTokens } = require('../config');
+const { aaveMarkets } = require('../config');
 
 /*
   Cache the prices of each token at each block. Upon receiving new price for a token for the current block, discard any old data
@@ -46,6 +52,46 @@ class MainnetPriceCache extends BlockCache {
       this.setPriceBySymbol('WETH', ethPriceUsd);
       return true;
     }
+    if (
+      token in compoundMarkets
+    ) {
+      if (compoundMarkets[token]?.[CHAIN_ID]
+        && this.getPriceBySymbol(token.substring(1))
+      ) {
+        const underUnderlyingPriceUsd = this.getPriceBySymbol(token.substring(1));
+        const {
+          address: underlyingAddress,
+          underlyingDecimals: underUnderlyingDecimals
+        } = compoundMarkets[token][CHAIN_ID];
+        const cTokenContract = new ethers.Contract(underlyingAddress, CTokenRead, dammProvider);
+        const exchangeRate = await cTokenContract.exchangeRateStored();
+        const exchangeRateFormattedString = ethers.utils.formatUnits(exchangeRate, 10 + underUnderlyingDecimals);
+        const priceUsd = (new BigNumber(exchangeRateFormattedString)).times(underUnderlyingPriceUsd).toNumber();
+        if (priceUsd) {
+          if (priceUsd === this.getPriceBySymbol(token)) {
+            return false;
+          }
+          this.setPriceBySymbol(token, priceUsd);
+          return true;
+        }
+      }
+      return false;
+    }
+    if (
+      token in aaveMarkets
+    ) {
+      if (this.getPriceBySymbol(token.substring(1))) {
+        const priceUsd = this.getPriceBySymbol(token.substring(1));
+        if (priceUsd) {
+          if (priceUsd === this.getPriceBySymbol(token)) {
+            return false;
+          }
+          this.setPriceBySymbol(token, priceUsd);
+          return true;
+        }
+      }
+      return false;
+    }
     const chainLinkPrice = await getChainlinkUSDPrice(token, this.getPriceBySymbol('ETH'));
     if (chainLinkPrice) {
       if (chainLinkPrice === this.getPriceBySymbol(symbol)) {
@@ -70,6 +116,7 @@ class MainnetPriceCache extends BlockCache {
       this.setPriceBySymbol(token, uniV2Price);
       return true;
     }
+
     const potentialV3PriceMarkets = Object.keys(uniswapV3PoolAddresses)
       .filter((market) => market.startsWith(`${symbol}_`) || market.endsWith(`_${symbol}`));
     for (let i = 0; i < potentialV3PriceMarkets.length; i += 1) {
@@ -89,6 +136,7 @@ class MainnetPriceCache extends BlockCache {
         }
       }
     }
+
     const potentialV2PriceMarkets = Object.keys(uniswapV2PoolAddresses)
       .filter((market) => market.startsWith(`${symbol}_`) || market.endsWith(`_${symbol}`));
     for (let i = 0; i < potentialV2PriceMarkets.length; i += 1) {

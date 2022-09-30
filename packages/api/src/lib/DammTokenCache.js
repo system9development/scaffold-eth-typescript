@@ -42,7 +42,7 @@ class DammTokenCache extends BlockCache {
     - Comptroller: The ethers contract instance for the comptroller (attached to the unitroller address)
       This will be used by the DammTokenCache instance to call the getAllMarkets() function of the contract
       on every block and update the #dammTokens private instance variable.
-    - mainnetCache: Provide if provider is not mainnet, will set to the mainnet cache instance
+    - mainnetCache: Provide if provider is not mainnet, will default to the mainnet cache instance
   */
   constructor(provider, Comptroller, mainnetCache) {
     super(provider);
@@ -92,7 +92,7 @@ class DammTokenCache extends BlockCache {
       staticData.underlyingDecimals = 18;
       staticData.underlyingReader = null;
     }
-    this.#dammTokenAddressesToStaticData[dTokenAddress] = staticData
+    this.#dammTokenAddressesToStaticData[dTokenAddress] = staticData;
   }
 
 

@@ -275,20 +275,28 @@ const compoundMarkets = {
     "1": {
       address: "0x39AA39c021dfbaE8faC545936693aC917d5E7563",
       decimals: 8,
+      underlyingDecimals: 6,
+      coingeckoId: "compound-usd-coin",
     },
     "5": {
       address: "0x73506770799Eb04befb5AaE4734e58C2C624F493",
       decimals: 8,
+      underlyingDecimals: 6,
+      coingeckoId: "compound-usd-coin",
     },
   },
   CUSDT: {
     "1": {
       address: "0xf650C3d88D12dB855b8bf7D11Be6C55A4e07dCC9",
       decimals: 8,
+      underlyingDecimals: 6,
+      coingeckoId: "compound-usdt",
     },
     "5": {
       address: "0x5A74332C881Ea4844CcbD8458e0B6a9B04ddb716",
       decimals: 8,
+      underlyingDecimals: 6,
+      coingeckoId: "compound-usdt",
     },
   },
 };
@@ -298,20 +306,28 @@ const aaveMarkets = {
     "1": {
       address: "0xBcca60bB61934080951369a648Fb03DF4F96263C",
       decimals: 6,
+      underlyingDecimals: 6,
+      coingeckoId: "aave-usdc",
     },
     "5": {
       address: "0x935c0F6019b05C787573B5e6176681282A3f3E05",
       decimals: 6,
+      underlyingDecimals: 6,
+      coingeckoId: "aave-usdc",
     },
   },
   AUSDT: {
     "1": {
       address: "0x3Ed3B47Dd13EC9a98b44e6204A523E766B225811",
       decimals: 6,
+      underlyingDecimals: 6,
+      coingeckoId: "aave-usdt",
     },
     "5": {
       address: "0x65E2fe35C30eC218b46266F89847c63c2eDa7Dc7",
       decimals: 6,
+      underlyingDecimals: 6,
+      coingeckoId: "aave-usdt",
     },
   },
 };

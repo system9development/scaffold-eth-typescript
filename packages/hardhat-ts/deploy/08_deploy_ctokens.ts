@@ -40,13 +40,19 @@ const getExternalUnderlyingDataFromSymbol: (symbol: string) => Promise<[string, 
       const { address, decimals } = aaveMarkets[symbol][CHAIN_ID];
       return [ address, decimals ];
     }
-    if (symbol in compoundMarkets) {
+  }
+  if (symbol in compoundMarkets) {
+    if (CHAIN_ID === 1 || CHAIN_ID === 5) {
       const { address, decimals } = compoundMarkets[symbol][CHAIN_ID];
       return [ address, decimals ];
+    } else {
+      const dTokenUnderlying = await ethers.getContractOrNull(symbol.replace(/^C/, 'd'));
+      if (dTokenUnderlying) {
+        return [dTokenUnderlying.address, 8];
+      }
     }
   }
   throw new Error(`could not get underlying data for ${symbol}`);
-  return ['', 0];
 }
 
 const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => {
@@ -78,29 +84,32 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
       }
       return [symbolReduction, decimalReduction];
     }, [[], []]);
-
-  if (CHAIN_ID === 1 || CHAIN_ID === 5) {
-    for (let i = 0; i < aaveTokenEntries.length; i += 1) {
-      const [ aTokenSymbol, aTokenData ] = aaveTokenEntries[i];
+  for (let i = 0; i < aaveTokenEntries.length; i += 1) {
+    const [ aTokenSymbol, aTokenData ] = aaveTokenEntries[i];
+    if (CHAIN_ID === 1 || CHAIN_ID === 5) {
       const aTokenChainData = aTokenData[CHAIN_ID];
       if (aTokenChainData) {
         tokenList.push(aTokenSymbol);
         decimalList.push(aTokenChainData.decimals as number);
       }
     }
-    for (let i = 0; i < compoundTokenEntries.length; i += 1) {
-      const [ cTokenSymbol, cTokenData ] = compoundTokenEntries[i];
+  }
+  for (let i = 0; i < compoundTokenEntries.length; i += 1) {
+    const [ cTokenSymbol, cTokenData ] = compoundTokenEntries[i];
+    if (CHAIN_ID === 1 || CHAIN_ID === 5) {
       const cTokenChainData = cTokenData[CHAIN_ID];
       if (compoundTokenEntries) {
         tokenList.push(cTokenSymbol);
         decimalList.push(cTokenChainData.decimals as number);
       }
-    }
-  } else {
-    for (let i = 0; i < compoundTokenEntries.length; i += 1) {
-      const [ cTokenSymbol ] = compoundTokenEntries[i];
-      tokenList.push(cTokenSymbol.replace(/C/, 'd'));
-      decimalList.push(8);
+    } else {
+      const dTokenSymbol = cTokenSymbol.replace(/^C/, 'd');
+      const dTokenMarket = await ethers.getContractOrNull<IERC20>(dTokenSymbol);
+      if (dTokenMarket) {
+        // the cToken can be spoofed on localnet with a matching dToken market
+        tokenList.push(cTokenSymbol);
+        decimalList.push(await dTokenMarket.decimals());
+      }
     }
   }
   // const dBDAMM = await deploy('dBDAMM', {

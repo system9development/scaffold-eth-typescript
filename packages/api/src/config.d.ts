@@ -9,6 +9,8 @@ export interface IMainnetMetaData {
 type IExternalTokenChainData = {
   address: string,
   decimals: number,
+  underlyingDecimals: number,
+  coingeckoId: string,
 };
 
 export interface IExternalDeployment {

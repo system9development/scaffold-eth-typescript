@@ -47,7 +47,7 @@ const getChainlinkUSDPrice = async (token, ethPriceUsd = null) => {
       && 'STETH_USD' in chainlinkOracles
     ) {
       const stethOracle = chainlinkOracles['STETH_USD'];
-      const wStethOracle = chainlinkOracles['WSTETH_USD'];
+      const wStethOracle = chainlinkOracles['WSTETH_STETH'];
       const [stethUsdLatestAnswer, wstethStethLatestAnswer] = await Promise.all([
         stethOracle.latestAnswer(),
         wStethOracle.latestAnswer(),

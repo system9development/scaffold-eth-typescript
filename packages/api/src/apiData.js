@@ -3,10 +3,17 @@ const { dammProvider, mainnetProvider, mainnetTokens } = require('./config');
 const Comptroller = require('./Comptroller');
 const MainnetPriceCache = require('./lib/MainnetPriceCache');
 const DammTokenCache = require('./lib/DammTokenCache');
+const { compoundMarkets, aaveMarkets, CHAIN_ID } = require('./config');
 
+const underlyingTokensForChain = Object.keys(mainnetTokens);
+if (CHAIN_ID === 1 || CHAIN_ID === 5) {
+  underlyingTokensForChain.push(...Object.keys(compoundMarkets), ...Object.keys(aaveMarkets));
+} else {
+  underlyingTokensForChain.push(...(Object.keys(compoundMarkets).map(symbol => symbol.replace(/C/, 'd'))))
+}
 const mainnetCache = new MainnetPriceCache(
   mainnetProvider,
-  Object.keys(mainnetTokens),
+  underlyingTokensForChain,
 );
 
 const dammTokenCache = new DammTokenCache(

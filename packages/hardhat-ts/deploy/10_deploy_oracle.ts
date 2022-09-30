@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import axios from 'axios';
 import { ComptrollerG7 as IComptroller } from 'generated/contract-types/ComptrollerG7';
 import { SimplePriceOracle as IOracle } from 'generated/contract-types/SimplePriceOracle';
@@ -6,7 +7,7 @@ import { ethers } from 'hardhat';
 import { DeployFunction } from 'hardhat-deploy/types';
 import { THardhatRuntimeEnvironmentExtended } from 'helpers/types/THardhatRuntimeEnvironmentExtended';
 
-import { mainnetTokens } from '../../api/src/config';
+import { aaveMarkets, CHAIN_ID, compoundMarkets, mainnetTokens } from '../../api/src/config';
 
 interface CoinGeckoResponse {
   [key: string]: {
@@ -22,6 +23,14 @@ const getTokenAddress = async (symbol: string): Promise<string> => {
   const address = (await ethers.getContractOrNull(symbol))?.address ?? symbolData.address;
   if (address !== undefined) {
     return address;
+  }
+  if (CHAIN_ID === 1 || CHAIN_ID === 5) {
+    if (symbol in compoundMarkets) {
+      return compoundMarkets[symbol][CHAIN_ID].address as string;
+    }
+    if (symbol in aaveMarkets) {
+      return aaveMarkets[symbol][CHAIN_ID].address as string;
+    }
   }
   return '';
 }
@@ -58,9 +67,17 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
     Object.entries(mainnetTokens)
       .map(([symbol, { coingeckoId }]: [string, { coingeckoId: string }]): [string, string] => [coingeckoId, symbol])
   );
-  const coingeckoIdQueryString = Object.values(mainnetTokens)
-    .map(({ coingeckoId }: { coingeckoId: string}): string => coingeckoId)
-    .toString();
+  Object.entries(compoundMarkets).forEach(([cTokenSymbol, cTokenData]) => {
+    const coingeckoId = cTokenData[1].coingeckoId;
+    coingeckoIdToSymbols[coingeckoId] = cTokenSymbol;
+  });
+  if (CHAIN_ID === 1 || CHAIN_ID === 5) {
+    Object.entries(aaveMarkets).forEach(([aTokenSymbol, aTokenData]) => {
+      const coingeckoId = aTokenData[1].coingeckoId;
+      coingeckoIdToSymbols[coingeckoId] = aTokenSymbol;
+    });
+  }
+  const coingeckoIdQueryString = Object.keys(coingeckoIdToSymbols).toString();
   const { data: priceData } = await axios.get<CoinGeckoResponse>('https://api.coingecko.com/api/v3/simple/price', {
     params: {
       ids: coingeckoIdQueryString,
@@ -72,7 +89,7 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
   }).catch((err) => {
     console.error('error getting prices from Coingecko', err);
     const emptyResponse: { data: CoinGeckoResponse } = { data: {} };
-    return emptyResponse
+    return emptyResponse;
   });
   console.log('price fetched from Coingecko', JSON.stringify(priceData));
 
@@ -81,13 +98,20 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
   for (let i = 0; i < priceDataKeys.length && !priceChanged; i += 1) {
     const coingeckoId = priceDataKeys[i];
     const symbol = coingeckoIdToSymbols[coingeckoId];
+    const decimals = symbol in mainnetTokens
+      ? mainnetTokens[symbol].decimals
+      : symbol in aaveMarkets
+      ? aaveMarkets[symbol][1].decimals
+      : symbol in compoundMarkets
+      ? compoundMarkets[symbol][1].decimals
+      : 0; 
     if (symbol === 'ETH') {
       continue;
     }
     const dToken = await ethers.getContract(`d${symbol}`);
     const previousPriceBigNumber = await Oracle.getUnderlyingPrice(dToken.address);
     const previousPrice = parseFloat(
-      ethers.utils.formatUnits(previousPriceBigNumber, 36 - mainnetTokens[symbol].decimals),
+      ethers.utils.formatUnits(previousPriceBigNumber, 36 - decimals),
     );
     const currentPrice = priceData[coingeckoId].usd;
     if (Math.abs((previousPrice - currentPrice)/currentPrice) > 0.25) {
@@ -110,12 +134,42 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
         }
         return [symbolReduction, decimalReduction];
       }, [[], []]);
+    
     const tokenAddresses = await Promise.all(symbols.map(getTokenAddress));
     const priceValues = symbols.map((symbol, idx) => {
       const priceForSymbol = priceData[mainnetTokens[symbol].coingeckoId].usd;
       return ethers.utils.parseUnits(priceForSymbol.toString(), 36 - decimals[idx]);
     });
-
+    for (let i = 0; i < Object.keys(compoundMarkets).length; i += 1) {
+      const cTokenSymbol = Object.keys(compoundMarkets)[i];
+      if (CHAIN_ID === 1 || CHAIN_ID === 5) {
+        const { address: tokenAddress, decimals: tokenDecimals, coingeckoId } = compoundMarkets[cTokenSymbol][CHAIN_ID];
+        tokenAddresses.push(tokenAddress);
+        decimals.push(tokenDecimals);
+        symbols.push(cTokenSymbol);
+        const priceForCToken = priceData[coingeckoId].usd;
+        priceValues.push(ethers.utils.parseUnits(priceForCToken.toString(), 36 - tokenDecimals));
+      } else {
+        const { coingeckoId } = compoundMarkets[cTokenSymbol][1];
+        const tokenAddress = (await ethers.getContract(`d${cTokenSymbol.substring(1)}`)).address;
+        tokenAddresses.push(tokenAddress);
+        decimals.push(8);
+        symbols.push(cTokenSymbol);
+        const priceForCToken = priceData[coingeckoId].usd;
+        priceValues.push(ethers.utils.parseUnits(priceForCToken.toString(), 28));
+      }
+    }
+    if (CHAIN_ID === 1 || CHAIN_ID === 5) {
+      for (let i = 0; i < Object.keys(aaveMarkets).length; i += 1) {
+        const aTokenSymbol = Object.keys(aaveMarkets)[i];
+        const { address: tokenAddress, decimals: tokenDecimals, coingeckoId } = aaveMarkets[aTokenSymbol][CHAIN_ID];
+        tokenAddresses.push(tokenAddress);
+        decimals.push(tokenDecimals);
+        symbols.push(aTokenSymbol);
+        const priceForAToken = priceData[coingeckoId].usd;
+        priceValues.push(ethers.utils.parseUnits(priceForAToken.toString(), 36 - tokenDecimals));
+      }
+    }
     console.log('updating oracle with the following tokens and prices');
     for (let i = 0; i < tokenAddresses.length; i += 1) {
       console.log(`${tokenAddresses[i]} (${symbols[i]}/${decimals[i]}): ${priceValues[i].toString()}`);

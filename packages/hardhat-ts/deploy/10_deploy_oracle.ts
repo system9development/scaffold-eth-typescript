@@ -104,7 +104,7 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
       ? aaveMarkets[symbol][1].decimals
       : symbol in compoundMarkets
       ? compoundMarkets[symbol][1].decimals
-      : 0; 
+      : 0;
     if (symbol === 'ETH') {
       continue;
     }
@@ -135,7 +135,7 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
         }
         return [symbolReduction, decimalReduction];
       }, [[], []]);
-    
+
     const tokenAddresses = await Promise.all(symbols.map(getTokenAddress));
     const priceValues = symbols.map((symbol, idx) => {
       const priceForSymbol = priceData[mainnetTokens[symbol].coingeckoId].usd;
@@ -148,7 +148,7 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
         tokenAddresses.push(tokenAddress);
         decimals.push(tokenDecimals);
         symbols.push(cTokenSymbol);
-        const priceForCToken = priceData[coingeckoId].usd;
+        const priceForCToken = cTokenSymbol === 'CTUSD' ? 0.020506 : priceData[coingeckoId].usd;
         priceValues.push(ethers.utils.parseUnits(priceForCToken.toString(), 36 - tokenDecimals));
       } else {
         const { coingeckoId } = compoundMarkets[cTokenSymbol][1];
@@ -156,7 +156,7 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
         tokenAddresses.push(tokenAddress);
         decimals.push(8);
         symbols.push(cTokenSymbol);
-        const priceForCToken = priceData[coingeckoId].usd;
+        const priceForCToken = cTokenSymbol === 'CTUSD' ? 0.020506 : priceData[coingeckoId].usd;
         priceValues.push(ethers.utils.parseUnits(priceForCToken.toString(), 28));
       }
     }

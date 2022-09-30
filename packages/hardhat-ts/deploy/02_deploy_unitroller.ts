@@ -21,16 +21,23 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
     from: deployer,
     log: true,
   });
-  const Comptroller = await ethers.getContract<IComptroller>('ComptrollerImplementation');
+  const ComptrollerImplementation = await ethers.getContract<IComptroller>('ComptrollerImplementation');
   const Unitroller = await ethers.getContract<IUnitroller>('Unitroller');
   const currentImplementation = await Unitroller.callStatic.comptrollerImplementation();
-  if (currentImplementation === Comptroller.address) {
+  if (currentImplementation === ComptrollerImplementation.address) {
     console.log('skipping Unitroller._setPendingImplementation; already set');
   } else {
-    console.log(`setting Unitroller comptroller implementation to ${Comptroller.address}`)
-    await (await Unitroller._setPendingImplementation(Comptroller.address)).wait();
+    console.log(`setting Unitroller comptroller implementation to ${ComptrollerImplementation.address}`)
+    await (await Unitroller._setPendingImplementation(ComptrollerImplementation.address)).wait();
     console.log(`Comptroller: becoming Unitroller at ${Unitroller.address}`);
-    await (await Comptroller._become(Unitroller.address)).wait();
+    await (await ComptrollerImplementation._become(Unitroller.address)).wait();
+  }
+  const BDAMM = await ethers.getContract('BDAMM');
+  const Comptroller = (await ethers.getContract<IComptroller>('ComptrollerImplementation')).attach(Unitroller.address);
+  const compAddress = await Comptroller.getCompAddress();
+  if (compAddress !== BDAMM.address) {
+    console.error(`unitroller getCompAddress returned ${compAddress}, but BDAMM address is ${BDAMM.address}. Exiting.`);
+    process.exit(1);
   }
 };
 export default func;

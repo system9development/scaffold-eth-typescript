@@ -116,6 +116,7 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
     const currentPrice = priceData[coingeckoId].usd;
     if (Math.abs((previousPrice - currentPrice)/currentPrice) > 0.25) {
       // Set all prices again if any price is more than 25% away from the previous price
+      console.log(`${symbol}: old price`, previousPrice, 'current price', currentPrice)
       priceChanged = true;
     } else {
       console.log(`detected similar price for ${symbol} within 25% of current:\nPrevious: ${previousPrice}\nCurrent: ${currentPrice}`);

@@ -3,8 +3,12 @@ import '@nomiclabs/hardhat-ethers';
 import fs from 'fs';
 import path from 'path';
 
+import dotenv from 'dotenv';
 import { CErc20 as ICErc20 } from 'generated/contract-types/CErc20';
 import { ethers } from 'hardhat';
+import { aaveMarkets, compoundMarkets, mainnetTokens } from '../../api/src/config';
+
+dotenv.config();
 
 interface TokenData {
   [key: string]: {
@@ -79,8 +83,19 @@ const updateTokens: (data: TokenData) => Promise<TokenData> = async (data) => {
   const tokens = Object.keys(data).filter((symbol) => symbol.toUpperCase() !== 'ETH');
   for (let i = 0; i < tokens.length; i += 1) {
     const symbol = tokens[i];
+    const SYMBOL = symbol.toUpperCase();
+    if (chainId === 1 || chainId == 5) {
+      if (SYMBOL in compoundMarkets) {
+        data[symbol][chainId] = compoundMarkets[SYMBOL][chainId].address;
+        continue;
+      }
+      if (SYMBOL in aaveMarkets) {
+        data[symbol][chainId] = aaveMarkets[SYMBOL][chainId].address;
+        continue;
+      }
+    }
     try {
-      const contract = await ethers.getContract(symbol.toUpperCase());
+      const contract = await ethers.getContract(SYMBOL);
       data[symbol][chainId] = contract.address;
     } catch (e) {
       console.error(e);

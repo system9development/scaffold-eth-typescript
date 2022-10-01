@@ -24,6 +24,7 @@ const dammProvider = NETWORK_URL && CHAIN_ID ? new ethers.providers.StaticJsonRp
   }
 ) : mainnetProvider;
 
+// Currently unused:
 const goerliTokens = {
   "AAVE": {
     "address": "0xAab60cfb471E77E8CEf9e3a6949DC1cfe43e203e",

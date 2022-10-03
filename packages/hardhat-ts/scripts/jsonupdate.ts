@@ -6,6 +6,7 @@ import path from 'path';
 import dotenv from 'dotenv';
 import { CErc20 as ICErc20 } from 'generated/contract-types/CErc20';
 import { ethers } from 'hardhat';
+
 import { aaveMarkets, compoundMarkets, mainnetTokens } from '../../api/src/config';
 
 dotenv.config();
@@ -49,7 +50,11 @@ const getChainId = (): number => {
   if (HARDHAT_TARGET_NETWORK === 'goerli' || HARDHAT_TARGET_NETWORK === 'gorli') {
     return 5;
   }
-  if (HARDHAT_TARGET_NETWORK === 'homestead' || HARDHAT_TARGET_NETWORK === 'mainnet') {
+  if (
+    HARDHAT_TARGET_NETWORK === 'homestead'
+    || HARDHAT_TARGET_NETWORK === 'mainnet'
+    || HARDHAT_TARGET_NETWORK === 'localfork'
+  ) {
     return 1;
   }
   return 31337;

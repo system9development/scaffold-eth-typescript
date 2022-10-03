@@ -6,6 +6,13 @@ if (typeof window !== 'undefined' && window != null) {
 }
 
 export const NETWORKS = {
+  localfork: {
+    name: 'localfork',
+    color: '#ff8b9e',
+    chainId: 31336,
+    blockExplorer: '',
+    url: 'http://' + hostname + ':8545',
+  },
   localhost: {
     name: 'localhost',
     color: '#666666',

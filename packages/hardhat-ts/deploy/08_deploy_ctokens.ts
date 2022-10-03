@@ -67,7 +67,8 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
   const StablecoinIRM = await ethers.getContract<IJumpRateModelV2>('StablecoinIRM');
   const WethWbtcIRM = await ethers.getContract<IJumpRateModelV2>('WethWbtcIRM');
   const AltcoinIRM = await ethers.getContract<IJumpRateModelV2>('AltcoinIRM');
-  const Comptroller = (await ethers.getContract<IComptroller>('ComptrollerImplementation')).attach(Unitroller.address);
+  const Comptroller = (await ethers.getContract<IComptroller>('ComptrollerImplementation', deployer))
+    .attach(Unitroller.address);
   const CTokenDelegate = await ethers.getContract<ICTokenDelegate>('CErc20Delegate');
 
   const currentlySupportedMarkets = new Set((await Comptroller.callStatic.getAllMarkets()).map(ethers.utils.getAddress));
@@ -142,7 +143,7 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
     const symbol = tokenList[i];
     const decimals = decimalList[i];
     if (await ethers.getContractOrNull(`d${symbol}`)) {
-      const dTokenContract = await ethers.getContract<ICTokenDelegate>(`d${symbol}`);
+      const dTokenContract = await ethers.getContract<ICTokenDelegate>(`d${symbol}`, deployer);
       // In case this market was already deployed, update the IRM if changed
       const interestRateModelAddress = symbol === 'WETH' || symbol === 'WBTC'
         ? WethWbtcIRM.address
@@ -239,7 +240,7 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
       }
     }
 
-    const dTokenContract = await ethers.getContract<ICTokenDelegate>(`d${symbol}`);
+    const dTokenContract = await ethers.getContract<ICTokenDelegate>(`d${symbol}`, deployer);
 
     // Set the reserve factor, if unset
     const currentReserveFactor = await dTokenContract.reserveFactorMantissa();

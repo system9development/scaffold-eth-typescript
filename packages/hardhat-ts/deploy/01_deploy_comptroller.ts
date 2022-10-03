@@ -10,7 +10,7 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
   const { getNamedAccounts, deployments } = hre;
   const { deploy } = deployments;
   const { deployer } = await getNamedAccounts();
-  const BDAMM = await ethers.getContract('BDAMM');
+  const BDAMM = await ethers.getContract('BDAMM', deployer);
   // If BDAMM was deployed/redeployed in the previous step, replace address in contract and exit
   const comptrollerContractCode = fs.readFileSync(PATH_TO_COMPTROLLER_SOL).toString();
   const comptrollerContractCodeUpdated = comptrollerContractCode

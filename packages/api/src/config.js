@@ -20,7 +20,7 @@ const dammProvider = NETWORK_URL && CHAIN_ID ? new ethers.providers.StaticJsonRp
   NETWORK_URL,
   {
     name: NETWORK_NAME,
-    chainId: CHAIN_ID
+    chainId: NETWORK_NAME === 'localfork' ? 31337 : CHAIN_ID
   }
 ) : mainnetProvider;
 

@@ -3,6 +3,7 @@ import 'tsconfig-paths/register';
 
 import './helpers/hardhat-imports';
 import '@nomiclabs/hardhat-etherscan';
+import "@nomiclabs/hardhat-ethers";
 
 import path from 'path';
 
@@ -46,6 +47,22 @@ const targetNetwork = HARDHAT_TARGET_NETWORK === ''
 console.log('HARDHAT_TARGET_NETWORK: ', targetNetwork);
 console.log('INFURA_API_TOKEN', process.env.INFURA_API_TOKEN?.replace?.(/(.{4}).*(.{4})/, "$1...$2"));
 
+const hardhatNetworkConfig = targetNetwork === 'localfork'
+  ? {
+    chainId: 31336,
+    forking: {
+      url: `https://eth-mainnet.alchemyapi.io/v2/${process.env.ALCHEMY_API_TOKEN}`,
+      blockNumber: 15659182,
+    },
+    autoImpersonate: true,
+    // accounts: ['0xf2E055D3204aD73C7C51DE2668435B76C727a92f'] as unknown as Array<{privateKey: string, balance: string}>,
+    // accounts: [],
+  } : {
+    accounts: {
+      mnemonic: getMnemonic(),
+      accountsBalance: '10000000000000000000000',
+    },
+  };
 /**
  * loads network list and config from '@scaffold-eth/common/src
  */
@@ -62,12 +79,6 @@ const networks = {
       if there is no mnemonic, it will just use account 0 of the hardhat node to deploy
       (you can put in a mnemonic here to set the deployer locally)
     */
-    accounts: {
-      mnemonic: getMnemonic(),
-      accountsBalance: '10000000000000000000000',
-    },
-  },
-  hardhat: {
     accounts: {
       mnemonic: getMnemonic(),
       accountsBalance: '10000000000000000000000',
@@ -99,14 +110,20 @@ const networks = {
       mnemonic: getMnemonic(),
     },
   },
+  localfork: {
+    ...hardhatNetworkConfig,
+    // accounts: [],
+    url: 'http://localhost:8545',
+  },
+  hardhat: hardhatNetworkConfig,
 };
 
 /**
  * See {@link hardhatNamedAccounts} to define named accounts
  */
-const namedAccounts =  ['mainnet', 'homestead'].includes(targetNetwork)
+const namedAccounts =  ['mainnet', 'homestead', 'localfork'].includes(targetNetwork)
   // production deployer address
-  ? { deployer: '0xf2E055D3204aD73C7C51DE2668435B76C727a92f'}
+  ? { deployer: '0xf2E055D3204aD73C7C51DE2668435B76C727a92f' }
   // signers from auto-generated mnemonic
   : hardhatNamedAccounts as {[name: string]: string | number | { [network: string]: null | number | string }};
 

@@ -44,9 +44,10 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
     log: true,
     contract: 'SimplePriceOracle',
   });
-  const Oracle = await ethers.getContract<IOracle>('Oracle');
+  const Oracle = await ethers.getContract<IOracle>('Oracle', deployer);
   const Unitroller = await ethers.getContract<IUnitroller>('Unitroller');
-  const Comptroller = (await ethers.getContract<IComptroller>('ComptrollerImplementation')).attach(Unitroller.address);
+  const Comptroller = (await ethers.getContract<IComptroller>('ComptrollerImplementation', deployer))
+    .attach(Unitroller.address);
   const currentOracle = await Comptroller.oracle();
   if (currentOracle !== Oracle.address) {
     console.log(`setting Comptroller price oracle to ${Oracle.address}`);

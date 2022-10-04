@@ -160,7 +160,7 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
         await (await existingDtokenContract._setInterestRateModel(interestRateModelAddress)).wait();
       }
     } else if (symbol === 'USDT') {
-      const dUSDT = await deploy('dUSDT', {
+      await deploy('dUSDT', {
         contract: 'CErc20Delegator',
         from: deployer,
         log: true,
@@ -177,16 +177,9 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
           '0x',
         ],
       });
-      if (!currentlySupportedMarkets.has(ethers.utils.getAddress(dUSDT.address))) {
-        console.log('adding dUSDT to Comptroller active markets');
-        await (await Comptroller._supportMarket(dUSDT.address)).wait();
-        currentlySupportedMarkets.add(ethers.utils.getAddress(dUSDT.address));
-      } else {
-        console.log('Skipping Comptroller._supportMarkets for dUSDT; already supported');
-      }
       dTokens.push('dUSDT');
     } else if (symbol === 'USDC') {
-      const dUSDC = await deploy('dUSDC', {
+      await deploy('dUSDC', {
         contract: 'CErc20Delegator',
         from: deployer,
         log: true,
@@ -203,13 +196,6 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
           '0x',
         ],
       });
-      if (!currentlySupportedMarkets.has(ethers.utils.getAddress(dUSDC.address))) {
-        console.log('adding dUSDC to Comptroller active markets');
-        await (await Comptroller._supportMarket(dUSDC.address)).wait();
-        currentlySupportedMarkets.add(ethers.utils.getAddress(dUSDC.address));
-      } else {
-        console.log('Skipping Comptroller._supportMarkets for dUSDC; already supported');
-      }
       dTokens.push('dUSDC');
     } else if (symbol !== 'ETH') {
       const [underlyingAddress] = await getExternalUnderlyingDataFromSymbol(symbol);
@@ -219,7 +205,7 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
         : STABLECOIN_UNDERLYING_SYMBOLS_SET.has(symbol)
         ? StablecoinIRM.address
         : AltcoinIRM.address;
-      const dToken = await deploy(`d${symbol}`, {
+      await deploy(`d${symbol}`, {
         contract: 'CErc20Delegator',
         from: deployer,
         log: true,
@@ -236,17 +222,17 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
           '0x',
         ],
       });
-      if (!currentlySupportedMarkets.has(ethers.utils.getAddress(dToken.address))) {
-        console.log(`adding d${symbol} to Comptroller active markets`);
-        await (await Comptroller._supportMarket(dToken.address)).wait();
-        currentlySupportedMarkets.add(ethers.utils.getAddress(dToken.address));
-      } else {
-        console.log(`Skipping Comptroller._supportMarkets for d${symbol}; already supported`);
-      }
     }
 
     const dTokenContract = await ethers.getContract<ICTokenDelegate>(`d${symbol}`, deployer);
 
+    if (!currentlySupportedMarkets.has(ethers.utils.getAddress(dTokenContract.address))) {
+      console.log(`adding d${symbol} to Comptroller active markets`);
+      await (await Comptroller._supportMarket(dTokenContract.address)).wait();
+      currentlySupportedMarkets.add(ethers.utils.getAddress(dTokenContract.address));
+    } else {
+      console.log(`Skipping Comptroller._supportMarkets for d${symbol}; already supported`);
+    }
     // Set the reserve factor, if unset
     const currentReserveFactor = await dTokenContract.reserveFactorMantissa();
     if (currentReserveFactor.isZero()) {

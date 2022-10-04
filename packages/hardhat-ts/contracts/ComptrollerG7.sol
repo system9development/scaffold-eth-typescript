@@ -1362,6 +1362,6 @@ contract ComptrollerG7 is ComptrollerV5Storage, ComptrollerInterface, Comptrolle
      * @return The address of COMP
      */
     function getCompAddress() public pure returns (address) {
-        return 0x0000000000000000000000000000000000000000;
+        return 0xfa372fF1547fa1a283B5112a4685F1358CE5574d;
     }
 }

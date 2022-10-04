@@ -7,7 +7,7 @@ import dotenv from 'dotenv';
 import { CErc20 as ICErc20 } from 'generated/contract-types/CErc20';
 import { ethers } from 'hardhat';
 
-import { aaveMarkets, compoundMarkets, mainnetTokens } from '../../api/src/config';
+import { aaveMarkets, compoundMarkets, goerliTokens, mainnetTokens } from '../../api/src/config';
 
 dotenv.config();
 
@@ -98,6 +98,13 @@ const updateTokens: (data: TokenData) => Promise<TokenData> = async (data) => {
         data[symbol][chainId] = aaveMarkets[SYMBOL][chainId].address;
         continue;
       }
+    }
+    if (chainId === 1 && SYMBOL in mainnetTokens) {
+      data[symbol][chainId] = mainnetTokens[SYMBOL].address;
+      continue;
+    }
+    if (chainId === 5 && SYMBOL in goerliTokens) {
+      data[symbol][chainId] = goerliTokens[SYMBOL].address;
     }
     try {
       const contract = await ethers.getContract(SYMBOL);

@@ -59,6 +59,7 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
   const { getNamedAccounts, deployments } = hre;
   const { deploy } = deployments;
   const { deployer } = await getNamedAccounts();
+  const deployerSigner = await ethers.getNamedSigner('deployer');
   // const signer = await ethers.getSigner(deployer);
   const Unitroller = await ethers.getContract<IUnitroller>('Unitroller');
   const USDT = (await ethers.getContractOrNull('USDT'))?.address ?? tokenData.USDT.address;
@@ -139,20 +140,24 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
   //   console.log('Skipping Comptroller._supportMarkets for dBDAMM; already supported');
   // }
   // dTokens.push('dBDAMM');
+  const newlyDeployedMarkets = new Set<string>();
   for (let i = 0; i < tokenList.length; i += 1) {
     const symbol = tokenList[i];
     const decimals = decimalList[i];
-    if (await ethers.getContractOrNull(`d${symbol}`)) {
-      const dTokenContract = await ethers.getContract<ICTokenDelegate>(`d${symbol}`, deployer);
+    const existingDtokenContract = await ethers.getContractOrNull<ICTokenDelegate>(`d${symbol}`, deployer);
+    if (!existingDtokenContract) {
+      newlyDeployedMarkets.add(`d${symbol}`);
+    }
+    if (existingDtokenContract) {
       // In case this market was already deployed, update the IRM if changed
       const interestRateModelAddress = symbol === 'WETH' || symbol === 'WBTC'
         ? WethWbtcIRM.address
         : STABLECOIN_UNDERLYING_SYMBOLS_SET.has(symbol)
         ? StablecoinIRM.address
         : AltcoinIRM.address;
-      if ( interestRateModelAddress !== await dTokenContract.interestRateModel()) {
+      if ( interestRateModelAddress !== await existingDtokenContract.interestRateModel()) {
         console.log(`updating interest rate model for d${symbol} to ${interestRateModelAddress}`);
-        await (await dTokenContract._setInterestRateModel(interestRateModelAddress)).wait();
+        await (await existingDtokenContract._setInterestRateModel(interestRateModelAddress)).wait();
       }
     } else if (symbol === 'USDT') {
       const dUSDT = await deploy('dUSDT', {
@@ -249,6 +254,37 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
       await (await dTokenContract._setReserveFactor(ethers.utils.parseUnits('0.175'))).wait();
     } else {
       console.log(`Skipping d${symbol}._setReserveFactor: already set to ${ethers.utils.formatEther(currentReserveFactor)}`);
+    }
+
+    const currentTotalSupply = await dTokenContract.totalSupply();
+    if (currentTotalSupply.isZero()) {
+      const underlyingAddress = await dTokenContract.underlying();
+      const underlyingContract = new ethers.Contract(
+        underlyingAddress,
+        JSON.stringify([
+          "function decimals() view returns (uint8)",
+          "function approve(address, uint256)",
+          "function symbol() view returns (string)"
+        ]),
+        deployerSigner,
+      );
+      const underlyingDecimals: number = await underlyingContract.decimals();
+      const underlyingSymbol: string = await underlyingContract.symbol();
+      const underlyingAmountToMintString = '0.0001';
+      const underlyingAmountToMint = ethers.utils.parseUnits(underlyingAmountToMintString, underlyingDecimals);
+      console.log(`Approving spend of ${underlyingSymbol} to market ${dTokenContract.address}`);
+      await (await underlyingContract.approve(dTokenContract.address, underlyingAmountToMint)).wait();
+      console.log(`minting 0.0001 ${underlyingSymbol} of d${symbol}`);
+      await (await dTokenContract.mint(underlyingAmountToMint)).wait();
+      const deployerBalance = await dTokenContract.balanceOf(deployer);
+      const totalSupply = await dTokenContract.totalSupply();
+      if (totalSupply.isZero() || !(totalSupply.eq(deployerBalance))) {
+        console.error(`total supply of d${symbol} changed during initial seed. Deployer balance is ${deployerBalance}. total supply is ${totalSupply}`);
+        process.exit(1);
+      }
+    } else if (newlyDeployedMarkets.has(`d${symbol}`)) {
+      console.log(`d${symbol} was deployed in this run, but the total supply is not zero. Check manually to ensure attacker did not mint`);
+      process.exit(1);
     }
     dTokens.push(`d${symbol}`);
   }

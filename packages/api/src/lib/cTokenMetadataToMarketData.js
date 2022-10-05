@@ -73,7 +73,7 @@ const cTokenMetadataToMarketData = ({
   // @ts-ignore
   const totalBorrowsFormatted = new BigNumber(ethers.utils.formatUnits(
     totalBorrows?.toString() || 0,
-    underlyingDecimals.toNumber())
+    underlyingDecimals.toNumber()),
   );
   const totalBorrowsUsd = underlyingPriceUsd
     ? totalBorrowsFormatted.times(underlyingPriceUsd).toFixed(2)

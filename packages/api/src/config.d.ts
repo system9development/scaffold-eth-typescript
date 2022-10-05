@@ -30,3 +30,4 @@ export const aaveMarkets: {[key: string]: IExternalDeployment};
 export const compoundMarkets: {[key: string]: IExternalDeployment};
 export const STABLECOIN_UNDERLYING_SYMBOLS_SET: Set<string>;
 export const CHAIN_ID: number;
+export const bdammPoolInfo: { type: 'univ3', address: string, decimals: 18 }

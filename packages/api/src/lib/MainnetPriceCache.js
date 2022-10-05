@@ -4,12 +4,13 @@ const { getUniV3USDPrice, getUniV3ToTokenPrice } = require('./UniswapV3');
 const { getUniV2USDPrice, getUniV2ToTokenPrice } = require('./UniswapV2');
 const BlockCache = require('./BlockCache');
 const { uniswapV2PoolAddresses, uniswapV3PoolAddresses, CHAIN_ID } = require('../config');
-const { compoundMarkets } = require('../config');
+const {
+  compoundMarkets,
+  aaveMarkets,
+  dammProvider,
+} = require('../config');
 const CTokenRead = require('../abis/CTokenRead');
-const { dammProvider } = require('../config');
 const { default: BigNumber } = require('bignumber.js');
-const { mainnetTokens } = require('../config');
-const { aaveMarkets } = require('../config');
 
 /*
   Cache the prices of each token at each block. Upon receiving new price for a token for the current block, discard any old data

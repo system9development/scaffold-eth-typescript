@@ -11,6 +11,7 @@ const {
   mainnetProvider,
   uniswapV3PoolAddresses,
   mainnetTokens,
+  bdammPoolInfo,
 } = require('../config');
 
 dotenv.config();
@@ -18,7 +19,7 @@ dotenv.config();
 const Q96 = JSBI.exponentiate(JSBI.BigInt(2), JSBI.BigInt(96))
 const Q192 = JSBI.exponentiate(Q96, JSBI.BigInt(2)).toString();
 const uniswapV3Pools = Object.fromEntries(
-  Object.entries(uniswapV3PoolAddresses).map(
+  [...Object.entries(uniswapV3PoolAddresses), ['USDC_BDAMM', bdammPoolInfo.address]].map(
     ([tokenName, poolAddress]) => {
       const poolContract = new ethers.Contract(poolAddress, IUniswapV3PoolABI, mainnetProvider);
       const poolData = { reader: poolContract };
@@ -72,13 +73,35 @@ const getUniV3ToTokenPrice = async (baseToken, quoteToken) => {
     ).times(decimalAdjustment).toNumber();
   }
 }
+
+
+const getUniV3BdammPrice = async () => {
+  const decimals = 18;
+  const tokenIsBase = false;
+  const tokenIsQuote = true;
+  const poolData = uniswapV3Pools['USDC_BDAMM'];
+  const slot0Data = await poolData.reader.slot0();
+  // @ts-ignore
+  const sqrtPrice = BigNumber(slot0Data[0].toString());
+  // @ts-ignore
+  const decimalAdjustment = BigNumber(10).pow(12); // bdamm decimals - usdc decimals
+  // @ts-ignore
+  return new BigNumber(1).dividedBy(
+    sqrtPrice.pow(2).dividedBy(Q192)
+  // @ts-ignore
+  ).times(decimalAdjustment).toNumber();
+};
+
 /**
- * 
+ *
  * @param {string} token - the token symbol
  * @param {number} ethPriceUsd - the price of ethereum in USD
  */
 
 const getUniV3USDPrice = async (token, ethPriceUsd) => {
+  if (token === 'BDAMM') {
+    return getUniV3BdammPrice();
+  }
   const { decimals: tokenDecimals } = mainnetTokens[token];
   const tokenIsBase = `${token}_ETH` in uniswapV3Pools || `${token}_WETH` in uniswapV3Pools;
   const tokenIsQuote = `ETH_${token}` in uniswapV3Pools || `WETH_${token}` in uniswapV3Pools;

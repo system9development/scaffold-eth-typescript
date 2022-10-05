@@ -5,7 +5,7 @@ const MainnetPriceCache = require('./lib/MainnetPriceCache');
 const DammTokenCache = require('./lib/DammTokenCache');
 const { compoundMarkets, aaveMarkets, CHAIN_ID } = require('./config');
 
-const underlyingTokensForChain = Object.keys(mainnetTokens);
+const underlyingTokensForChain = [...Object.keys(mainnetTokens), 'BDAMM'];
 if (CHAIN_ID === 1 || CHAIN_ID === 5) {
   underlyingTokensForChain.push(...Object.keys(compoundMarkets), ...Object.keys(aaveMarkets));
 } else {
@@ -24,7 +24,7 @@ const dammTokenCache = new DammTokenCache(
 
 const apiData = async () => {
   // Gets an array of addresses
-  const metadata = dammTokenCache.getDammMetadata()
+  const metadata = dammTokenCache.getDammMetadata();
 
   const response = {
     status: true,
@@ -38,6 +38,7 @@ const apiData = async () => {
       markets: metadata,
       mainnetBlock: mainnetProvider.blockNumber,
       dammNetBlock: dammProvider.blockNumber,
+      bdamm: mainnetCache.getPriceBySymbol('BDAMM'),
     },
   };
   return response;

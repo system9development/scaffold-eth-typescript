@@ -97,7 +97,8 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
   console.log('price fetched from Coingecko', JSON.stringify(priceData));
 
   let priceChanged = false;
-  const priceDataKeys = Object.keys(priceData);
+  // filter(Boolean) removes "" from tokens not on coingecko (e.g. CTUSD)
+  const priceDataKeys = Object.keys(priceData).filter(Boolean);
   for (let i = 0; i < priceDataKeys.length && !priceChanged; i += 1) {
     const coingeckoId = priceDataKeys[i];
     const symbol = coingeckoIdToSymbols[coingeckoId];

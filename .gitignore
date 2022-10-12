@@ -18,6 +18,9 @@ packages/hardhat-ts/generated/*
 !packages/hardhat-ts/generated/.gitignore
 !packages/hardhat-ts/generated/deployments
 packages/hardhat-ts/generated/deployments/*/solcInputs
+!packages/hardhat-ts/generated/artifacts
+packages/hardhat-ts/generated/artifacts/*
+!packages/hardhat-ts/generated/artifacts/build-info
 cache
 artifacts
 tenderly.yaml

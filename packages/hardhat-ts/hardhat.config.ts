@@ -52,7 +52,7 @@ const hardhatNetworkConfig = targetNetwork === 'localfork'
     chainId: 31336,
     forking: {
       url: `https://eth-mainnet.alchemyapi.io/v2/${process.env.ALCHEMY_API_TOKEN}`,
-      blockNumber: 15679964,
+      blockNumber: 15734717,
     },
     autoImpersonate: true,
     // accounts: ['0xf2E055D3204aD73C7C51DE2668435B76C727a92f'] as unknown as Array<{privateKey: string, balance: string}>,

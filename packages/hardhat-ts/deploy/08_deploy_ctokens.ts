@@ -275,6 +275,73 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
       process.exit(1);
     }
     dTokens.push(`d${symbol}`);
+
+    /* Updates to token IRMs */
+
+    const StablecoinIRMFlat12 = await ethers.getContract('StablecoinIRMFlat12');
+    const StablecoinIRMFlat9 = await ethers.getContract('StablecoinIRMFlat9');
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    const StablecoinIRMFlat10_8 = await ethers.getContract('StablecoinIRMFlat10_8');
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    const StablecoinIRMFlat8_4 = await ethers.getContract('StablecoinIRMFlat8_4');
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    const StablecoinIRMFlat10_5 = await ethers.getContract('StablecoinIRMFlat10_5');
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    const StablecoinIRMFlat8_2 = await ethers.getContract('StablecoinIRMFlat8_2');
+
+    const dusdt = await ethers.getContract<ICTokenDelegate>('dUSDT', deployer);
+    const dusdtIRM = await dusdt.interestRateModel();
+    if (dusdtIRM !== StablecoinIRMFlat12.address) {
+      console.log('Updating dUSDT IRM to flat 12% for borrowers');
+      await (await dusdt._setInterestRateModel(StablecoinIRMFlat12.address)).wait();
+    } else {
+      console.log('dUSDT IRM already set to 12%');
+    }
+
+    const dusdc = await ethers.getContract<ICTokenDelegate>('dUSDC', deployer);
+    const dusdcIRM = await dusdt.interestRateModel();
+    if (dusdcIRM !== StablecoinIRMFlat9.address) {
+      console.log('Updating dUSDC IRM to flat 9% for borrowers');
+      await (await dusdc._setInterestRateModel(StablecoinIRMFlat9.address)).wait();
+    } else {
+      console.log('dUSDC IRM already set to 9%');
+    }
+
+    const dausdt = await ethers.getContract<ICTokenDelegate>('dAUSDT', deployer);
+    const dausdtIRM = await dausdt.interestRateModel();
+    if (dausdtIRM !== StablecoinIRMFlat10_8.address) {
+      console.log('Updating dAUSDT IRM to flat 10.8% for borrowers');
+      await (await dausdt._setInterestRateModel(StablecoinIRMFlat10_8.address)).wait();
+    } else {
+      console.log('dAUSDT IRM already set to 10.8%');
+    }
+
+    const dausdc = await ethers.getContract<ICTokenDelegate>('dAUSDC', deployer);
+    const dausdcIRM = await dausdc.interestRateModel();
+    if (dausdcIRM !== StablecoinIRMFlat8_4.address) {
+      console.log('Updating dAUSDC IRM to flat 8.4% for borrowers');
+      await (await dausdc._setInterestRateModel(StablecoinIRMFlat8_4.address)).wait();
+    } else {
+      console.log('dAUSDC IRM already set to 8.4%');
+    }
+
+    const dcusdt = await ethers.getContract<ICTokenDelegate>('dCUSDT', deployer);
+    const dcusdtIRM = await dcusdt.interestRateModel();
+    if (dcusdtIRM !== StablecoinIRMFlat10_5.address) {
+      console.log('Updating dCUSDT IRM to flat 10.5% for borrowers');
+      await (await dcusdt._setInterestRateModel(StablecoinIRMFlat10_5.address)).wait();
+    } else {
+      console.log('dCUSDT IRM already set to 10.5%');
+    }
+
+    const dcusdc = await ethers.getContract<ICTokenDelegate>('dCUSDC', deployer);
+    const dcusdcIRM = await dcusdc.interestRateModel();
+    if (dcusdcIRM !== StablecoinIRMFlat8_2.address) {
+      console.log('Updating dCUSDC IRM to flat 8.2% for borrowers');
+      await (await dcusdc._setInterestRateModel(StablecoinIRMFlat8_2.address)).wait();
+    } else {
+      console.log('dCUSDC IRM already set to 8.2%');
+    }
   }
 };
 export default func;

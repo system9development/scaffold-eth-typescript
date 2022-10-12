@@ -12,11 +12,13 @@ import {
   mainnetTokens,
   IMainnetMetaData,
   STABLECOIN_UNDERLYING_SYMBOLS_SET,
-  CHAIN_ID,
+  CHAIN_ID as CHAIN_ID_ORIG,
   aaveMarkets,
   compoundMarkets,
   IExternalDeployment,
 } from '../../api/src/config';
+
+const CHAIN_ID = CHAIN_ID_ORIG === 31336 ? 1 : CHAIN_ID_ORIG;
 
 // const { HARDHAT_TARGET_NETWORK } = process.env;
 // const tokenData = ['mainnet', 'homestead'].includes(HARDHAT_TARGET_NETWORK ?? '') ? mainnetTokens : goerliTokens;

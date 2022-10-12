@@ -7,7 +7,9 @@ import { ethers } from 'hardhat';
 import { DeployFunction } from 'hardhat-deploy/types';
 import { THardhatRuntimeEnvironmentExtended } from 'helpers/types/THardhatRuntimeEnvironmentExtended';
 
-import { aaveMarkets, CHAIN_ID, compoundMarkets, mainnetTokens } from '../../api/src/config';
+import { aaveMarkets, CHAIN_ID as CHAIN_ID_ORIG, compoundMarkets, mainnetTokens } from '../../api/src/config';
+
+const CHAIN_ID = CHAIN_ID_ORIG === 31336 ? 1 : CHAIN_ID_ORIG;
 
 interface CoinGeckoResponse {
   [key: string]: {

@@ -76,6 +76,9 @@ class DammTokenCache extends BlockCache {
       staticData.reader = cErc20Reader;
       staticData.underlying = underlyingAddress;
       staticData.underlyingSymbol = (await underlyingReader.symbol()).toUpperCase();
+      if (staticData.underlyingSymbol === 'AWETH') {
+        staticData.underlyingSymbol = 'AETH';
+      }
       staticData.underlyingName = await underlyingReader.name();
       staticData.underlyingDecimals = await underlyingReader.decimals();
       staticData.underlyingReader = underlyingReader;

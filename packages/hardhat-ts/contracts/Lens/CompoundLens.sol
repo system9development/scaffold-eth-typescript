@@ -475,7 +475,7 @@ contract CompoundLens {
       CToken[] memory marketSlice = new CToken[](1);
       marketSlice[0] = markets[i];
       comptroller.claimComp(accounts, marketSlice, false, true);
-      uint256 newBalance = comp.balanceOf(account);
+      uint256 newBalance = add(comp.balanceOf(account), comptroller.compAccrued(account), "error getting new balance");
       claimableAmounts[i] = sub(newBalance, balance, "get the difference of comp balance");
       balance = newBalance;
     }

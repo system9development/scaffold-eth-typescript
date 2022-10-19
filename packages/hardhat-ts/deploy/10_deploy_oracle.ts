@@ -28,10 +28,10 @@ const getTokenAddress = async (symbol: string): Promise<string> => {
   }
   if (CHAIN_ID === 1 || CHAIN_ID === 5) {
     if (symbol in compoundMarkets) {
-      return compoundMarkets[symbol][CHAIN_ID].address as string;
+      return compoundMarkets[symbol][CHAIN_ID].address;
     }
     if (symbol in aaveMarkets) {
-      return aaveMarkets[symbol][CHAIN_ID].address as string;
+      return aaveMarkets[symbol][CHAIN_ID].address;
     }
   }
   return '';
@@ -147,7 +147,7 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
     });
     for (let i = 0; i < Object.keys(compoundMarkets).length; i += 1) {
       const cTokenSymbol = Object.keys(compoundMarkets)[i];
-      if (CHAIN_ID === 1 || CHAIN_ID === 5) {
+      if ((CHAIN_ID === 1 || CHAIN_ID === 5) && CHAIN_ID in compoundMarkets[cTokenSymbol]) {
         const { address: tokenAddress, decimals: tokenDecimals, coingeckoId } = compoundMarkets[cTokenSymbol][CHAIN_ID];
         tokenAddresses.push(tokenAddress);
         decimals.push(tokenDecimals);
@@ -167,12 +167,14 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
     if (CHAIN_ID === 1 || CHAIN_ID === 5) {
       for (let i = 0; i < Object.keys(aaveMarkets).length; i += 1) {
         const aTokenSymbol = Object.keys(aaveMarkets)[i];
-        const { address: tokenAddress, decimals: tokenDecimals, coingeckoId } = aaveMarkets[aTokenSymbol][CHAIN_ID];
-        tokenAddresses.push(tokenAddress);
-        decimals.push(tokenDecimals);
-        symbols.push(aTokenSymbol);
-        const priceForAToken = priceData[coingeckoId].usd;
-        priceValues.push(ethers.utils.parseUnits(priceForAToken.toString(), 36 - tokenDecimals));
+        if (CHAIN_ID in aaveMarkets[aTokenSymbol]) {
+          const { address: tokenAddress, decimals: tokenDecimals, coingeckoId } = aaveMarkets[aTokenSymbol][CHAIN_ID];
+          tokenAddresses.push(tokenAddress);
+          decimals.push(tokenDecimals);
+          symbols.push(aTokenSymbol);
+          const priceForAToken = priceData[coingeckoId].usd;
+          priceValues.push(ethers.utils.parseUnits(priceForAToken.toString(), 36 - tokenDecimals));
+        }
       }
     }
     console.log('updating oracle with the following tokens and prices');

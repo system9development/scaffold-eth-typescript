@@ -111,7 +111,7 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
     const [ cTokenSymbol, cTokenData ] = compoundTokenEntries[i];
     if (CHAIN_ID === 1 || CHAIN_ID === 5) {
       const cTokenChainData = cTokenData[CHAIN_ID];
-      if (compoundTokenEntries) {
+      if (cTokenChainData) {
         tokenList.push(cTokenSymbol);
         decimalList.push(cTokenChainData.decimals as number);
       }

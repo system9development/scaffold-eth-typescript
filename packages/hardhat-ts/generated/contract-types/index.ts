@@ -53,6 +53,7 @@ export type { InterestRateModel } from "./InterestRateModel";
 export type { JumpRateModel } from "./JumpRateModel";
 export type { JumpRateModelV2 } from "./JumpRateModelV2";
 export type { CompoundLens } from "./CompoundLens";
+export type { ComptrollerLens2Interface } from "./ComptrollerLens2Interface";
 export type { ComptrollerLensInterface } from "./ComptrollerLensInterface";
 export type { GovernorBravoInterface } from "./GovernorBravoInterface";
 export type { Maximillion } from "./Maximillion";
@@ -135,6 +136,7 @@ export { InterestRateModel__factory } from "./factories/InterestRateModel__facto
 export { JumpRateModel__factory } from "./factories/JumpRateModel__factory";
 export { JumpRateModelV2__factory } from "./factories/JumpRateModelV2__factory";
 export { CompoundLens__factory } from "./factories/CompoundLens__factory";
+export { ComptrollerLens2Interface__factory } from "./factories/ComptrollerLens2Interface__factory";
 export { ComptrollerLensInterface__factory } from "./factories/ComptrollerLensInterface__factory";
 export { GovernorBravoInterface__factory } from "./factories/GovernorBravoInterface__factory";
 export { Maximillion__factory } from "./factories/Maximillion__factory";

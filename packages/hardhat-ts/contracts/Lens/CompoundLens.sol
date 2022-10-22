@@ -37,6 +37,12 @@ interface ComptrollerLensInterface {
   function borrowCaps(address) external view returns (uint256);
 }
 
+interface ComptrollerLens2Interface {
+  function claimComp(address[] memory, CToken[] memory, bool, bool) external;
+
+  function compAccrued(address) external view returns (uint256);
+}
+
 interface GovernorBravoInterface {
   struct Receipt {
     bool hasVoted;
@@ -452,6 +458,28 @@ contract CompoundLens {
     uint256 allocated = sub(total, balance, "sub allocated");
 
     return CompBalanceMetadataExt({ balance: balance, votes: uint256(comp.getCurrentVotes(account)), delegate: comp.delegates(account), allocated: allocated });
+  }
+
+  function getClaimMarketData(
+    Comp comp,
+    ComptrollerLens2Interface comptroller,
+    address account,
+    CToken[] calldata markets
+  ) external returns (uint256[] memory) {
+    uint256[] memory claimableAmounts = new uint256[](markets.length);
+    uint256 baseAccrual = comptroller.compAccrued(account);
+    uint256 balance = add(comp.balanceOf(account), baseAccrual, "initial balance with base accrual");
+    address[] memory accounts = new address[](1);
+    accounts[0] = account;
+    for (uint256 i = 0; i < markets.length; i++) {
+      CToken[] memory marketSlice = new CToken[](1);
+      marketSlice[0] = markets[i];
+      comptroller.claimComp(accounts, marketSlice, false, true);
+      uint256 newBalance = add(comp.balanceOf(account), comptroller.compAccrued(account), "error getting new balance");
+      claimableAmounts[i] = sub(newBalance, balance, "get the difference of comp balance");
+      balance = newBalance;
+    }
+    return claimableAmounts;
   }
 
   struct CompVotes {

@@ -308,12 +308,12 @@ const compoundMarkets = {
       underlyingDecimals: 6,
       coingeckoId: "compound-usdt",
     },
-    "5": {
-      address: "0x5A74332C881Ea4844CcbD8458e0B6a9B04ddb716",
-      decimals: 8,
-      underlyingDecimals: 6,
-      coingeckoId: "compound-usdt",
-    },
+    // "5": {
+    //   address: "0x5A74332C881Ea4844CcbD8458e0B6a9B04ddb716",
+    //   decimals: 8,
+    //   underlyingDecimals: 6,
+    //   coingeckoId: "compound-usdt",
+    // },
   },
   CDAI: {
     "1": {
@@ -322,12 +322,12 @@ const compoundMarkets = {
       underlyingDecimals: 18,
       coingeckoId: "cdai",
     },
-    "5": {
-      address: "0x0545a8eaF7ff6bB6F708CbB544EA55DBc2ad7b2a",
-      decimals: 8,
-      underlyingDecimals: 18,
-      coingeckoId: "cdai",
-    },
+    // "5": {
+    //   address: "0x0545a8eaF7ff6bB6F708CbB544EA55DBc2ad7b2a",
+    //   decimals: 8,
+    //   underlyingDecimals: 18,
+    //   coingeckoId: "cdai",
+    // },
   },
   CETH: {
     "1": {
@@ -350,12 +350,12 @@ const compoundMarkets = {
       underlyingDecimals: 18,
       coingeckoId: "compound-chainlink-token",
     },
-    "5": {
-      address: "0x73506770799Eb04befb5AaE4734e58C2C624F493",
-      decimals: 8,
-      underlyingDecimals: 18,
-      coingeckoId: "compound-chainlink-token",
-    },
+    // "5": {
+    //   address: "0x73506770799Eb04befb5AaE4734e58C2C624F493",
+    //   decimals: 8,
+    //   underlyingDecimals: 18,
+    //   coingeckoId: "compound-chainlink-token",
+    // },
   },
   CUNI: {
     "1": {
@@ -364,12 +364,12 @@ const compoundMarkets = {
       underlyingDecimals: 18,
       coingeckoId: "compound-uniswap",
     },
-    "5": {
-      address: "0x2073d38198511F5Ed8d893AB43A03bFDEae0b1A5",
-      decimals: 8,
-      underlyingDecimals: 18,
-      coingeckoId: "compound-uniswap",
-    },
+    // "5": {
+    //   address: "0x2073d38198511F5Ed8d893AB43A03bFDEae0b1A5",
+    //   decimals: 8,
+    //   underlyingDecimals: 18,
+    //   coingeckoId: "compound-uniswap",
+    // },
   },
   CTUSD: {
     "1": {
@@ -378,12 +378,12 @@ const compoundMarkets = {
       underlyingDecimals: 18,
       coingeckoId: "",
     },
-    "5": {
-      address: "0x73506770799Eb04befb5AaE4734e58C2C624F493",
-      decimals: 8,
-      underlyingDecimals: 18,
-      coingeckoId: "",
-    },
+    // "5": {
+    //   address: "0x73506770799Eb04befb5AaE4734e58C2C624F493",
+    //   decimals: 8,
+    //   underlyingDecimals: 18,
+    //   coingeckoId: "",
+    // },
   },
   CWBTC: {
     "1": {
@@ -392,12 +392,12 @@ const compoundMarkets = {
       underlyingDecimals: 8,
       coingeckoId: "compound-wrapped-btc",
     },
-    "5": {
-      address: "0xDa6F609F3636062E06fFB5a1701Df3c5F1ab3C8f",
-      decimals: 8,
-      underlyingDecimals: 8,
-      coingeckoId: "compound-wrapped-btc",
-    },
+    // "5": {
+    //   address: "0xDa6F609F3636062E06fFB5a1701Df3c5F1ab3C8f",
+    //   decimals: 8,
+    //   underlyingDecimals: 8,
+    //   coingeckoId: "compound-wrapped-btc",
+    // },
   },
 };
 
@@ -423,12 +423,12 @@ const aaveMarkets = {
       underlyingDecimals: 6,
       coingeckoId: "aave-usdt",
     },
-    "5": {
-      address: "0x65E2fe35C30eC218b46266F89847c63c2eDa7Dc7",
-      decimals: 6,
-      underlyingDecimals: 6,
-      coingeckoId: "aave-usdt",
-    },
+    // "5": {
+    //   address: "0x65E2fe35C30eC218b46266F89847c63c2eDa7Dc7",
+    //   decimals: 6,
+    //   underlyingDecimals: 6,
+    //   coingeckoId: "aave-usdt",
+    // },
   },
   ADAI: {
     "1": {
@@ -437,12 +437,12 @@ const aaveMarkets = {
       underlyingDecimals: 18,
       coingeckoId: "aave-dai",
     },
-    "5": {
-      address: "0x65E2fe35C30eC218b46266F89847c63c2eDa7Dc7",
-      decimals: 18,
-      underlyingDecimals: 18,
-      coingeckoId: "aave-dai",
-    },
+    // "5": {
+    //   address: "0x65E2fe35C30eC218b46266F89847c63c2eDa7Dc7",
+    //   decimals: 18,
+    //   underlyingDecimals: 18,
+    //   coingeckoId: "aave-dai",
+    // },
   },
   AETH: {
     "1": {
@@ -451,12 +451,12 @@ const aaveMarkets = {
       underlyingDecimals: 18,
       coingeckoId: "aave-weth",
     },
-    "5": {
-      address: "0x65E2fe35C30eC218b46266F89847c63c2eDa7Dc7",
-      decimals: 18,
-      underlyingDecimals: 18,
-      coingeckoId: "aave-weth",
-    },
+    // "5": {
+    //   address: "0x65E2fe35C30eC218b46266F89847c63c2eDa7Dc7",
+    //   decimals: 18,
+    //   underlyingDecimals: 18,
+    //   coingeckoId: "aave-weth",
+    // },
   },
   ALINK: {
     "1": {
@@ -465,12 +465,12 @@ const aaveMarkets = {
       underlyingDecimals: 18,
       coingeckoId: "aave-link",
     },
-    "5": {
-      address: "0x65E2fe35C30eC218b46266F89847c63c2eDa7Dc7",
-      decimals: 18,
-      underlyingDecimals: 18,
-      coingeckoId: "aave-link",
-    },
+    // "5": {
+    //   address: "0x65E2fe35C30eC218b46266F89847c63c2eDa7Dc7",
+    //   decimals: 18,
+    //   underlyingDecimals: 18,
+    //   coingeckoId: "aave-link",
+    // },
   },
   AUNI: {
     "1": {
@@ -478,14 +478,13 @@ const aaveMarkets = {
       decimals: 18,
       underlyingDecimals: 18,
       coingeckoId: "aave-uni",
-      
     },
-    "5": {
-      address: "0x65E2fe35C30eC218b46266F89847c63c2eDa7Dc7",
-      decimals: 18,
-      underlyingDecimals: 18,
-      coingeckoId: "aave-uni",
-    },
+    // "5": {
+    //   address: "0x65E2fe35C30eC218b46266F89847c63c2eDa7Dc7",
+    //   decimals: 18,
+    //   underlyingDecimals: 18,
+    //   coingeckoId: "aave-uni",
+    // },
   },
   ATUSD: {
     "1": {
@@ -494,12 +493,12 @@ const aaveMarkets = {
       underlyingDecimals: 18,
       coingeckoId: "aave-tusd",
     },
-    "5": {
-      address: "0x65E2fe35C30eC218b46266F89847c63c2eDa7Dc7",
-      decimals: 18,
-      underlyingDecimals: 18,
-      coingeckoId: "aave-tusd",
-    },
+    // "5": {
+    //   address: "0x65E2fe35C30eC218b46266F89847c63c2eDa7Dc7",
+    //   decimals: 18,
+    //   underlyingDecimals: 18,
+    //   coingeckoId: "aave-tusd",
+    // },
   },
   AWBTC: {
     "1": {
@@ -508,12 +507,12 @@ const aaveMarkets = {
       underlyingDecimals: 8,
       coingeckoId: "aave-wbtc",
     },
-    "5": {
-      address: "0x65E2fe35C30eC218b46266F89847c63c2eDa7Dc7",
-      decimals: 8,
-      underlyingDecimals: 8,
-      coingeckoId: "aave-wbtc",
-    },
+    // "5": {
+    //   address: "0x65E2fe35C30eC218b46266F89847c63c2eDa7Dc7",
+    //   decimals: 8,
+    //   underlyingDecimals: 8,
+    //   coingeckoId: "aave-wbtc",
+    // },
   },
 };
 

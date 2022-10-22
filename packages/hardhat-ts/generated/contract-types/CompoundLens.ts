@@ -308,6 +308,7 @@ export interface CompoundLensInterface extends utils.Interface {
     "cTokenUnderlyingPrice(address)": FunctionFragment;
     "cTokenUnderlyingPriceAll(address[])": FunctionFragment;
     "getAccountLimits(address,address)": FunctionFragment;
+    "getClaimMarketData(address,address,address,address[])": FunctionFragment;
     "getCompBalanceMetadata(address,address)": FunctionFragment;
     "getCompBalanceMetadataExt(address,address,address)": FunctionFragment;
     "getCompVotes(address,address,uint32[])": FunctionFragment;
@@ -344,6 +345,10 @@ export interface CompoundLensInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "getAccountLimits",
     values: [string, string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getClaimMarketData",
+    values: [string, string, string, string[]]
   ): string;
   encodeFunctionData(
     functionFragment: "getCompBalanceMetadata",
@@ -400,6 +405,10 @@ export interface CompoundLensInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "getAccountLimits",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getClaimMarketData",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -500,6 +509,14 @@ export interface CompoundLens extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    getClaimMarketData(
+      comp: string,
+      comptroller: string,
+      account: string,
+      markets: string[],
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     getCompBalanceMetadata(
       comp: string,
       account: string,
@@ -582,6 +599,14 @@ export interface CompoundLens extends BaseContract {
   getAccountLimits(
     comptroller: string,
     account: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  getClaimMarketData(
+    comp: string,
+    comptroller: string,
+    account: string,
+    markets: string[],
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -669,6 +694,14 @@ export interface CompoundLens extends BaseContract {
       account: string,
       overrides?: CallOverrides
     ): Promise<CompoundLens.AccountLimitsStructOutput>;
+
+    getClaimMarketData(
+      comp: string,
+      comptroller: string,
+      account: string,
+      markets: string[],
+      overrides?: CallOverrides
+    ): Promise<BigNumber[]>;
 
     getCompBalanceMetadata(
       comp: string,
@@ -758,6 +791,14 @@ export interface CompoundLens extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    getClaimMarketData(
+      comp: string,
+      comptroller: string,
+      account: string,
+      markets: string[],
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     getCompBalanceMetadata(
       comp: string,
       account: string,
@@ -841,6 +882,14 @@ export interface CompoundLens extends BaseContract {
     getAccountLimits(
       comptroller: string,
       account: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    getClaimMarketData(
+      comp: string,
+      comptroller: string,
+      account: string,
+      markets: string[],
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 

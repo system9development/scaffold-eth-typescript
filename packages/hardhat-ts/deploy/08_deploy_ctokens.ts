@@ -69,7 +69,7 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
   const WethWbtcIRM = await ethers.getContract<IJumpRateModelV2>('WethWbtcIRM');
   const AltcoinIRM = await ethers.getContract<IJumpRateModelV2>('AltcoinIRM');
   const StablecoinIRMFlat12 = await ethers.getContract('StablecoinIRMFlat12');
-  const StablecoinIRMFlat9 = await ethers.getContract('StablecoinIRMFlat9');
+  // const StablecoinIRMFlat9 = await ethers.getContract('StablecoinIRMFlat9');
   // eslint-disable-next-line @typescript-eslint/naming-convention
   const StablecoinIRMFlat10_8 = await ethers.getContract('StablecoinIRMFlat10_8');
   // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -77,7 +77,9 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
   // eslint-disable-next-line @typescript-eslint/naming-convention
   const StablecoinIRMFlat10_5 = await ethers.getContract('StablecoinIRMFlat10_5');
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  const StablecoinIRMFlat8_2 = await ethers.getContract('StablecoinIRMFlat8_2');
+  // const StablecoinIRMFlat8_2 = await ethers.getContract('StablecoinIRMFlat8_2');
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  const StablecoinIRMFlat7_5 = await ethers.getContract('StablecoinIRMFlat7_5');
 
   const Comptroller = (await ethers.getContract<IComptroller>('ComptrollerImplementation', deployer))
     .attach(Unitroller.address);
@@ -167,18 +169,16 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
       // In case this market was already deployed, update the IRM if changed
       const interestRateModelAddress = symbol === 'WETH' || symbol === 'WBTC'
         ? WethWbtcIRM.address
-        : symbol === 'USDC' || symbol === 'TUSD'
-        ? StablecoinIRMFlat9.address
         : symbol === 'USDT'
         ? StablecoinIRMFlat12.address
         : symbol === 'AUSDT'
         ? StablecoinIRMFlat10_8.address
-        : symbol === 'AUSDC'
+        : symbol === 'AUSDC' || symbol === 'USDC' || symbol === 'TUSD'
         ? StablecoinIRMFlat8_4.address
         : symbol === 'CUSDT'
         ? StablecoinIRMFlat10_5.address
         : symbol === 'CUSDC'
-        ? StablecoinIRMFlat8_2.address
+        ? StablecoinIRMFlat7_5.address
         : STABLECOIN_UNDERLYING_SYMBOLS_SET.has(symbol)
         ? StablecoinIRM.address
         : AltcoinIRM.address;

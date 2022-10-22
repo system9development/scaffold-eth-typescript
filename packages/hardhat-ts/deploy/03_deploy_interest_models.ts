@@ -74,6 +74,13 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
     log: true,
     args: [parseEther('0.078811181352'), 0, 0, parseEther('1'), deployer],
   });
+  // Initialized targeting flat borrow rate of 7.5%
+  await deploy('StablecoinIRMFlat7_5', {
+    contract: 'JumpRateModelV2',
+    from: deployer,
+    log: true,
+    args: [parseEther('0.072320658642'), 0, 0, parseEther('1'), deployer],
+  });
 
 };
 export default func;

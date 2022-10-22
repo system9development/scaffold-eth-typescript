@@ -173,11 +173,11 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
         ? StablecoinIRMFlat12.address
         : symbol === 'AUSDT'
         ? StablecoinIRMFlat10_8.address
-        : symbol === 'AUSDC' || symbol === 'USDC' || symbol === 'TUSD'
+        : symbol === 'AUSDC' || symbol === 'USDC'
         ? StablecoinIRMFlat8_4.address
         : symbol === 'CUSDT'
         ? StablecoinIRMFlat10_5.address
-        : symbol === 'CUSDC'
+        : symbol === 'CUSDC' || symbol === 'TUSD'
         ? StablecoinIRMFlat7_5.address
         : STABLECOIN_UNDERLYING_SYMBOLS_SET.has(symbol)
         ? StablecoinIRM.address

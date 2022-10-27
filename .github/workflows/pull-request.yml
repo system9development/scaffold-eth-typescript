@@ -36,12 +36,13 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
       - run: yarn install --immutable
-      - name: 'Check hardhat compile'
-        run: |
-          yarn w:hardhat compile --force
 
       - name: 'Generate a mnemonic'
         run: yarn generate
+
+      - name: 'Check hardhat compile'
+        run: |
+          yarn w:hardhat compile --force
 
       - name: 'Build contracts'
         run: |

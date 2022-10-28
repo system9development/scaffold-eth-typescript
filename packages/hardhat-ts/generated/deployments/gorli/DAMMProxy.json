@@ -1,0 +1,105 @@
+{
+  "address": "0x7770d4bd31387Cd5dCb5B45d7Bd2930e62a57A32",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "bytes",
+          "name": "constructData",
+          "type": "bytes"
+        },
+        {
+          "internalType": "address",
+          "name": "contractLogic",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "stateMutability": "payable",
+      "type": "fallback"
+    }
+  ],
+  "transactionHash": "0x9347234bff994cbfa6acc7405d9e65a94e7cfcf217979dd0c4198a7926ff4f1c",
+  "receipt": {
+    "to": null,
+    "from": "0xc8693923643D93877A8E5609EE119C6De6cb4F8A",
+    "contractAddress": "0x7770d4bd31387Cd5dCb5B45d7Bd2930e62a57A32",
+    "transactionIndex": 39,
+    "gasUsed": "257630",
+    "logsBloom": "0x00000000000000000000000000000000000000000000000000800000000000000000000000000000000040000000000004008000000000000000000000000000000000000000000000000008000000000001000000000000000000000000000000000000020000000000000000000800000000000000000000000010000000400000000000000000000000000000000000000000000080000000000000000040000000000000000000000000000400000000000000000000000000000000000000000002000000000000000000040000000000000000000000000000000020000000000000000000000000000000000400000000000000000010000000000000",
+    "blockHash": "0xe03fcfd2a1c4ff6f315559472c90307eb3cab756a96d5f90841b65aa10aafd01",
+    "transactionHash": "0x9347234bff994cbfa6acc7405d9e65a94e7cfcf217979dd0c4198a7926ff4f1c",
+    "logs": [
+      {
+        "transactionIndex": 39,
+        "blockNumber": 7846070,
+        "transactionHash": "0x9347234bff994cbfa6acc7405d9e65a94e7cfcf217979dd0c4198a7926ff4f1c",
+        "address": "0x7770d4bd31387Cd5dCb5B45d7Bd2930e62a57A32",
+        "topics": [
+          "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0",
+          "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "0x000000000000000000000000c8693923643d93877a8e5609ee119c6de6cb4f8a"
+        ],
+        "data": "0x",
+        "logIndex": 269,
+        "blockHash": "0xe03fcfd2a1c4ff6f315559472c90307eb3cab756a96d5f90841b65aa10aafd01"
+      },
+      {
+        "transactionIndex": 39,
+        "blockNumber": 7846070,
+        "transactionHash": "0x9347234bff994cbfa6acc7405d9e65a94e7cfcf217979dd0c4198a7926ff4f1c",
+        "address": "0x7770d4bd31387Cd5dCb5B45d7Bd2930e62a57A32",
+        "topics": [
+          "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+          "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "0x000000000000000000000000c8693923643d93877a8e5609ee119c6de6cb4f8a"
+        ],
+        "data": "0x000000000000000000000000000000000000000000cecb8f27f4200f3a000000",
+        "logIndex": 270,
+        "blockHash": "0xe03fcfd2a1c4ff6f315559472c90307eb3cab756a96d5f90841b65aa10aafd01"
+      },
+      {
+        "transactionIndex": 39,
+        "blockNumber": 7846070,
+        "transactionHash": "0x9347234bff994cbfa6acc7405d9e65a94e7cfcf217979dd0c4198a7926ff4f1c",
+        "address": "0x7770d4bd31387Cd5dCb5B45d7Bd2930e62a57A32",
+        "topics": [
+          "0x7f26b83ff96e1f2b6a682f133852f6798a09c465da95921460cefb3847402498"
+        ],
+        "data": "0x0000000000000000000000000000000000000000000000000000000000000001",
+        "logIndex": 271,
+        "blockHash": "0xe03fcfd2a1c4ff6f315559472c90307eb3cab756a96d5f90841b65aa10aafd01"
+      }
+    ],
+    "blockNumber": 7846070,
+    "cumulativeGasUsed": "5395349",
+    "status": 1,
+    "byzantium": true
+  },
+  "args": [
+    "0x8129fc1c",
+    "0x32a0ba84f2C31ec08b8Aa7b84D9b6b6381c7952D"
+  ],
+  "numDeployments": 1,
+  "solcInputHash": "b162ec601d24ab4301e4af3799860417",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.13+commit.abaa5c0e\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"bytes\",\"name\":\"constructData\",\"type\":\"bytes\"},{\"internalType\":\"address\",\"name\":\"contractLogic\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"stateMutability\":\"payable\",\"type\":\"fallback\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/DAMM/DAMMProxy.sol\":\"DAMMProxy\"},\"evmVersion\":\"london\",\"libraries\":{\":__CACHE_BREAKER__\":\"0x00000000d41867734bbee4c6863d9255b2b06ac1\"},\"metadata\":{\"bytecodeHash\":\"ipfs\",\"useLiteralContent\":true},\"optimizer\":{\"enabled\":true,\"runs\":250},\"remappings\":[]},\"sources\":{\"contracts/DAMM/DAMMProxy.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.8.13;\\n\\ncontract DAMMProxy {\\n    // Code position in storage is keccak256(\\\"eip1967.proxy.implementation\\\") = \\\"0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc\\\"\\n    constructor(bytes memory constructData, address contractLogic) {\\n        // save the code address\\n        assembly { // solium-disable-line\\n            sstore(0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc, contractLogic)\\n        }\\n        (bool success, ) = contractLogic.delegatecall(constructData); // solium-disable-line\\n        require(success, \\\"Construction failed\\\");\\n    }\\n\\n    fallback() external payable {\\n        assembly { // solium-disable-line\\n            let contractLogic := sload(0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc)\\n            calldatacopy(0x0, 0x0, calldatasize())\\n            let success := delegatecall(sub(gas(), 10000), contractLogic, 0x0, calldatasize(), 0, 0)\\n            let retSz := returndatasize()\\n            returndatacopy(0, 0, retSz)\\n            switch success\\n            case 0 {\\n                revert(0, retSz)\\n            }\\n            default {\\n                return(0, retSz)\\n            }\\n        }\\n    }\\n}\",\"keccak256\":\"0x3aea8a38deb1286dde5eb4c8b5aad0a664e9fb8242436a828ef135024e1c4883\",\"license\":\"MIT\"}},\"version\":1}",
+  "bytecode": "0x608060405234801561001057600080fd5b506040516102d73803806102d783398101604081905261002f9161016b565b807f360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc556000816001600160a01b03168360405161006c919061022a565b600060405180830381855af49150503d80600081146100a7576040519150601f19603f3d011682016040523d82523d6000602084013e6100ac565b606091505b50509050806101015760405162461bcd60e51b815260206004820152601360248201527f436f6e737472756374696f6e206661696c656400000000000000000000000000604482015260640160405180910390fd5b505050610246565b634e487b7160e01b600052604160045260246000fd5b60005b8381101561013a578181015183820152602001610122565b83811115610149576000848401525b50505050565b80516001600160a01b038116811461016657600080fd5b919050565b6000806040838503121561017e57600080fd5b82516001600160401b038082111561019557600080fd5b818501915085601f8301126101a957600080fd5b8151818111156101bb576101bb610109565b604051601f8201601f19908116603f011681019083821181831017156101e3576101e3610109565b816040528281528860208487010111156101fc57600080fd5b61020d83602083016020880161011f565b80965050505050506102216020840161014f565b90509250929050565b6000825161023c81846020870161011f565b9190910192915050565b6083806102546000396000f3fe60806040527f360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc54600036818237808036818561270f195a01f491503d8082833e8280156049578183f35b8183fdfea264697066735822122077e75c18219d9e6eb4f3af1790051b45e738baa95158cc5fba84570506e76f8e64736f6c634300080d0033",
+  "deployedBytecode": "0x60806040527f360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc54600036818237808036818561270f195a01f491503d8082833e8280156049578183f35b8183fdfea264697066735822122077e75c18219d9e6eb4f3af1790051b45e738baa95158cc5fba84570506e76f8e64736f6c634300080d0033",
+  "devdoc": {
+    "kind": "dev",
+    "methods": {},
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "version": 1
+  },
+  "storageLayout": {
+    "storage": [],
+    "types": null
+  }
+}

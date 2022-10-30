@@ -21,18 +21,18 @@ contract Swap is Ownable, ReentrancyGuard {
         require(amount <= allowance, "User has not given swap contract spend approval");
         uint256 selfBalanceToToken = _toToken.balanceOf(address(this));
         require(amount <= selfBalanceToToken, "Not enough liquidity");
-        _fromToken.transferFrom(user, address(this), amount);
-        _toToken.transfer(user, amount);
+        require(_fromToken.transferFrom(user, address(this), amount), "Could not transfer user's token to swap contract");
+        require(_toToken.transfer(user, amount), "Swap contract could not transfer token to user");
     }
 
     function withdrawFrom() onlyOwner external {
         uint256 balance = _fromToken.balanceOf(address(this));
-        _fromToken.transfer(this.owner(), balance);
+        require(_fromToken.transfer(this.owner(), balance), "Admin could not withdraw FromToken");
     }
 
     function withdrawTo() onlyOwner external {
         uint256 balance = _toToken.balanceOf(address(this));
-        _toToken.transfer(this.owner(), balance);
+        require(_toToken.transfer(this.owner(), balance), "Admin could not withdraw ToToken");
     }
 
     function renounceOwnership() override public virtual onlyOwner {

@@ -43,12 +43,17 @@ contract Redemption is Ownable, ReentrancyGuard {
 
     function withdrawDAMM() onlyOwner external {
         uint256 balance = DAMM.balanceOf(address(this));
-        require(DAMM.transfer(this.owner(), balance), "Admin could not withdraw ToToken");
+        require(DAMM.transfer(this.owner(), balance), "Admin could not withdraw DAMM");
     }
 
     function withdrawUSDC() onlyOwner external {
       uint256 balance = USDC.balanceOf(address(this));
-      require(USDC.transfer(this.owner(), balance), "Admin could not withdraw ToToken");
+      require(USDC.transfer(this.owner(), balance), "Admin could not withdraw USDC");
+    }
+
+    function sweepToken(ERC20 token) onlyOwner external {
+      uint256 balance = token.balanceOf(address(this));
+      require(token.transfer(this.owner(), balance), "Admin could not withdraw token");
     }
 
     function renounceOwnership() override public virtual onlyOwner {

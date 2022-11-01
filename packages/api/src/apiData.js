@@ -5,7 +5,7 @@ const MainnetPriceCache = require('./lib/MainnetPriceCache');
 const DammTokenCache = require('./lib/DammTokenCache');
 const { compoundMarkets, aaveMarkets, CHAIN_ID } = require('./config');
 
-const underlyingTokensForChain = [...Object.keys(mainnetTokens), 'BDAMM'];
+const underlyingTokensForChain = [...Object.keys(mainnetTokens), 'BDAMM', 'DAMM'];
 if (CHAIN_ID === 1 || CHAIN_ID === 5) {
   underlyingTokensForChain.push(...Object.keys(compoundMarkets), ...Object.keys(aaveMarkets));
 } else {
@@ -39,6 +39,7 @@ const apiData = async () => {
       mainnetBlock: mainnetProvider.blockNumber,
       dammNetBlock: dammProvider.blockNumber,
       bdamm: mainnetCache.getPriceBySymbol('BDAMM'),
+      damm: mainnetCache.getPriceBySymbol('DAMM'),
     },
   };
   return response;

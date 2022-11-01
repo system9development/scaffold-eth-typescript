@@ -32,3 +32,4 @@ export const STABLECOIN_UNDERLYING_SYMBOLS_SET: Set<string>;
 export const CHAIN_ID: number;
 export const bdammPoolInfo: { type: 'univ3', address: string, decimals: 18 }
 export const dammPoolInfo: { type: 'univ3', address: string, decimals: 18 }
+export const TARGETED_BDAMM_DAMM_DISCOUNT_RATE: number;

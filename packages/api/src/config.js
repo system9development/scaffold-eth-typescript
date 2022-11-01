@@ -590,6 +590,8 @@ const STABLECOIN_UNDERLYING_SYMBOLS_SET = new Set([
   'CDAI',
 ]);
 
+const TARGETED_BDAMM_DAMM_DISCOUNT_RATE = 0.5;
+
 module.exports = {
   dammProvider,
   mainnetProvider,
@@ -605,4 +607,5 @@ module.exports = {
   CHAIN_ID,
   bdammPoolInfo,
   dammPoolInfo,
+  TARGETED_BDAMM_DAMM_DISCOUNT_RATE,
 };

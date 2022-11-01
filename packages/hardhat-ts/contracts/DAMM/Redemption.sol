@@ -11,10 +11,10 @@ contract Redemption is Ownable, ReentrancyGuard {
     ERC20 constant DAMM = ERC20(0xb3207935FF56120f3499e8aD08461Dd403bF16b8);
     ERC20 constant USDC = ERC20(0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48);
 
-    uint256 redemptionUSDCPrice_;
+    uint256 public redemptionUSDCPrice;
 
     constructor(uint256 _redemptionUSDCPrice) {
-      redemptionUSDCPrice_ = _redemptionUSDCPrice;
+      redemptionUSDCPrice = _redemptionUSDCPrice;
     }
 
     /* 
@@ -25,7 +25,7 @@ contract Redemption is Ownable, ReentrancyGuard {
         address user = msg.sender;
         uint256 allowanceBDAMM = BDAMM.allowance(user, address(this));
         require(amount <= allowanceBDAMM, "User has not given swap contract spend approval for BDAMM");
-        uint256 requiredRedemptionFee = amount * redemptionUSDCPrice_;
+        uint256 requiredRedemptionFee = amount * redemptionUSDCPrice;
         require(redemptionFee * 10**18 == requiredRedemptionFee, "Incorrect USDC redemption fee sent");
         uint256 allowanceUSDC = USDC.allowance(user, address(this));
         require(redemptionFee <= allowanceUSDC, "User has not given swap contract spend approval for USDC");
@@ -61,10 +61,6 @@ contract Redemption is Ownable, ReentrancyGuard {
     }
 
     function updateRedemptionUSDCPrice(uint256 _redemptionUSDCPrice) onlyOwner external {
-      redemptionUSDCPrice_ =_redemptionUSDCPrice;
-    }
-
-    function redemptionUSDCPrice() public view returns (uint256) {
-      return redemptionUSDCPrice_;
+      redemptionUSDCPrice = _redemptionUSDCPrice;
     }
 }

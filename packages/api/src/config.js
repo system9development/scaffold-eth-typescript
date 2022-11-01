@@ -546,6 +546,7 @@ const uniswapV3PoolAddresses = {
   ETH_BTRFLY: '0x3e6E23198679419cD73bB6376518dCc5168c8260',
   AGEUR_USDC: '0x735a26a57A0A0069dfABd41595A970faF5E1ee8b',
   USDC_BDAMM: '0x1971f78a7636632101e06931e0856be2f9bceC02',
+  USDC_DAMM: '0x9481b31eCc2EE62F9D3165ab4bFe5E9064CA4e7A',
   /* ---- Test pools ---- */
   USDC_ETH: '0x8ad599c3A0ff1De082011EFDDc58f1908eb6e6D8',
   ETH_USDT: '0x4e68Ccd3E89f51C3074ca5072bbAC773960dFa36',
@@ -563,6 +564,12 @@ const uniswapV2PoolAddresses = {
 const bdammPoolInfo = {
   type: 'univ3',
   address: '0x1971f78a7636632101e06931e0856be2f9bceC02',
+  decimals: 18,
+};
+
+const dammPoolInfo = {
+  type: 'univ3',
+  address: '0x9481b31eCc2EE62F9D3165ab4bFe5E9064CA4e7A',
   decimals: 18,
 };
 
@@ -597,4 +604,5 @@ module.exports = {
   STABLECOIN_UNDERLYING_SYMBOLS_SET,
   CHAIN_ID,
   bdammPoolInfo,
+  dammPoolInfo,
 };

@@ -81,7 +81,13 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
     log: true,
     args: [parseEther('0.072320658642'), 0, 0, parseEther('1'), deployer],
   });
-
+  // Borrow rate of 5.0%
+  await deploy('IRMFlat5_0', {
+    contract: 'JumpRateModelV2',
+    from: deployer,
+    log: true,
+    args: [parseEther('0.048790165536'), 0, 0, parseEther('1'), deployer],
+  });
 };
 export default func;
 func.tags = ['core'];

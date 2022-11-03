@@ -81,6 +81,8 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
   // eslint-disable-next-line @typescript-eslint/naming-convention
   const StablecoinIRMFlat7_5 = await ethers.getContract('StablecoinIRMFlat7_5');
 
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  const IRMFlat5_0 = await ethers.getContract('IRMFlat5_0');
   const Comptroller = (await ethers.getContract<IComptroller>('ComptrollerImplementation', deployer))
     .attach(Unitroller.address);
   const CTokenDelegate = await ethers.getContract<ICTokenDelegate>('CErc20Delegate');
@@ -167,7 +169,7 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
     }
     if (existingDtokenContract) {
       // In case this market was already deployed, update the IRM if changed
-      const interestRateModelAddress = symbol === 'WETH' || symbol === 'WBTC'
+      const interestRateModelAddress = symbol === 'WBTC'
         ? WethWbtcIRM.address
         : symbol === 'USDT'
         ? StablecoinIRMFlat12.address
@@ -181,6 +183,8 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
         ? StablecoinIRMFlat7_5.address
         : STABLECOIN_UNDERLYING_SYMBOLS_SET.has(symbol)
         ? StablecoinIRM.address
+        : ['AETH', 'WETH', 'CETH'].includes(symbol)
+        ? IRMFlat5_0.address
         : AltcoinIRM.address;
       if ( interestRateModelAddress !== await existingDtokenContract.interestRateModel()) {
         console.log(`updating interest rate model for d${symbol} to ${interestRateModelAddress}`);

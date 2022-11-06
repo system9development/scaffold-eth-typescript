@@ -65,7 +65,7 @@ module.exports = {
     'import/named': 'off',
     'import/namespace': 'off',
     'import/default': 'off',
-    'import/no-named-as-default-member': 'error',
+    'import/no-named-as-default-member': 'warn',
     'import/extensions': 'off',
     'import/no-unresolved': 'off',
     'import/prefer-default-export': 'off',

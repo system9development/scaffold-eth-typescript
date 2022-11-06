@@ -4,6 +4,8 @@ import { ethers } from 'hardhat';
 import { DeployFunction } from 'hardhat-deploy/types';
 import { THardhatRuntimeEnvironmentExtended } from 'helpers/types/THardhatRuntimeEnvironmentExtended';
 
+import prettyDiff from '../helpers/prettyDiff';
+
 const PATH_TO_COMPTROLLER_SOL = '../hardhat-ts/contracts/ComptrollerG7.sol';
 
 const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => {
@@ -23,6 +25,7 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
       args: [BDAMM.address],
     });
   } else {
+    console.log(prettyDiff(comptrollerContractCode, comptrollerContractCodeUpdated));
     fs.writeFileSync(PATH_TO_COMPTROLLER_SOL, comptrollerContractCodeUpdated);
     console.error(`Updating ComptrollerG7.sol with new BDAMM address ${BDAMM.address}.`);
     console.error('Run `yarn deploy` again to trigger rebuild and deploy');

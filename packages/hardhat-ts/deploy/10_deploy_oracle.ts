@@ -156,7 +156,7 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
         priceValues.push(ethers.utils.parseUnits(priceForCToken.toString(), 36 - tokenDecimals));
       } else {
         const { coingeckoId } = compoundMarkets[cTokenSymbol][1];
-        const tokenAddress = (await ethers.getContract(`d${cTokenSymbol.substring(1)}`)).address;
+        const tokenAddress = (await ethers.getContract(`d${cTokenSymbol.substring(1).replace(/^ETH$/, 'WETH')}`)).address;
         tokenAddresses.push(tokenAddress);
         decimals.push(8);
         symbols.push(cTokenSymbol);

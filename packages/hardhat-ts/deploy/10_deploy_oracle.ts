@@ -109,7 +109,7 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
       : symbol in compoundMarkets
       ? compoundMarkets[symbol][1].decimals
       : 0;
-    if (symbol === 'ETH') {
+    if (symbol === 'ETH' || symbol === 'CETH') {
       continue;
     }
     const dToken = await ethers.getContract(`d${symbol}`);

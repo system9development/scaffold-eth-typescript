@@ -105,6 +105,7 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
       const aTokenChainData = aTokenData[CHAIN_ID];
       if (aTokenChainData) {
         tokenList.push(aTokenSymbol);
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
         decimalList.push(aTokenChainData.decimals as number);
       }
     }
@@ -115,6 +116,7 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
       const cTokenChainData = cTokenData[CHAIN_ID];
       if (cTokenChainData) {
         tokenList.push(cTokenSymbol);
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
         decimalList.push(cTokenChainData.decimals as number);
       }
     } else {

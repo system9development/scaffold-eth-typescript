@@ -3867,6 +3867,59 @@
       "artifacts": [
         "DAMMProxy"
       ]
+    },
+    "/home/zeus/projects/launch/mainnet-final/packages/hardhat-ts/contracts/openzeppelin/Swap.sol": {
+      "lastModificationDate": 1667170121791,
+      "contentHash": "542f9edda8d61a836ccf7b308d27fa1f",
+      "sourceName": "contracts/openzeppelin/Swap.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 250
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "storageLayout",
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "evm.gasEstimates",
+                "devdoc",
+                "userdoc"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x00000000d41867734bbee4c6863d9255b2b06ac1"
+            }
+          }
+        }
+      },
+      "imports": [
+        "../openzeppelin/Ownable.sol",
+        "../openzeppelin/ERC20.sol",
+        "../openzeppelin/ReentrancyGuard.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.4"
+      ],
+      "artifacts": [
+        "Swap"
+      ]
     }
   }
 }

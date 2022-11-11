@@ -107,6 +107,7 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
       const aTokenChainData = aTokenData[CHAIN_ID];
       if (aTokenChainData) {
         tokenList.push(aTokenSymbol);
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
         decimalList.push(aTokenChainData.decimals as number);
       }
     }
@@ -117,6 +118,7 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
       const cTokenChainData = cTokenData[CHAIN_ID];
       if (cTokenChainData) {
         tokenList.push(cTokenSymbol);
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
         decimalList.push(cTokenChainData.decimals as number);
       }
     } else {
@@ -281,23 +283,29 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
         JSON.stringify([
           "function decimals() view returns (uint8)",
           "function approve(address, uint256)",
-          "function symbol() view returns (string)"
+          "function symbol() view returns (string)",
+          "function balanceOf(address) view returns (uint256)"
         ]),
         deployerSigner,
       );
-      const underlyingDecimals: number = await underlyingContract.decimals();
       const underlyingSymbol: string = await underlyingContract.symbol();
-      const underlyingAmountToMintString = '0.0001';
-      const underlyingAmountToMint = ethers.utils.parseUnits(underlyingAmountToMintString, underlyingDecimals);
-      console.log(`Approving spend of ${underlyingSymbol} to market ${dTokenContract.address}`);
-      await (await underlyingContract.approve(dTokenContract.address, underlyingAmountToMint)).wait();
-      console.log(`minting 0.0001 ${underlyingSymbol} of d${symbol}`);
-      await (await dTokenContract.mint(underlyingAmountToMint)).wait();
-      const deployerBalance = await dTokenContract.balanceOf(deployer);
-      const totalSupply = await dTokenContract.totalSupply();
-      if (totalSupply.isZero() || !(totalSupply.eq(deployerBalance))) {
-        console.error(`total supply of d${symbol} changed during initial seed. Deployer balance is ${deployerBalance}. total supply is ${totalSupply}`);
-        process.exit(1);
+      const balanceOfUnderlying = await underlyingContract.balanceOf(deployer);
+      if (balanceOfUnderlying.isZero()) {
+        console.log(`deployer has no ${underlyingSymbol}, cannot mint initial d${underlyingSymbol}`);
+      } else {
+        const underlyingDecimals: number = await underlyingContract.decimals();
+        const underlyingAmountToMintString = '0.0001';
+        const underlyingAmountToMint = ethers.utils.parseUnits(underlyingAmountToMintString, underlyingDecimals);
+        console.log(`Approving spend of ${underlyingSymbol} to market ${dTokenContract.address}`);
+        await (await underlyingContract.approve(dTokenContract.address, underlyingAmountToMint)).wait();
+        console.log(`minting 0.0001 ${underlyingSymbol} of d${symbol}`);
+        await (await dTokenContract.mint(underlyingAmountToMint)).wait();
+        const deployerBalance = await dTokenContract.balanceOf(deployer);
+        const totalSupply = await dTokenContract.totalSupply();
+        if (totalSupply.isZero() || !(totalSupply.eq(deployerBalance))) {
+          console.error(`total supply of d${symbol} changed during initial seed. Deployer balance is ${deployerBalance}. total supply is ${totalSupply}`);
+          process.exit(1);
+        }
       }
     } else if (newlyDeployedMarkets.has(`d${symbol}`)) {
       console.log(`d${symbol} was deployed in this run, but the total supply is not zero. Check manually to ensure attacker did not mint`);

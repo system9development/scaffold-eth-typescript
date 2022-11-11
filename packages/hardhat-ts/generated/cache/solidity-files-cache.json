@@ -3920,6 +3920,227 @@
       "artifacts": [
         "Swap"
       ]
+    },
+    "/home/zeus/projects/launch/mainnet-final/packages/hardhat-ts/contracts/Dammtroller/Dammtroller.sol": {
+      "lastModificationDate": 1668125958875,
+      "contentHash": "6cd2bb8a9f77340ebc3a484d053a658e",
+      "sourceName": "contracts/Dammtroller/Dammtroller.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 250
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "storageLayout",
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "evm.gasEstimates",
+                "devdoc",
+                "userdoc"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x00000000d41867734bbee4c6863d9255b2b06ac1"
+            }
+          }
+        }
+      },
+      "imports": [
+        "../CToken.sol",
+        "../ErrorReporter.sol",
+        "../PriceOracle.sol",
+        "../ComptrollerInterface.sol",
+        "./ComptrollerStorage.sol",
+        "./DammtrollerProxy.sol",
+        "../Governance/Comp.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.10"
+      ],
+      "artifacts": [
+        "Dammtroller"
+      ]
+    },
+    "/home/zeus/projects/launch/mainnet-final/packages/hardhat-ts/contracts/Dammtroller/ComptrollerStorage.sol": {
+      "lastModificationDate": 1668125958875,
+      "contentHash": "20c5496cfbe23e4e8df8b2310569f663",
+      "sourceName": "contracts/Dammtroller/ComptrollerStorage.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 250
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "storageLayout",
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "evm.gasEstimates",
+                "devdoc",
+                "userdoc"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x00000000d41867734bbee4c6863d9255b2b06ac1"
+            }
+          }
+        }
+      },
+      "imports": [
+        "../CToken.sol",
+        "../PriceOracle.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.10"
+      ],
+      "artifacts": [
+        "ComptrollerV1Storage",
+        "ComptrollerV2Storage",
+        "ComptrollerV3Storage",
+        "ComptrollerV4Storage",
+        "ComptrollerV5Storage",
+        "ComptrollerV6Storage",
+        "ComptrollerV7Storage",
+        "UnitrollerAdminStorage"
+      ]
+    },
+    "/home/zeus/projects/launch/mainnet-final/packages/hardhat-ts/contracts/Dammtroller/DammtrollerProxy.sol": {
+      "lastModificationDate": 1668125958875,
+      "contentHash": "a1b2bb6b0dae30710b458e3bf4ff5616",
+      "sourceName": "contracts/Dammtroller/DammtrollerProxy.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 250
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "storageLayout",
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "evm.gasEstimates",
+                "devdoc",
+                "userdoc"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x00000000d41867734bbee4c6863d9255b2b06ac1"
+            }
+          }
+        }
+      },
+      "imports": [
+        "../ErrorReporter.sol",
+        "./ComptrollerStorage.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.10"
+      ],
+      "artifacts": [
+        "DammtrollerProxy"
+      ]
+    },
+    "/home/zeus/projects/launch/mainnet-final/packages/hardhat-ts/contracts/DAMM/Redemption.sol": {
+      "lastModificationDate": 1668125958875,
+      "contentHash": "06e42f29bb657bd92550256640b3ed6f",
+      "sourceName": "contracts/DAMM/Redemption.sol",
+      "solcConfig": {
+        "version": "0.8.13",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 250
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "storageLayout",
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "devdoc",
+                "userdoc",
+                "evm.gasEstimates",
+                "devdoc",
+                "userdoc"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          },
+          "metadata": {
+            "useLiteralContent": true
+          },
+          "libraries": {
+            "": {
+              "__CACHE_BREAKER__": "0x00000000d41867734bbee4c6863d9255b2b06ac1"
+            }
+          }
+        }
+      },
+      "imports": [
+        "../openzeppelin/Ownable.sol",
+        "../openzeppelin/ERC20.sol",
+        "../openzeppelin/ReentrancyGuard.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.4"
+      ],
+      "artifacts": [
+        "Redemption"
+      ]
     }
   }
 }

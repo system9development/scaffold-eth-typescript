@@ -13,6 +13,22 @@ if (!ALCHEMY_API_TOKEN) {
   process.exit(1);
 }
 
+const {
+  DAMM_REDEMPTION_FEE_ADMIN = '',
+  DAMM_TREASURY_ADDRESS = '',
+} = process.env;
+
+if (CHAIN_ID === 1 || CHAIN_ID === 31336) {
+  if (!DAMM_REDEMPTION_FEE_ADMIN) {
+    console.error('DAMM_REDEMPTION_FEE_ADMIN not set');
+    process.exit(1)
+  }
+  if (!DAMM_TREASURY_ADDRESS) {
+    console.error('DAMM_TREASURY_ADDRESS not set');
+    process.exit(1);
+  }
+}
+
 const mainnetProvider = new ethers.providers.AlchemyProvider('homestead', ALCHEMY_API_TOKEN);
 
 console.log('Creating DAMM provider', NETWORK_URL, CHAIN_ID);
@@ -608,4 +624,6 @@ module.exports = {
   bdammPoolInfo,
   dammPoolInfo,
   TARGETED_BDAMM_DAMM_DISCOUNT_RATE,
+  DAMM_REDEMPTION_FEE_ADMIN,
+  DAMM_TREASURY_ADDRESS,
 };

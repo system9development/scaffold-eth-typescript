@@ -2710,6 +2710,7 @@ __metadata:
     "@typechain/ethers-v5": ^9.0.0
     "@typechain/hardhat": ^4.0.0
     "@types/chai": ^4.3.1
+    "@types/diff": ^5.0.2
     "@types/mocha": ^9.1.1
     "@types/node": ^16.11.40
     "@types/qrcode-terminal": ^0.12.0
@@ -2720,6 +2721,7 @@ __metadata:
     chai: ^4.3.6
     chalk: ^4.1.2
     cross-env: ^7.0.3
+    diff: ^5.1.0
     dotenv: ^16.0.1
     eslint: ^8.17.0
     eslint-config-airbnb: ^19.0.4
@@ -3327,6 +3329,13 @@ __metadata:
   version: 2.8.12
   resolution: "@types/cors@npm:2.8.12"
   checksum: 8c45f112c7d1d2d831b4b266f2e6ed33a1887a35dcbfe2a18b28370751fababb7cd045e745ef84a523c33a25932678097bf79afaa367c6cb3fa0daa7a6438257
+  languageName: node
+  linkType: hard
+
+"@types/diff@npm:^5.0.2":
+  version: 5.0.2
+  resolution: "@types/diff@npm:5.0.2"
+  checksum: 8fbc419b5aca33f494026bf5f70e026f76367689677ef114f9c078ac738d7dbe96e6dda3fd8290e4a7c35281e2b60b034e3d7e3c968b850cf06a21279e7ddcbe
   languageName: node
   linkType: hard
 
@@ -8714,6 +8723,13 @@ __metadata:
   version: 4.0.2
   resolution: "diff@npm:4.0.2"
   checksum: f2c09b0ce4e6b301c221addd83bf3f454c0bc00caa3dd837cf6c127d6edf7223aa2bbe3b688feea110b7f262adbfc845b757c44c8a9f8c0c5b15d8fa9ce9d20d
+  languageName: node
+  linkType: hard
+
+"diff@npm:^5.1.0":
+  version: 5.1.0
+  resolution: "diff@npm:5.1.0"
+  checksum: c7bf0df7c9bfbe1cf8a678fd1b2137c4fb11be117a67bc18a0e03ae75105e8533dbfb1cda6b46beb3586ef5aed22143ef9d70713977d5fb1f9114e21455fba90
   languageName: node
   linkType: hard
 

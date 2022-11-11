@@ -190,6 +190,11 @@ const mainnetTokens = {
     "coingeckoId": "apecoin",
     "decimals": 18
   },
+  "BDAMM": {
+    "address": "0xfa372fF1547fa1a283B5112a4685F1358CE5574d",
+    "coingeckoId": "bonded-damm",
+    "decimals": 18
+  },
   "BTRFLY": {
     "address": "0xc55126051b22ebb829d00368f4b12bde432de5da",
     "coingeckoId": "redacted",

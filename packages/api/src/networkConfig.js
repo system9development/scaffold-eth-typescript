@@ -6,7 +6,7 @@ const NETWORK_NAME = process.env.ETHERS_NETWORK_NAME === 'localfork'
 const contractsConfig = require('../../common/src/generated/hardhat_contracts.json');
 const networkConfig = contractsConfig[CHAIN_ID]?.find((config) => config.name === NETWORK_NAME)?.contracts;
 
-if (!networkConfig) {
+if (!networkConfig || !networkConfig['Unitroller'] || !networkConfig['gdAMM']) {
   console.error(`no network config found for ${NETWORK_NAME} with chainID ${CHAIN_ID}`);
   process.exit(1);
 }

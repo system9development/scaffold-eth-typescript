@@ -6,6 +6,7 @@ const cTokenMetadataToJson = require('./cTokenMetadataToJson');
 const cTokenMetadataToMarketData = require('./cTokenMetadataToMarketData');
 const MainnetPriceCache = require('./MainnetPriceCache');
 const BlockCache = require('./BlockCache');
+const networkConfig = require('../networkConfig');
 
 /*
   Cache static and variable metadata for each token supported by DAMM.
@@ -112,7 +113,7 @@ class DammTokenCache extends BlockCache {
     }
     const blockNumber = await this.#provider.getBlockNumber();
     this.#blockNumber = blockNumber;
-    this.#dammTokens = await Comptroller.getAllMarkets();
+    this.#dammTokens = [...await Comptroller.getAllMarkets(), networkConfig['gdAMM'].address];
     const dammTokenSet = new Set(this.#dammTokens);
     console.log('DammTokenCache:init: Initializing static data');
     await Promise.all((this.#dammTokens).map((dToken) => this.#initializeDammTokenStaticData(dToken)));
@@ -127,7 +128,7 @@ class DammTokenCache extends BlockCache {
     this.#provider.on('block', async (blockNumber) => {
       this.#blockNumber = blockNumber;
 
-      const latestDammTokens = await Comptroller.getAllMarkets();
+      const latestDammTokens = [...await Comptroller.getAllMarkets(), networkConfig['gdAMM'].address];
       if (!latestDammTokens || latestDammTokens.length === 0) {
         console.error('Comptroller getAllMarkets failed or reported 0 dAMM tokens; aborting update');
       }

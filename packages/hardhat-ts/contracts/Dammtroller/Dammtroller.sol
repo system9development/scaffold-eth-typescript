@@ -1289,8 +1289,9 @@ contract Dammtroller is ComptrollerV5Storage, ComptrollerInterface, ComptrollerE
     function grantCompInternal(address user, uint amount) internal returns (uint) {
         Comp comp = Comp(getCompAddress());
         uint compRemaining = comp.balanceOf(address(this));
-        if (amount > 0 && amount <= compRemaining) {
-            comp.transfer(user, amount);
+        uint amountToTransfer = amount / 1e12;
+        if (amountToTransfer > 0 && amountToTransfer <= compRemaining) {
+            comp.transfer(user, amountToTransfer);
             return 0;
         }
         return amount;

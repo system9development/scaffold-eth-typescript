@@ -2,8 +2,15 @@ const ethers = require('ethers');
 const {
   uniswapV2PoolAddresses,
   mainnetProvider,
-  mainnetTokens,
+  mainnetTokens: mainnetTokensOrig,
+  mainnetBdamm,
 } = require('../config');
+
+const mainnetTokens = {
+  ...mainnetTokensOrig,
+  ...mainnetBdamm,
+};
+
 const { abi: IUniswapV2PoolABI } = require('@uniswap/v2-core/build/IUniswapV2Pair.json');
 const BigNumber = require('bignumber.js');
 

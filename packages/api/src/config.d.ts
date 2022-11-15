@@ -19,6 +19,7 @@ export interface IExternalDeployment {
 }
 
 export const mainnetTokens: {[key: string]:  IMainnetMetaData};
+export const mainnetBdamm: {[key: string]:  IMainnetMetaData};
 export const goerliTokens: {[key: string]: IMainnetMetaData };
 export const dammProvider: ethers.providers.Provider & { blockNumber?: number };
 export const mainnetProvider: ethers.providers.Provider & { blockNumber?: number };

@@ -10,10 +10,16 @@ const { abi: IUniswapV3PoolABI } = require(
 const {
   mainnetProvider,
   uniswapV3PoolAddresses,
-  mainnetTokens,
+  mainnetTokens: mainnetTokensOrig,
+  mainnetBdamm,
   bdammPoolInfo,
   dammPoolInfo,
 } = require('../config');
+
+const mainnetTokens = {
+  ...mainnetTokensOrig,
+  ...mainnetBdamm,
+};
 
 dotenv.config();
 

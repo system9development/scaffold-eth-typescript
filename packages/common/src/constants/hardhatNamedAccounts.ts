@@ -1,7 +1,18 @@
 import { TNetworkNames } from '~common/models/TNetworkNames';
 
 type TChain = TNetworkNames | number;
-type TAccountName = 'deployer' | 'user1' | 'user2' | 'user3' | 'user4' | 'user5' | 'governance';
+type TAccountName = 'deployer'
+  | 'user1'
+  | 'user2'
+  | 'user3'
+  | 'user4'
+  | 'user5'
+  | 'user6'
+  | 'user7'
+  | 'user8'
+  | 'user9'
+  | 'user10'
+  | 'governance';
 
 /**
  * The default account to use for hardhat.  For example 0 will take by default take the first account of hardhat
@@ -38,6 +49,21 @@ export const hardhatNamedAccounts: {
   },
   user5: {
     default: 5,
+  },
+  user6: {
+    default: 6,
+  },
+  user7: {
+    default: 7,
+  },
+  user8: {
+    default: 8,
+  },
+  user9: {
+    default: 9,
+  },
+  user10: {
+    default: 10,
   },
   governance: {
     default: 10,

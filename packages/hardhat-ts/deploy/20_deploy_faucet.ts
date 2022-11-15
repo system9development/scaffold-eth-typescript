@@ -36,13 +36,15 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
   for (let i = 0; i < tokenList.length; i += 1) {
     const [symbol, token] = tokenContractEntries[i];
     const faucetBalance = await token.balanceOf(Faucet.address);
+    const amount = ethers.utils.parseUnits('100000', mainnetTokens[symbol].decimals);
     if (faucetBalance.isZero() && symbol !== 'USDT') {
-      // if (symbol === 'USDT') {
-      //   console.log('transferring 100,000 USDT from deployer to faucet')
-      //   await (await token.transfer(Faucet.address, ethers.BigNumber.from('100000000000'))).wait();
-      // } else {
-      console.log(`minting 100,000 ${symbol} to faucet`);
-      await (await token.mint(Faucet.address, parseUnits('100000', mainnetTokens[symbol].decimals))).wait();
+      if ((await token.balanceOf(deployer)).gt(amount)) {
+        console.log(`transferring 100,000 ${symbol} to faucet`);
+        await token.transfer(Faucet.address, amount);
+      } else {
+        console.log(`minting 100,000 ${symbol} to faucet`);
+        await (await token.mint(Faucet.address, parseUnits('100000', mainnetTokens[symbol].decimals))).wait();
+      }
     }
   }
 };

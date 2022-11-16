@@ -54,7 +54,7 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
     const redemption = await ethers.getContract<IRedemption>('Redemption');
     const usdcFeesCollected = await redemption.totalUSDCFees();
     if (usdcFeesCollected.isZero()) {
-      await damm.transfer(redemption.address, ethers.utils.parseEther('100'));
+      await (await damm.transfer(redemption.address, ethers.utils.parseEther('100'))).wait();
     }
   }
 };

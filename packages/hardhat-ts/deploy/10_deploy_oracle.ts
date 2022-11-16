@@ -70,12 +70,12 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
     Object.entries(mainnetTokens)
       .map(([symbol, { coingeckoId }]: [string, { coingeckoId: string }]): [string, string] => [coingeckoId, symbol])
   );
-  Object.entries(compoundMarkets).forEach(([cTokenSymbol, cTokenData]) => {
+  Object.entries(compoundMarkets).filter(([, chainData]) => CHAIN_ID in chainData).forEach(([cTokenSymbol, cTokenData]) => {
     const coingeckoId = cTokenData[1].coingeckoId;
     coingeckoIdToSymbols[coingeckoId] = cTokenSymbol;
   });
   if (CHAIN_ID === 1 || CHAIN_ID === 5) {
-    Object.entries(aaveMarkets).forEach(([aTokenSymbol, aTokenData]) => {
+    Object.entries(aaveMarkets).filter(([, chainData]) => CHAIN_ID in chainData).forEach(([aTokenSymbol, aTokenData]) => {
       const coingeckoId = aTokenData[1].coingeckoId;
       coingeckoIdToSymbols[coingeckoId] = aTokenSymbol;
     });

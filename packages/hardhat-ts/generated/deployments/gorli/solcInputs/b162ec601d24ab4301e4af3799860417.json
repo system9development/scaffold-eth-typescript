@@ -1,0 +1,42 @@
+{
+  "language": "Solidity",
+  "sources": {
+    "contracts/DAMM/DAMMProxy.sol": {
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.13;\n\ncontract DAMMProxy {\n    // Code position in storage is keccak256(\"eip1967.proxy.implementation\") = \"0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc\"\n    constructor(bytes memory constructData, address contractLogic) {\n        // save the code address\n        assembly { // solium-disable-line\n            sstore(0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc, contractLogic)\n        }\n        (bool success, ) = contractLogic.delegatecall(constructData); // solium-disable-line\n        require(success, \"Construction failed\");\n    }\n\n    fallback() external payable {\n        assembly { // solium-disable-line\n            let contractLogic := sload(0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc)\n            calldatacopy(0x0, 0x0, calldatasize())\n            let success := delegatecall(sub(gas(), 10000), contractLogic, 0x0, calldatasize(), 0, 0)\n            let retSz := returndatasize()\n            returndatacopy(0, 0, retSz)\n            switch success\n            case 0 {\n                revert(0, retSz)\n            }\n            default {\n                return(0, retSz)\n            }\n        }\n    }\n}"
+    }
+  },
+  "settings": {
+    "optimizer": {
+      "enabled": true,
+      "runs": 250
+    },
+    "outputSelection": {
+      "*": {
+        "*": [
+          "storageLayout",
+          "abi",
+          "evm.bytecode",
+          "evm.deployedBytecode",
+          "evm.methodIdentifiers",
+          "metadata",
+          "devdoc",
+          "userdoc",
+          "evm.gasEstimates",
+          "devdoc",
+          "userdoc"
+        ],
+        "": [
+          "ast"
+        ]
+      }
+    },
+    "metadata": {
+      "useLiteralContent": true
+    },
+    "libraries": {
+      "": {
+        "__CACHE_BREAKER__": "0x00000000d41867734bbee4c6863d9255b2b06ac1"
+      }
+    }
+  }
+}

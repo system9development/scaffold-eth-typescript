@@ -3922,8 +3922,8 @@
       ]
     },
     "/home/zeus/projects/launch/mainnet-final/packages/hardhat-ts/contracts/Dammtroller/Dammtroller.sol": {
-      "lastModificationDate": 1668125958875,
-      "contentHash": "6cd2bb8a9f77340ebc3a484d053a658e",
+      "lastModificationDate": 1668570876844,
+      "contentHash": "9a151345ed62f9367dd88045f76c77cc",
       "sourceName": "contracts/Dammtroller/Dammtroller.sol",
       "solcConfig": {
         "version": "0.8.13",

@@ -75,13 +75,14 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
     'StablecoinIRMFlat8_4',
     'StablecoinIRMFlat10_5',
     'StablecoinIRMFlat8_2',
+    'StablecoinIRMFlat7_5',
+    'IRMFlat5_0',
     'IRMFlat9_5',
     'IRMFlat11_0',
     'IRMFlat7_0',
     'IRMFlat8_5',
     'IRMFlat9_2',
     'IRMFlat6_0',
-    'IRMFlat5_0'
   ] as const;
   const IRMs: { [key: string]:  IJumpRateModelV2 } = {};
   for (let i = 0; i < IRMNames.length; i++) {
@@ -182,7 +183,7 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
       const interestRateModelAddress = SYMBOL === 'WBTC'
         ? IRMs.WethWbtcIRM.address
         : SYMBOL === 'USDT'
-        ? IRMs.StablecoinIRMFlat11.address
+        ? IRMs.IRMFlat11_0.address
         : SYMBOL === 'USDC'
         ? IRMs.IRMFlat9_5.address
         : SYMBOL === 'DAI'

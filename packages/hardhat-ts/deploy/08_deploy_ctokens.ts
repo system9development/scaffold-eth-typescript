@@ -65,24 +65,31 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
   // const signer = await ethers.getSigner(deployer);
   const Unitroller = await ethers.getContract<IUnitroller>('Unitroller');
 
-  const StablecoinIRM = await ethers.getContract<IJumpRateModelV2>('StablecoinIRM');
-  const WethWbtcIRM = await ethers.getContract<IJumpRateModelV2>('WethWbtcIRM');
-  const AltcoinIRM = await ethers.getContract<IJumpRateModelV2>('AltcoinIRM');
-  const StablecoinIRMFlat12 = await ethers.getContract('StablecoinIRMFlat12');
-  // const StablecoinIRMFlat9 = await ethers.getContract('StablecoinIRMFlat9');
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  const StablecoinIRMFlat10_8 = await ethers.getContract('StablecoinIRMFlat10_8');
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  const StablecoinIRMFlat8_4 = await ethers.getContract('StablecoinIRMFlat8_4');
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  const StablecoinIRMFlat10_5 = await ethers.getContract('StablecoinIRMFlat10_5');
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  // const StablecoinIRMFlat8_2 = await ethers.getContract('StablecoinIRMFlat8_2');
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  const StablecoinIRMFlat7_5 = await ethers.getContract('StablecoinIRMFlat7_5');
+  const IRMNames = [
+    'StablecoinIRM',
+    'WethWbtcIRM',
+    'AltcoinIRM',
+    'StablecoinIRMFlat12',
+    'StablecoinIRMFlat9',
+    'StablecoinIRMFlat10_8',
+    'StablecoinIRMFlat8_4',
+    'StablecoinIRMFlat10_5',
+    'StablecoinIRMFlat8_2',
+    'IRMFlat9_5',
+    'IRMFlat11_0',
+    'IRMFlat7_0',
+    'IRMFlat8_5',
+    'IRMFlat9_2',
+    'IRMFlat6_0',
+    'IRMFlat5_0'
+  ] as const;
+  const IRMs: { [key: string]:  IJumpRateModelV2 } = {};
+  for (let i = 0; i < IRMNames.length; i++) {
+    const IRMName: typeof IRMNames[number] = IRMNames[i];
+    IRMs[IRMName] = await ethers.getContract<IJumpRateModelV2>(IRMName);
+  }
 
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  const IRMFlat5_0 = await ethers.getContract('IRMFlat5_0');
   const Comptroller = (await ethers.getContract<IComptroller>('ComptrollerImplementation', deployer))
     .attach(Unitroller.address);
   const CTokenDelegate = await ethers.getContract<ICTokenDelegate>('CErc20Delegate');
@@ -164,6 +171,7 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
   const newlyDeployedMarkets = new Set<string>();
   for (let i = 0; i < tokenList.length; i += 1) {
     const symbol = tokenList[i];
+    const SYMBOL = symbol.toUpperCase();
     const decimals = decimalList[i];
     const existingDtokenContract = await ethers.getContractOrNull<ICTokenDelegate>(`d${symbol}`, deployer);
     if (!existingDtokenContract) {
@@ -171,23 +179,31 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
     }
     if (existingDtokenContract) {
       // In case this market was already deployed, update the IRM if changed
-      const interestRateModelAddress = symbol === 'WBTC'
-        ? WethWbtcIRM.address
-        : symbol === 'USDT'
-        ? StablecoinIRMFlat12.address
-        : symbol === 'AUSDT'
-        ? StablecoinIRMFlat10_8.address
-        : symbol === 'AUSDC' || symbol === 'USDC'
-        ? StablecoinIRMFlat8_4.address
-        : symbol === 'CUSDT'
-        ? StablecoinIRMFlat10_5.address
-        : symbol === 'CUSDC' || symbol === 'TUSD'
-        ? StablecoinIRMFlat7_5.address
+      const interestRateModelAddress = SYMBOL === 'WBTC'
+        ? IRMs.WethWbtcIRM.address
+        : SYMBOL === 'USDT'
+        ? IRMs.StablecoinIRMFlat11.address
+        : SYMBOL === 'USDC'
+        ? IRMs.IRMFlat9_5.address
+        : SYMBOL === 'DAI'
+        ? IRMs.IRMFlat7_0.address
+        : SYMBOL === 'AUSDT'
+        ? IRMs.StablecoinIRMFlat10_8.address
+        : SYMBOL === 'AUSDC'
+        ? IRMs.StablecoinIRMFlat8_4.address
+        : SYMBOL === 'CUSDT'
+        ? IRMs.IRMFlat9_2.address
+        : SYMBOL === 'CUSDC'
+        ? IRMs.IRMFlat8_5.address
+        : SYMBOL === 'CDAI'
+        ? IRMs.IRMFlat6_0.address
+        : SYMBOL === 'TUSD'
+        ? IRMs.StablecoinIRMFlat7_5.address
         : STABLECOIN_UNDERLYING_SYMBOLS_SET.has(symbol)
-        ? StablecoinIRM.address
+        ? IRMs.StablecoinIRM.address
         : ['AETH', 'WETH', 'CETH'].includes(symbol)
-        ? IRMFlat5_0.address
-        : AltcoinIRM.address;
+        ? IRMs.IRMFlat5_0.address
+        : IRMs.AltcoinIRM.address;
       if ( interestRateModelAddress !== await existingDtokenContract.interestRateModel()) {
         console.log(`updating interest rate model for d${symbol} to ${interestRateModelAddress}`);
         await (await existingDtokenContract._setInterestRateModel(interestRateModelAddress)).wait();
@@ -200,7 +216,7 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
         args: [
           USDT,
           Comptroller.address,
-          StablecoinIRM.address,
+          IRMs.StablecoinIRM.address,
           ethers.utils.parseUnits('0.02', 10 + decimals),
           'dToken Tether USD',
           'dUSDT',
@@ -219,7 +235,7 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
         args: [
           USDC,
           Comptroller.address,
-          StablecoinIRM.address,
+          IRMs.StablecoinIRM.address,
           ethers.utils.parseUnits('0.02', 10 + decimals),
           'dToken USD Coin',
           'dUSDC',
@@ -234,10 +250,10 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
       const [underlyingAddress] = await getExternalUnderlyingDataFromSymbol(symbol);
       // Determine which interest rate model to use for the token
       const IRMAddress = symbol === 'WETH' || symbol === 'WBTC'
-        ? WethWbtcIRM.address
+        ? IRMs.WethWbtcIRM.address
         : STABLECOIN_UNDERLYING_SYMBOLS_SET.has(symbol)
-        ? StablecoinIRM.address
-        : AltcoinIRM.address;
+        ? IRMs.StablecoinIRM.address
+        : IRMs.AltcoinIRM.address;
       await deploy(`d${symbol}`, {
         contract: 'CErc20Delegator',
         from: deployer,

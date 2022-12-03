@@ -88,6 +88,48 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
     log: true,
     args: [parseEther('0.048790165536'), 0, 0, parseEther('1'), deployer],
   });
+  // Initialized targeting flat borrow rate of 9.5%
+  await deploy('IRMFlat9_5', {
+    contract: 'JumpRateModelV2',
+    from: deployer,
+    log: true,
+    args: [parseEther('0.090754364935108356'), 0, 0, parseEther('1'), deployer],
+  });
+  // Initialized targeting flat borrow rate of 11%
+  await deploy('IRMFlat11_0', {
+    contract: 'JumpRateModelV2',
+    from: deployer,
+    log: true,
+    args: [parseEther('0.104360017363802626'), 0, 0, parseEther('1'), deployer],
+  });
+  // Initialized targeting flat borrow rate of 7%
+  await deploy('IRMFlat7_0', {
+    contract: 'JumpRateModelV2',
+    from: deployer,
+    log: true,
+    args: [parseEther('0.067658649283153238'), 0, 0, parseEther('1'), deployer],
+  });
+  // Initialized targeting flat borrow rate of 8.5%
+  await deploy('IRMFlat8_5', {
+    contract: 'JumpRateModelV2',
+    from: deployer,
+    log: true,
+    args: [parseEther('0.081579988516544688'), 0, 0, parseEther('1'), deployer],
+  });
+  // Initialized targeting flat borrow rate of 9.2%
+  await deploy('IRMFlat9_2', {
+    contract: 'JumpRateModelV2',
+    from: deployer,
+    log: true,
+    args: [parseEther('0.088010878824817951'), 0, 0, parseEther('1'), deployer],
+  });
+  // Initialized targeting flat borrow rate of 6%
+  await deploy('IRMFlat6_0', {
+    contract: 'JumpRateModelV2',
+    from: deployer,
+    log: true,
+    args: [parseEther('0.088010878824817951'), 0, 0, parseEther('1'), deployer],
+  });
 };
 export default func;
 func.tags = ['core'];

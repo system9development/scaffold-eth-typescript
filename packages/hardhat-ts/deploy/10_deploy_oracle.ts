@@ -152,7 +152,11 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
         tokenAddresses.push(tokenAddress);
         decimals.push(tokenDecimals);
         symbols.push(cTokenSymbol);
-        const priceForCToken = cTokenSymbol === 'CTUSD' ? 0.020506 : priceData[coingeckoId].usd;
+        const priceForCToken = cTokenSymbol === 'CTUSD'
+          ? 0.020571
+          : cTokenSymbol === 'CUSDT'
+          ? 0.022063
+          : priceData[coingeckoId].usd;
         priceValues.push(ethers.utils.parseUnits(priceForCToken.toString(), 36 - tokenDecimals));
       } else {
         const { coingeckoId } = compoundMarkets[cTokenSymbol][1];
@@ -160,7 +164,11 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
         tokenAddresses.push(tokenAddress);
         decimals.push(8);
         symbols.push(cTokenSymbol);
-        const priceForCToken = cTokenSymbol === 'CTUSD' ? 0.020506 : priceData[coingeckoId].usd;
+        const priceForCToken = cTokenSymbol === 'CTUSD'
+          ? 0.020571
+          : cTokenSymbol === 'CUSDT'
+          ? 0.022063
+          : priceData[coingeckoId].usd;
         priceValues.push(ethers.utils.parseUnits(priceForCToken.toString(), 28));
       }
     }
@@ -186,4 +194,4 @@ const func: DeployFunction = async (hre: THardhatRuntimeEnvironmentExtended) => 
 };
 
 export default func;
-func.tags = ['core'];
+func.tags = ['core', 'oracle'];
